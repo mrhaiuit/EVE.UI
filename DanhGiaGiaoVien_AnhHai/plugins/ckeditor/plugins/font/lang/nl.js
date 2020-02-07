@@ -1,0 +1,1 @@
+CKEDITOR.plugins_GiaoDien2.setLang("font","nl",{fontSize:{label:"Lettergrootte",voiceLabel:"Lettergrootte",panelTitle:"Lettergrootte"},label:"Lettertype",panelTitle:"Lettertype",voiceLabel:"Lettertype"});

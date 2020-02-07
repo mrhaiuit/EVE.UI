@@ -1,0 +1,1 @@
+CKEDITOR.plugins_GiaoDien2.setLang("justify","th",{block:"จัดพอดีหน้ากระดาษ",center:"จัดกึ่งกลาง",left:"จัดชิดซ้าย",right:"จัดชิดขวา"});
