@@ -44,20 +44,24 @@
             min-height: 100%;
         }
 
-        .formLogin {
+        .formForgot,.formLogin {
             position: absolute;
             top: 40%;
             left: 50%;
             width: 40rem;
-            background-color: #ffffffa1;
+            background-color: rgba(255, 255, 255, 0.6313725490196078);
             transform: translate(-50%, -40%);
             border-radius: 5px;
             box-shadow: 1px 1px 11px 4px;
             padding: 65px 25px 25px 25px;
         }
+        .formForgot{
+            width:36rem;
+        }
+
 
         .form-group .form-control {
-            background-color: #00000033;
+            background-color: rgba(0, 0, 0, 0.2);
             border-radius: 5px;
             font-size: 20px;
             color: white;
@@ -86,7 +90,7 @@
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
-            background-color: #ffffffa1;
+            background-color: rgba(255, 255, 255, 0.6313725490196078);
             transform: translate(-50%, -60%);
             border-radius: 50%;
             box-shadow: 1px 1px 11px 4px;
@@ -226,12 +230,54 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
+                        <a href="javascript:$('.formLogin').fadeOut().hide(); $('.formForgot').removeAttr('style').addClass('animated shake');"><i class="fa fa-key m-r-10"></i> Quên mật khẩu</a> 
+                    </div>
+                    <div class="col-sm-12">
                         <a class="btn btn-default waves-effect" style="float: right; font-size: 18px; padding: 5px 20px;" onclick="btnLogin_clickJS();"><i class="fa fa-sign-in m-r-20"></i>ĐĂNG NHẬP</a>
                         <asp:LinkButton ID="btnLogin" OnClick="btnLogin_Click" runat="server" Style="display: none;"></asp:LinkButton>
                     </div>
+                </div> 
+            </div>
+
+            <div class="formForgot animated zoomIn" style="display:none;">
+                <div class="row clearfix">
+                    <div class="cirlcleBrand animated zoomIn">
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" class="form-control" id="Text1" runat="server" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
+                                <label class="form-label">Số điện thoại</label>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" class="form-control" id="Text2" runat="server" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
+                                <label class="form-label">Email</label>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="password" class="form-control" id="Password1" runat="server" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
+                                <label class="form-label">Mật khẩu mới</label>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <a href="javascript:$('.formForgot').fadeOut().hide(); $('.formLogin').removeAttr('style').addClass('animated shake');"><i class="fa fa-sign-in m-r-10"></i> Về đăng nhập</a> 
+                    </div>
+                    <div class="col-sm-12">
+                        <a class="btn btn-default waves-effect" style="float: right; font-size: 18px; padding: 5px 20px;" onclick=""><i class="fa fa-refresh m-r-20"></i>KHÔI PHỤC</a>
+                        <asp:LinkButton ID="LinkButto1"  runat="server" Style="display: none;"></asp:LinkButton>
+                    </div> 
                 </div>
 
             </div>
+
         </div>
     </form>
     <!-- Jquery Core Js -->
