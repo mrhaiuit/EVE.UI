@@ -17,7 +17,7 @@ public static class Connect
 {
     public static SqlConnection ConnectSQL()
     {
-        string s = @"Data Source=27.0.15.8,1433;Initial Catalog=db_QLCamDo_DuongGia;User ID=login123; Password=123123123;Connect Timeout=10"; 
+        string s = @"Data Source=27.0.15.8;Initial Catalog=EvalEdu;User ID=hai; Password=Hai@123;Connect Timeout=10"; 
         //string s = @"Data Source="+ System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + @"db_MySoftware.db";
         SqlConnection conn = new SqlConnection(s);
         return conn;

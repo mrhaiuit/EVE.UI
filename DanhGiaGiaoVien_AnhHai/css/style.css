@@ -2469,7 +2469,7 @@
     }
 
 .bg-cyan {
-    background-color: #00BCD4 !important;
+    background-color: rgb(108, 167, 183); !important;
     color: #fff;
 }
 
@@ -2637,7 +2637,7 @@
 }
 
 .col-cyan {
-    color: #00BCD4 !important;
+    color: rgb(108, 167, 183); !important;
 }
 
 .col-teal {
@@ -3015,7 +3015,7 @@
     }
 
     .demo-choose-skin .cyan {
-        background-color: #00BCD4;
+        background-color: rgb(108, 167, 183);;
     }
 
     .demo-choose-skin .teal {
@@ -4551,8 +4551,8 @@ section.content {
 }
 
 [type="checkbox"]:checked.chk-col-cyan + label:before {
-    border-right: 2px solid #00BCD4;
-    border-bottom: 2px solid #00BCD4;
+    border-right: 2px solid rgb(108, 167, 183);;
+    border-bottom: 2px solid rgb(108, 167, 183);;
 }
 
 [type="checkbox"]:checked.chk-col-teal + label:before {
@@ -4670,8 +4670,8 @@ section.content {
 }
 
 [type="checkbox"].filled-in:checked.chk-col-cyan + label:after {
-    border: 2px solid #00BCD4;
-    background-color: #00BCD4;
+    border: 2px solid rgb(108, 167, 183);;
+    background-color: rgb(108, 167, 183);;
 }
 
 [type="checkbox"].filled-in:checked.chk-col-teal + label:after {
@@ -4791,8 +4791,8 @@ section.content {
 }
 
 [type="radio"].radio-col-cyan:checked + label:after {
-    background-color: #00BCD4;
-    border-color: #00BCD4;
+    background-color: rgb(108, 167, 183);;
+    border-color: rgb(108, 167, 183);;
 }
 
 [type="radio"].radio-col-teal:checked + label:after {
@@ -4924,12 +4924,12 @@ section.content {
 }
 
 [type="radio"].with-gap.radio-col-cyan:checked + label:before {
-    border: 2px solid #00BCD4;
+    border: 2px solid rgb(108, 167, 183);;
 }
 
 [type="radio"].with-gap.radio-col-cyan:checked + label:after {
-    background-color: #00BCD4;
-    border: 2px solid #00BCD4;
+    background-color: rgb(108, 167, 183);;
+    border: 2px solid rgb(108, 167, 183);;
 }
 
 [type="radio"].with-gap.radio-col-teal:checked + label:before {
@@ -5152,7 +5152,7 @@ section.content {
     }
 
         .switch label input[type=checkbox]:checked + .lever.switch-col-cyan:after {
-            background-color: #00BCD4;
+            background-color: rgb(108, 167, 183);;
         }
 
     .switch label input[type=checkbox]:checked:not(:disabled) ~ .lever.switch-col-teal:active:after {
@@ -5610,7 +5610,7 @@ section.content {
     }
 
     .nav-tabs.tab-col-cyan > li > a:before {
-        border-bottom: 2px solid #00BCD4;
+        border-bottom: 2px solid rgb(108, 167, 183);;
     }
 
     .nav-tabs.tab-col-teal > li > a:before {
@@ -5860,7 +5860,7 @@ section.content {
             }
 
 .modal-col-cyan {
-    background-color: #00BCD4;
+    background-color: rgb(108, 167, 183);;
 }
 
     .modal-col-cyan .modal-body,
@@ -6336,11 +6336,11 @@ section.content {
     }
 
 .panel-group .panel-col-cyan {
-    border: 1px solid #00BCD4;
+    border: 1px solid rgb(108, 167, 183);;
 }
 
     .panel-group .panel-col-cyan .panel-title {
-        background-color: #00BCD4 !important;
+        background-color: rgb(108, 167, 183); !important;
         color: #fff;
     }
 
@@ -6630,7 +6630,7 @@ section.content {
 
 .full-body .panel-col-cyan .panel-body {
     border-top-color: #fff !important;
-    background-color: #00BCD4;
+    background-color: rgb(108, 167, 183);;
     color: #fff;
 }
 
@@ -7267,12 +7267,12 @@ fieldset[disabled] .form-control {
         }
 
 .breadcrumb-col-cyan li a {
-    color: #00BCD4 !important;
+    color: rgb(108, 167, 183); !important;
     font-weight: bold;
 }
 
 .breadcrumb-bg-cyan {
-    background-color: #00BCD4 !important;
+    background-color: rgb(108, 167, 183); !important;
 }
 
     .breadcrumb-bg-cyan li {
@@ -7845,17 +7845,17 @@ fieldset[disabled] .form-control {
     }
 
 .list-group .pl-cyan {
-    stroke: #00BCD4;
+    stroke: rgb(108, 167, 183);;
 }
 
 .list-group .list-group-bg-cyan {
-    background-color: #00BCD4;
+    background-color: rgb(108, 167, 183);;
     border: none;
     color: #fff;
 }
 
     .list-group .list-group-bg-cyan:hover, .list-group .list-group-bg-cyan:focus {
-        background-color: #00BCD4;
+        background-color: rgb(108, 167, 183);;
         color: #fff;
         opacity: 0.8;
     }
@@ -8654,7 +8654,7 @@ fieldset[disabled] .form-control {
 }
 
 .md-preloader .pl-cyan {
-    stroke: #00BCD4;
+    stroke: rgb(108, 167, 183);;
 }
 
 .md-preloader .pl-teal {
@@ -8787,7 +8787,7 @@ fieldset[disabled] .form-control {
     }
 
     .spinner-layer.pl-cyan {
-        border-color: #00BCD4;
+        border-color: rgb(108, 167, 183);;
     }
 
     .spinner-layer.pl-teal {
@@ -10197,8 +10197,7 @@ fieldset[disabled] .form-control {
     -webkit-transition: all 0.5s;
     transition: all 0.5s;
     font-family: "Roboto", sans-serif;
-    background-image: linear-gradient( rgba(0, 0, 0, 0.12), rgba(21, 21, 21, 0.88) ), url('../images/menuside.jpg');
-    background-position: right center;
+    background-color: rgb(108, 167, 183);
     width: 23rem;
     overflow: hidden;
     display: inline-block;
@@ -10583,7 +10582,7 @@ fieldset[disabled] .form-control {
 
 /* Login Page ================================== */
 .login-page {
-    background-color: #00BCD4;
+    background-color: rgb(108, 167, 183);;
     padding-left: 0;
     max-width: 360px;
     margin: 5% auto;
@@ -10599,7 +10598,7 @@ fieldset[disabled] .form-control {
     .login-page .login-box a {
         font-size: 14px;
         text-decoration: none;
-        color: #00BCD4;
+        color: rgb(108, 167, 183);;
     }
 
     .login-page .login-box .logo {
@@ -10624,7 +10623,7 @@ fieldset[disabled] .form-control {
 
 /* Sign Up Page ================================ */
 .signup-page {
-    background-color: #00BCD4;
+    background-color: rgb(108, 167, 183);;
     padding-left: 0;
     max-width: 360px;
     margin: 5% auto;
@@ -10640,7 +10639,7 @@ fieldset[disabled] .form-control {
     .signup-page .signup-box a {
         font-size: 14px;
         text-decoration: none;
-        color: #00BCD4;
+        color: rgb(108, 167, 183);;
     }
 
     .signup-page .signup-box .logo {
@@ -10665,7 +10664,7 @@ fieldset[disabled] .form-control {
 
 /* Forgot Password Page ======================== */
 .fp-page {
-    background-color: #00BCD4;
+    background-color: rgb(108, 167, 183);;
     padding-left: 0;
     max-width: 360px;
     margin: 5% auto;
@@ -10681,7 +10680,7 @@ fieldset[disabled] .form-control {
     .fp-page .fp-box a {
         font-size: 14px;
         text-decoration: none;
-        color: #00BCD4;
+        color: rgb(108, 167, 183);;
     }
 
     .fp-page .fp-box .logo {

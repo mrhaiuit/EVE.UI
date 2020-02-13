@@ -12,13 +12,10 @@ public partial class Layout_MasterPage : System.Web.UI.MasterPage
     string mQuyen = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"] != null)
+        if (Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"] != null)
         {
-            string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"].Value;
-            idNguoiDung = StaticData.getField("tb_NguoiDung", "idNguoiDung", "TenDangNhap", TenDangNhap_Cookie.ToString());
-            string idLoaiNguoiDung = StaticData.getField("tb_NguoiDung", "idLoaiNguoiDung", "TenDangNhap", TenDangNhap_Cookie.ToString());
-
-            mQuyen = StaticData.getField("tb_LoaiNguoiDung", "TenLoaiNguoiDung", "idLoaiNguoiDung", idLoaiNguoiDung);
+            string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value;
+            idNguoiDung = StaticData.getField("Employee", "EmployeeId", "UserName", TenDangNhap_Cookie.ToString()); 
 
             LoadThongTinNguoiDung();
         }
@@ -34,20 +31,21 @@ public partial class Layout_MasterPage : System.Web.UI.MasterPage
     }
     private void LoadThongTinNguoiDung()
     {
-        string sqlTTND = "SELECT * FROM tb_NguoiDung WHERE idNguoiDung = '" + idNguoiDung + "'";
+        string sqlTTND = "SELECT * FROM Employee WHERE EmployeeId = '" + idNguoiDung + "'";
 
         DataTable tb = Connect.GetTable(sqlTTND);
         if (tb.Rows.Count > 0)
         {
-            idbody.Attributes.Add("class", "theme-" + tb.Rows[0]["themeSoftware"].ToString());
-            UserFullname.InnerHtml = tb.Rows[0]["HoTen"].ToString();
-            emailUser.InnerHtml = tb.Rows[0]["Email"].ToString();
+            //idbody.Attributes.Add("class", "theme-" + tb.Rows[0]["themeSoftware"]);
+            idbody.Attributes.Add("class", "theme-" + "cyan");
+            UserFullname.InnerHtml = tb.Rows[0]["EmployeeName"].ToString();
+            emailUser.InnerHtml = tb.Rows[0]["PhoneNumber"].ToString();
 
-            if (System.IO.File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "/images/image-user/" + tb.Rows[0]["LinkHinhDaiDien"].ToString()))
-                avatarUser.Src = "../images/image-user/" + tb.Rows[0]["LinkHinhDaiDien"];
+            //if (System.IO.File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "/images/image-user/" + ""))
+            //    avatarUser.Src = "../images/image-user/" + tb.Rows[0]["LinkHinhDaiDien"];
 
-            if (System.IO.File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "/images/image-user/" + tb.Rows[0]["LinkAnHBia"].ToString()))
-                user_info.Attributes.Add("style", "background:url('../../images/image-user/" + tb.Rows[0]["LinkAnHBia"] + "') no-repeat no-repeat;background-size:cover;");
+            //if (System.IO.File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "/images/image-user/" + tb.Rows[0]["LinkAnHBia"].ToString()))
+            //    user_info.Attributes.Add("style", "background:url('../../images/image-user/" + tb.Rows[0]["LinkAnHBia"] + "') no-repeat no-repeat;background-size:cover;");
         }
     }
     private void LoadMenu()
@@ -57,10 +55,8 @@ public partial class Layout_MasterPage : System.Web.UI.MasterPage
 
         html += @"
                     <ul class='list' >
-                       <li class='header'>MAIN NAVIGATION</li>";
-        mQuyen = mQuyen.ToUpper(); 
-
-        if (mQuyen == "ADMIN" || mQuyen == "USER" )
+                       <li class='header'>MAIN NAVIGATION</li>"; 
+         
         {
             html += @"  <li " + ((URL.Contains("/SECTION_")) ? " class='active'" : "") + @">
                             <a href='javascript:void(0);' class='menu-toggle' data-toggle='tooltip' data-placement='right' title='' data-original-title='DANH MỤC'>
@@ -68,54 +64,39 @@ public partial class Layout_MasterPage : System.Web.UI.MasterPage
                                 <span>DANH MỤC</span>
                             </a>
                             <ul class='ml-menu'>";
-            if (mQuyen == "ADMIN")
+            //if (mQuyen == "ADMIN")
                 html += @"     <li " + ((URL.Contains("/SECTION_USER.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Danh mục người dùng'>
-                                    <a href='../../ASP_page/DanhMuc/Section_User.aspx' class='toggled waves-effect waves-block' >
+                                    <a href='../../ASP_page/DanhMuc/SECTION_USER.aspx' class='toggled waves-effect waves-block' >
                                           <span>Người dùng</span>
                                     </a>
-                                </li>  "; 
-            html += @"      </ul>
-                        </li>";
-        }
-
-        if (mQuyen == "ADMIN" || mQuyen == "USER" || mQuyen == "THỦ QUỸ")
-        {
-            html += @"  <li " + ((URL.Contains("/THONGKE/")) ? " class='active'" : "") + @">
-                            <a href='javascript:void(0);' class='menu-toggle' data-toggle='tooltip' data-placement='right' title='' data-original-title='THỐNG KÊ'>
-                                <i class='material-icons'>insert_chart</i>
-                                <span>THỐNG KÊ</span>
-                            </a>
-                            <ul class='ml-menu'>";
-            if (mQuyen == "USER" || mQuyen == "ADMIN")
-                html += @"      <li " + ((URL.Contains("/STATISTIC_NOCONGTRINH.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Thống kê Nợ công trình'>
-                                    <a href='../../ASP_page/ThongKe/STATISTIC_NoCongTrinh.aspx' class='toggled waves-effect waves-block' >
-                                          <span>Nợ công trình</span>
+                                </li>  ";
+            //if (mQuyen == "ADMIN")
+            html += @"     <li " + ((URL.Contains("/SECTION_DOTDANHGIA.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Danh mục đợt đánh giá'>
+                                    <a href='../../ASP_page/DanhMuc/SECTION_DOTDANHGIA.aspx' class='toggled waves-effect waves-block' >
+                                          <span>Đợt đánh giá</span>
                                     </a>
-                                </li>   "; 
-            html += @"       </ul>
+                                </li>  ";
+            //if (mQuyen == "ADMIN")
+            html += @"     <li " + ((URL.Contains("/SECTION_TIEUCHUANTIEUCHI.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Tiêu chuẩn/tiêu chí'>
+                                    <a href='../../ASP_page/DanhMuc/SECTION_TIEUCHUANTIEUCHI.aspx' class='toggled waves-effect waves-block' >
+                                          <span>Tiêu chuẩn/tiêu chí</span>
+                                    </a>
+                                </li>  ";
+            html += @"      </ul>
                         </li>";
         } 
 
-        if (mQuyen == "ADMIN" || mQuyen == "THỦ QUỸ")
+
+        //if (mQuyen == "ADMIN" || mQuyen == "THỦ QUỸ")
         {
-            html += @" <li " + ((URL.Contains("MANAGEMENT_QLTHU.ASPX")) ? " class='active'" : "") + @">
-                            <a href='../../ASP_page/QuanLy/MANAGEMENT_QLThu.aspx' data-toggle='tooltip' data-placement='right' title='' data-original-title='QL Thu'>
-                                <i class='material-icons'>local_atm</i>
-                                <span>QL THU</span>
+            html += @" <li " + ((URL.Contains("DANHGIAGIAOVIEN.ASPX")) ? " class='active'" : "") + @">
+                            <a href='../../ASP_page/DANHGIAGIAOVIEN.aspx' data-toggle='tooltip' data-placement='right' title='' data-original-title='Đánh giá giáo viên'>
+                                <i class='material-icons'>contacts</i>
+                                <span>ĐÁNH GIÁ GIÁO VIÊN</span>
                             </a>
                         </li>";
         }
 
-        if (mQuyen == "ADMIN" || mQuyen == "THỦ QUỸ")
-        {
-            html += @" <li " + ((URL.Contains("MANAGEMENT_QLCHI.ASPX")) ? " class='active'" : "") + @">
-                            <a href='../../ASP_page/QuanLy/MANAGEMENT_QLChi.aspx' data-toggle='tooltip' data-placement='right' title='' data-original-title='QL Chi'>
-                                <i class='material-icons'>local_atm</i>
-                                <span>QL CHI</span>
-                            </a>
-                        </li>";
-        }
-         
         html += @"</ul>";
 
         MainNavigation.InnerHtml = html;

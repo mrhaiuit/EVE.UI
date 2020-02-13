@@ -12,10 +12,57 @@ using System.Net.Mail;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
+using Microsoft.VisualBasic;
 
 public static class StaticData
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    public static string TrimEx(this object str)
+    {
+        if (str == null)
+        {
+            return "";
+        }
 
+        return Convert.ToString(str).Trim();
+    }
+    public static string EncodePassword(this string passpwd)
+    {
+        string returnValue = " ";
+        int i;
+        int k;
+        double strPwd = 0;
+        string onechar;
+        var ArrPwd = new int[31];
+
+        for (i = 1; i <= passpwd.Length; i++)
+        {
+            onechar = passpwd.TrimEx().Substring(i - 1, 1);
+            if (!Information.IsNumeric(onechar))
+            {
+                ArrPwd[i] = Strings.Asc(onechar);
+            }
+            else
+            {
+                ArrPwd[i] = int.Parse(onechar);
+            }
+        }
+
+        for (k = 1; k <= i - 1; k++)
+        {
+            strPwd = strPwd + ArrPwd[k];
+
+            strPwd = strPwd * (k + i);
+        }
+
+        returnValue = strPwd.ToString();
+
+        return returnValue;
+    }
     public static string KiemTraKhongNhap_LoadLen(string SoTien)
     {
         string KQ = "0";
@@ -406,7 +453,8 @@ public static class StaticData
                 IPInterfaceProperties properties = adapter.GetIPProperties();
                 sMacAddress = adapter.GetPhysicalAddress().ToString();
             }
-        } return sMacAddress;
+        }
+        return sMacAddress;
     }
     private static void HoanVi(string a, string b)
     {
@@ -767,7 +815,7 @@ public static class StaticData
     }
     public static string ReplaceTieuDe(string TieuDe)
     {
-        string sTieuDe = TieuDe.Replace("?", "").Replace("[=1]", "").Replace("[=2]", "").Replace("[=3]", "").Replace("[=4]", "").Replace("[=5]", "").Replace("[=6]", "").Replace("[=7]", "").Replace("[=8]", "").Replace("[=9]", "").Replace("[=10]", "").Replace("[=11]", "").Replace("[=12]", "").Replace("[=13]", "").Replace("[=14]", "").Replace("[=15]", "").ToLower().Trim().Replace("/", " ").Replace("|", " ").Replace("–", "").Replace(" ", "-").Replace(".", "").Replace("%", "").Replace(":", "").Replace("!", "").Replace("\"", "").Replace(",", "").Replace(".", "").Replace("'", "").Replace("“", "").Replace("”", "").Replace("(", "").Replace(")", "").Replace(" ", "-").Replace(" ", "-").Replace(" ", "-").Replace(" ", "-").Replace(" ", "-").Replace("--", "-").Replace("--", "-").Replace("--", "-").Replace("---", "-").Replace("----", "-").Replace("-----", "-").Replace("&","");
+        string sTieuDe = TieuDe.Replace("?", "").Replace("[=1]", "").Replace("[=2]", "").Replace("[=3]", "").Replace("[=4]", "").Replace("[=5]", "").Replace("[=6]", "").Replace("[=7]", "").Replace("[=8]", "").Replace("[=9]", "").Replace("[=10]", "").Replace("[=11]", "").Replace("[=12]", "").Replace("[=13]", "").Replace("[=14]", "").Replace("[=15]", "").ToLower().Trim().Replace("/", " ").Replace("|", " ").Replace("–", "").Replace(" ", "-").Replace(".", "").Replace("%", "").Replace(":", "").Replace("!", "").Replace("\"", "").Replace(",", "").Replace(".", "").Replace("'", "").Replace("“", "").Replace("”", "").Replace("(", "").Replace(")", "").Replace(" ", "-").Replace(" ", "-").Replace(" ", "-").Replace(" ", "-").Replace(" ", "-").Replace("--", "-").Replace("--", "-").Replace("--", "-").Replace("---", "-").Replace("----", "-").Replace("-----", "-").Replace("&", "");
         if (sTieuDe.Length <= 62)
             return sTieuDe;
         else
@@ -825,7 +873,7 @@ public static class StaticData
     public static string[] SetPage(int Page, int TotalRows, int PageSize)
     {
         int MaxPage = 0;
-        string[] page= new string[] {"1", "", "", "", "", "", ""};
+        string[] page = new string[] { "1", "", "", "", "", "", "" };
 
         if (TotalRows % PageSize == 0)
             MaxPage = TotalRows / PageSize;
@@ -916,7 +964,7 @@ public static class StaticData
 
     #region Paging
     //P. V. Đạo
-    public static string CreateHTMLPaging(int page, string url, string[] p )
+    public static string CreateHTMLPaging(int page, string url, string[] p)
     {
         string html = "";
         html += "           <a class='notepaging' id='page_fist' href='" + url + p[0] + "' /><i class='fa fa-step-backward'></i></a>";

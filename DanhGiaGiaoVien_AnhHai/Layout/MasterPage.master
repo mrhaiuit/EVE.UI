@@ -17,7 +17,7 @@
     <link href="../../plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <!-- SweetAlert Css -->
     <link href="../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
-    <!-- select2 Css --> 
+    <!-- select2 Css -->
     <link href="../../plugins/select2/select2.min.css" rel="stylesheet" />
     <!-- Waves Effect Css -->
     <link href="../../plugins/node-waves/waves.css" rel="stylesheet" />
@@ -28,14 +28,23 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../../css/themes/all-themes.css" rel="stylesheet" />
 
-    <title>Welcome To | Công Ty Tư Vấn Thiết Kế Xây Dựng Thương Mại Ngọc Thanh</title>
+    <title>Welcome To | Phần Mềm Đánh Giá Giáo Viên</title>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
     <style>
 
         .select2-container .select2-selection--single {
-            height: 38px;
+            height: 34px;
         }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            top: 5px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            margin-top: 2px;
+        }
+
         @media (max-width: 767px) {
             .modal-lg {
                 width: 95%;
@@ -174,7 +183,7 @@
             else {
                 $('#' + id).val($('#' + id).val().replace(/\,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(/^\s+/, '').replace(/\s+$/, ''));
             }
-        } 
+        }
     </script>
 </head>
 <body class="theme-red" id="idbody" runat="server">
@@ -204,10 +213,10 @@
             <div class="navbar-header" style="margin-left: -2rem;">
                 <a class="logoutIcon" href="javascript:Logout();"><i class="fa fa-sign-out"></i></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" onclick="collapesSideBar();"><i class="material-icons SoftwareName">reorder</i><span>Công Ty Tư Vấn Thiết Kế Xây Dựng Thương Mại Ngọc Thanh</span></a>
+                <a class="navbar-brand" onclick="collapesSideBar();"><i class="material-icons SoftwareName">reorder</i><span>PHẦN MỀM ĐÁNH GIÁ GIÁO VIÊN</span></a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right"> 
+                <ul class="nav navbar-nav navbar-right">
                     <!-- Notifications -->
                     <li class="dropdown hidden">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
@@ -317,8 +326,8 @@
                         </ul>
                     </li>
                     <!-- #END# Notifications -->
-                    <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar"  ><i class="material-icons">more_vert</i></a></li>
-                    <li class="pull-right"><a href="javascript:Logout();" ><i class="material-icons">call_missed_outgoing</i> Đăng xuất</a></li>
+                    <li class="pull-right hidden"><a href="javascript:void(0);" class="js-right-sidebar"><i class="material-icons">more_vert</i></a></li>
+                    <li class="pull-right"><a href="javascript:Logout();"><i class="material-icons">call_missed_outgoing</i> Đăng xuất</a></li>
                 </ul>
             </div>
         </div>
@@ -335,7 +344,7 @@
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="UserFullname" runat="server">Le Thanh Vinh</div>
                     <div class="email" id="emailUser" runat="server">vinh.le@example.com</div>
-                    <div class="btn-group user-helper-dropdown">
+                    <div class="btn-group user-helper-dropdown hidden">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
                             <li><a href="../../ASP_page/DanhMuc/Profile.aspx"><i class="material-icons">person</i>Trang cá nhân</a></li>
@@ -374,7 +383,7 @@
             </div>
             <!-- #Menu -->
             <!-- Footer -->
-            <div class="legal">
+            <div class="legal hidden">
                 <div class="copyright">
                     &copy; 2020 <a href="https://xep.vn">CTY PHẦN MỀM XEP</a>.
                 </div>
@@ -491,8 +500,8 @@
     <!-- Waves Effect Plugin Js -->
     <script src="../../plugins/node-waves/waves.js"></script>
     <!-- sweetalert Js -->
-    <script src="../../plugins/sweetalert/sweetalert.min.js"></script> 
-    <!-- select2 Js --> 
+    <script src="../../plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- select2 Js -->
     <script src="../../plugins/select2/select2.min.js"></script>
     <!-- Tooltips Js -->
     <script src="../../js/pages/ui/tooltips-popovers.js"></script>

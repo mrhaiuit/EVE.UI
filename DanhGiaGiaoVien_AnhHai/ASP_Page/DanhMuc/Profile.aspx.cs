@@ -14,9 +14,9 @@ public partial class QuanLyNhapKho_NhapKho : System.Web.UI.Page
     string tenDangNhap_HienTai = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"] != null)
+        if (Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"] != null)
         {
-            string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"].Value;
+            string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value;
             idNguoiDung = StaticData.getField("tb_NguoiDung", "idNguoiDung", "TenDangNhap", TenDangNhap_Cookie.ToString());
             string idLoaiNguoiDung = StaticData.getField("tb_NguoiDung", "idLoaiNguoiDung", "TenDangNhap", TenDangNhap_Cookie.ToString());
 
@@ -127,13 +127,13 @@ public partial class QuanLyNhapKho_NhapKho : System.Web.UI.Page
             }
             catch { }
 
-            HttpCookie CC_QLCongTrinh_KimNgoc_VSW = new HttpCookie("CC_QLCongTrinh_KimNgoc_VSW", "");
-            CC_QLCongTrinh_KimNgoc_VSW.Expires = DateTime.Now;
-            HttpContext.Current.Response.Cookies.Add(CC_QLCongTrinh_KimNgoc_VSW);
+            HttpCookie CC_PhanMemDanhGiaGiaoVien_VSW = new HttpCookie("CC_PhanMemDanhGiaGiaoVien_VSW", "");
+            CC_PhanMemDanhGiaGiaoVien_VSW.Expires = DateTime.Now;
+            HttpContext.Current.Response.Cookies.Add(CC_PhanMemDanhGiaGiaoVien_VSW);
 
-            HttpCookie CC_QLCongTrinh_KimNgoc_VSW_NEW = new HttpCookie("CC_QLCongTrinh_KimNgoc_VSW", TenDangNhap); 
-            CC_QLCongTrinh_KimNgoc_VSW_NEW.Expires = DateTime.Now.AddDays(7);
-            HttpContext.Current.Response.Cookies.Add(CC_QLCongTrinh_KimNgoc_VSW_NEW);
+            HttpCookie CC_PhanMemDanhGiaGiaoVien_VSW_NEW = new HttpCookie("CC_PhanMemDanhGiaGiaoVien_VSW", TenDangNhap); 
+            CC_PhanMemDanhGiaGiaoVien_VSW_NEW.Expires = DateTime.Now.AddDays(7);
+            HttpContext.Current.Response.Cookies.Add(CC_PhanMemDanhGiaGiaoVien_VSW_NEW);
 
             Response.Write("<script type='text/javascript'>"); 
             Response.Write("document.location.href='" + Page.Request.Url + "';");

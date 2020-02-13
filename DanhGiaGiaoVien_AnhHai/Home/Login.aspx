@@ -102,6 +102,10 @@
             font-size: 16px;
             display: none;
         }
+        .form-group
+        {
+            margin-bottom:15px;
+        }
 
         @media (max-width: 400px) {
             .formLogin {
@@ -228,6 +232,9 @@
                             </div>
                             <span id="spPassword">Error</span>
                         </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <select class="form-group form-control" id="slUserGroup" runat="server"></select>
                     </div>
                     <div class="col-sm-12">
                         <a href="javascript:$('.formLogin').fadeOut().hide(); $('.formForgot').removeAttr('style').addClass('animated shake');"><i class="fa fa-key m-r-10"></i> Quên mật khẩu</a> 

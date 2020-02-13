@@ -34,7 +34,11 @@ public partial class Ajax : System.Web.UI.Page
             case "CheckUsername":
                 CheckUsername(); break;
             case "CheckPasswordOLD":
-                CheckPasswordOLD(); break; 
+                CheckPasswordOLD(); break;
+            case "Load_EduDepartment":
+                Load_EduDepartment(); break;
+            case "Load_EduSchoold":
+                Load_EduSchoold(); break;
             ///////////////////////////////  THỐNG KÊ 
             case "LoadNhaCungCap_choPopup":
                 LoadNhaCungCap_choPopup(); break;
@@ -46,7 +50,7 @@ public partial class Ajax : System.Web.UI.Page
             case "LoadChiTietThu":
                 LoadChiTietThu(); break;
             case "LoadChiTietChi":
-                LoadChiTietChi(); break; 
+                LoadChiTietChi(); break;
             ///////////////////////////////  QL THU
             case "ThemQLThu":
                 ThemQLThu(); break;
@@ -60,36 +64,58 @@ public partial class Ajax : System.Web.UI.Page
             case "CapNhatQLChi":
                 CapNhatQLChi(); break;
             case "XoaQLChi":
-                XoaQLChi(); break; 
+                XoaQLChi(); break;
 
         }
     }
     private void Logout()
     {
-        HttpCookie CC_QLCongTrinh_KimNgoc_VSW = new HttpCookie("CC_QLCongTrinh_KimNgoc_VSW", "");
-        CC_QLCongTrinh_KimNgoc_VSW.Expires = DateTime.Now;
-        HttpContext.Current.Response.Cookies.Add(CC_QLCongTrinh_KimNgoc_VSW);
+        HttpCookie CC_PhanMemDanhGiaGiaoVien_VSW = new HttpCookie("CC_PhanMemDanhGiaGiaoVien_VSW", "");
+        CC_PhanMemDanhGiaGiaoVien_VSW.Expires = DateTime.Now;
+        HttpContext.Current.Response.Cookies.Add(CC_PhanMemDanhGiaGiaoVien_VSW);
         Response.Write("Success");
     }
     void ChangeTheme()
     {
-        string color = StaticData.ValidParameter(Request.QueryString["color"]);
+        string color = (Request.QueryString["color"]);
 
-        if (Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"] != null)
+        if (Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"] != null)
         {
-            string Username = Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"].Value.Trim();
+            string Username = Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value.Trim();
             if (Connect.Exec(" update tb_NguoiDung set themeSoftware='" + color + "' where tendangnhap='" + Username + "' "))
                 Response.Write("Success");
         }
     }
     ///////////////////////////////////////  NGƯỜI DÙNG
     #region NGƯỜI DÙNG 
+    void Load_EduDepartment()
+    {
+        string IDEduProvince = (Request.QueryString["IDEduProvince"].Trim());
+        string html = "<option value=''>-- Chọn cấp Phòng --</option>";
+        DataTable table = Connect.GetTable(@"select EduDepartmentId,EduDepartmentName from EduDepartment where EduProvinceId='" + IDEduProvince + "'");
+
+        for (int i = 0; i < table.Rows.Count; i++)
+            html += "<option value='" + table.Rows[i]["EduDepartmentId"] + "'>" + table.Rows[i]["EduDepartmentName"] + "</option>";
+
+        Response.Write(html);
+    }
+    void Load_EduSchoold()
+    {
+        string IDEduDepartment = (Request.QueryString["IDEduDepartment"].Trim());
+        string html = "<option value=''>-- Chọn cấp Trường --</option>";
+        DataTable table = Connect.GetTable(@"select SchoolId, School from School where EduDepartmentId='" + IDEduDepartment + "'");
+
+        for (int i = 0; i < table.Rows.Count; i++)
+            html += "<option value='" + table.Rows[i]["SchoolId"] + "'>" + table.Rows[i]["School"] + "</option>";
+
+        Response.Write(html);
+    }
     void CheckPasswordOLD()
     {
-        if (Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"] != null)
+        if (Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"] != null)
         {
-            string PasswordOLD = StaticData.ValidParameter(Request.QueryString["PasswordOLD"].Trim());
-            string TenDangNhap = Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"].Value.Trim();
+            string PasswordOLD = (Request.QueryString["PasswordOLD"].Trim());
+            string TenDangNhap = Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value.Trim();
             string PasswordDB = StaticData.getField("tb_NguoiDung", "Matkhau", "TenDangNhap", TenDangNhap).Trim();
             if (PasswordOLD == PasswordDB)
                 Response.Write("OK");
@@ -99,10 +125,10 @@ public partial class Ajax : System.Web.UI.Page
     }
     void CheckUsername()
     {
-        if (Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"] != null)
+        if (Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"] != null)
         {
-            string Username = StaticData.ValidParameter(Request.QueryString["Username"].Trim());
-            string TenDangNhap_OLD = Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"].Value.Trim();
+            string Username = (Request.QueryString["Username"].Trim());
+            string TenDangNhap_OLD = Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value.Trim();
 
             string TenDangNhap_CheckExist = StaticData.getField("tb_nguoiDung", "TenDangNhap", "TenDangNhap", Username).Trim();
             if (TenDangNhap_CheckExist != "" && TenDangNhap_CheckExist != TenDangNhap_OLD)
@@ -116,29 +142,37 @@ public partial class Ajax : System.Web.UI.Page
     }
     void DeleteUser()
     {
-        string user = StaticData.ValidParameter(Request.QueryString["user"]);
-        string LinkHinhAnh = StaticData.getField("tb_NguoiDung", "LinkHinhDaiDien", "idNguoiDung", user);
-        if (Connect.Exec("delete from tb_NguoiDung where idNguoiDung='" + user + "'"))
+        string user = (Request.QueryString["user"]);
+        // string LinkHinhAnh = StaticData.getField("tb_NguoiDung", "LinkHinhDaiDien", "idNguoiDung", user);
+        if (Connect.Exec("delete from Employee where EmployeeId='" + user + "'"))
         {
-            try
-            {
-                File.Delete(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "/images/image-user/" + LinkHinhAnh);
-            }
-            catch { }
+            //try
+            //{
+            //    File.Delete(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "/images/image-user/" + LinkHinhAnh);
+            //}
+            //catch { }
             Response.Write("Success");
         }
     }
     void AddNewUser()
     {
-        string MaNguoiDUng = StaticData.ValidParameter(Request.QueryString["CodeUser"].Trim());
-        string HoTen = StaticData.ValidParameter(Request.QueryString["FullnameUser"].Trim());
-        string Email = StaticData.ValidParameter(Request.QueryString["EmailUser"].Trim());
-        string SDT = StaticData.ValidParameter(Request.QueryString["PhoneUser"].Trim());
-        string idLoaiNguoiDung = StaticData.ValidParameter(Request.QueryString["UserType"].Trim());
-        string TenDangNhap = StaticData.ValidParameter(Request.QueryString["Username"].Trim());
+        string[] chuoi = (Request.QueryString["chuoi"].Trim()).Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : FullnameUser 
+        //1 : PhoneUser 
+        //2 : AddresslUser 
+        //3 : CodeUser 
+        //4 : Username 
+        //5 : Password 
+        //6 : UserType 
+        //7 : Active 
+        //8 : GhiChu 
+        //9 : MinistryofEducationaCode
+        //10 : EduProvinceId
+        //11 : EduDepartmentId
+        //12 : SchoolId
 
-        DataTable table_checkExist_tenDangNhap = Connect.GetTable("select * from tb_NguoiDung where TenDangNhap = '" + TenDangNhap + "' ");
-        DataTable table_checkExist_maNhanVien = Connect.GetTable("select * from tb_NguoiDung where MaNguoiDUng = '" + MaNguoiDUng + "' ");
+        DataTable table_checkExist_tenDangNhap = Connect.GetTable("select * from Employee where Username = '" + chuoi[4] + "' ");
+        DataTable table_checkExist_maNhanVien = Connect.GetTable("select * from Employee where EmployeeCode = '" + chuoi[3] + "' ");
         if (table_checkExist_tenDangNhap.Rows.Count > 0)
         {
             Response.Write("SameUsername");
@@ -146,69 +180,95 @@ public partial class Ajax : System.Web.UI.Page
         }
         else if (table_checkExist_maNhanVien.Rows.Count > 0)
         {
-            //Response.Write("SameCode");
-            //return;
+            Response.Write("SameCode");
+            return;
         }
 
-        string sql = @" insert into tb_NguoiDung(HoTen, SDT,Email,TenDangNhap,MatKhau,idLoaiNguoiDung)
-                        values( 
-                                N'" + HoTen + @"' , 
-                                '" + SDT + @"' ,
-                                '" + Email + @"' ,
-                                " + (TenDangNhap == "" ? "NULL" : "'" + TenDangNhap + "'") + @" ,
-                                " + (TenDangNhap == "" ? "NULL" : "'" + "123" + "'") + @" ,
-                                '" + idLoaiNguoiDung + @"'
-                              ) ";
+        string sql = @" insert into Employee (EmployeeName, PhoneNumber,Address ,EmployeeCode,UserName,Password, EduLevelCode, Active, Remarks, 
+                                               MinistryofEducationaCode, EduProvinceId, EduDepartmentId, SchoolId)
 
-        if (Connect.Exec(sql))
+                        values( @EmployeeName, @PhoneNumber, @Address, @EmployeeCode, @UserName, @Password, @EduLevelCode, @Active, @Remarks, 
+                                        @MinistryofEducationaCode, @EduProvinceId, @EduDepartmentId, @SchoolId ) ";
+
+        string[] paraName = new string[13] { "@EmployeeName", "@PhoneNumber", "@Address", "@EmployeeCode", "@UserName", "@Password", "@EduLevelCode", "@Active", "@Remarks",
+                                                    "@MinistryofEducationaCode", "@EduProvinceId", "@EduDepartmentId", "@SchoolId" };
+
+        object[] paraValue = new object[13] { chuoi[0], chuoi[1], chuoi[2], chuoi[3], chuoi[4], chuoi[5].EncodePassword() , chuoi[6], chuoi[7], chuoi[8],
+                                                    chuoi[9], chuoi[10], chuoi[11], chuoi[12]};
+
+        if (Connect.Exec(sql, paraName, paraValue))
             Response.Write("Success");
     }
     void LoadInfoUser()
     {
-        string idNguoiDung = StaticData.ValidParameter(Request.QueryString["user"].Trim());
-        string sql = "select * from tb_NguoiDung where idNguoiDung ='" + idNguoiDung + "' ";
+        string EmployeeId = (Request.QueryString["user"].Trim());
+        string sql = "select * from Employee where EmployeeId ='" + EmployeeId + "' ";
         DataTable table = Connect.GetTable(sql);
         if (table.Rows.Count > 0)
         {
-            string kq = "cc" + "@_@" + table.Rows[0]["HoTen"] + "@_@" + table.Rows[0]["SDT"] + "@_@" + table.Rows[0]["Email"] + "@_@" + table.Rows[0]["TenDangNhap"] + "@_@" + table.Rows[0]["idLoaiNguoiDung"];
+            string kq = table.Rows[0]["EmployeeName"] + "@_@" + table.Rows[0]["PhoneNumber"] + "@_@" + table.Rows[0]["Address"] + "@_@" + table.Rows[0]["EmployeeCode"]
+                      + "@_@" + table.Rows[0]["UserName"] + "@_@" + table.Rows[0]["Password"] + "@_@" + table.Rows[0]["EduLevelCode"] + "@_@" + table.Rows[0]["Active"]
+                       + "@_@" + table.Rows[0]["Remarks"]
+                        + "@_@" + table.Rows[0]["MinistryofEducationaCode"] + "@_@" + table.Rows[0]["EduProvinceId"] + "@_@" + table.Rows[0]["EduDepartmentId"] + "@_@" + table.Rows[0]["SchoolId"];
             Response.Write(kq);
         }
     }
     void EditUser()
     {
-        string idNguoiDung = StaticData.ValidParameter(Request.QueryString["user"].Trim());
-        string MaNguoiDUng = StaticData.ValidParameter(Request.QueryString["CodeUser"].Trim());
-        string MaNguoiDUng_OLD = StaticData.getField("tb_NguoiDung", "MaNguoiDung", "idNguoiDung", idNguoiDung);
-        string HoTen = StaticData.ValidParameter(Request.QueryString["FullnameUser"].Trim());
-        string Email = StaticData.ValidParameter(Request.QueryString["EmailUser"].Trim());
-        string SDT = StaticData.ValidParameter(Request.QueryString["PhoneUser"].Trim());
-        string idLoaiNguoiDung = StaticData.ValidParameter(Request.QueryString["UserType"].Trim());
-        string TenDangNhap = StaticData.ValidParameter(Request.QueryString["Username"].Trim());
-        string TenDangNhap_OLD = StaticData.getField("tb_NguoiDung", "TenDangNhap", "idNguoiDung", idNguoiDung);
+        string idNguoiDung = (Request.QueryString["user"].Trim());
+        string MaNguoiDUng_OLD = StaticData.getField("Employee", "EmployeeCode", "EmployeeId", idNguoiDung);
+        string TenDangNhap_OLD = StaticData.getField("Employee", "UserName", "EmployeeId", idNguoiDung);
 
-        //string MaNguoiDung_CheckExist = StaticData.getField("tb_nguoiDung", "MaNguoiDung", "MaNguoiDung", MaNguoiDUng).Trim();
-        //if (MaNguoiDung_CheckExist != "" && MaNguoiDung_CheckExist != MaNguoiDUng_OLD)
-        //{
-        //    Response.Write("SameCode");
-        //    return;
-        //}
+        string[] chuoi = (Request.QueryString["chuoi"].Trim()).Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : FullnameUser 
+        //1 : PhoneUser 
+        //2 : AddresslUser 
+        //3 : CodeUser 
+        //4 : Username 
+        //5 : Password 
+        //6 : UserType 
+        //7 : Active 
+        //8 : GhiChu 
+        //9 : MinistryofEducationaCode
+        //10 : EduProvinceId
+        //11 : EduDepartmentId
+        //12 : SchoolId
 
-        string TenDangNhap_CheckExist = StaticData.getField("tb_nguoiDung", "TenDangNhap", "TenDangNhap", TenDangNhap).Trim();
+        string MaNguoiDung_CheckExist = StaticData.getField("Employee", "EmployeeCode", "EmployeeCode", chuoi[3]).Trim();
+        if (MaNguoiDung_CheckExist != "" && MaNguoiDung_CheckExist != MaNguoiDUng_OLD)
+        {
+            Response.Write("SameCode");
+            return;
+        }
+
+        string TenDangNhap_CheckExist = StaticData.getField("Employee", "UserName", "UserName", chuoi[4]).Trim();
         if (TenDangNhap_CheckExist != "" && TenDangNhap_CheckExist != TenDangNhap_OLD)
         {
             Response.Write("SameUsername");
             return;
         }
-        string sql = @" update tb_NguoiDung 
+        string sql = @" update Employee 
                         SET  
-                             HoTen = N'" + HoTen + @"' , 
-                             SDT = '" + SDT + @"' ,
-                             Email = '" + Email + @"' ,
-                             TenDangNhap = " + (TenDangNhap == "" ? "NULL" : "'" + TenDangNhap + "'") + @" ,
-                             MatKhau = " + (TenDangNhap == "" ? "NULL" : "'" + TenDangNhap + "'") + @" ,
-                             idLoaiNguoiDung = '" + idLoaiNguoiDung + @"'
-                        where idnguoiDung='" + idNguoiDung + @"'";
-        if (Connect.Exec(sql))
+                             EmployeeName = @EmployeeName,
+                             PhoneNumber = @PhoneNumber,
+                             Address = @Address ,
+                             EmployeeCode = @EmployeeCode,
+                             UserName = @UserName,
+                             Password = @Password,
+                             EduLevelCode = @EduLevelCode, 
+                             Active  = @Active, 
+                             Remarks = @Remarks, 
+                             MinistryofEducationaCode = @MinistryofEducationaCode, 
+                             EduProvinceId = @EduProvinceId, 
+                             EduDepartmentId = @EduDepartmentId, 
+                             SchoolId = @SchoolId
+                        where EmployeeId= @EmployeeId";
+        string[] paraName = new string[14] { "@EmployeeName", "@PhoneNumber", "@Address", "@EmployeeCode", "@UserName", "@Password", "@EduLevelCode", "@Active", "@Remarks",
+                                                    "@MinistryofEducationaCode", "@EduProvinceId", "@EduDepartmentId", "@SchoolId","@EmployeeId" };
+
+        object[] paraValue = new object[14] { chuoi[0], chuoi[1], chuoi[2], chuoi[3], chuoi[4], chuoi[5].EncodePassword() , chuoi[6],  (chuoi[7] =="True"? "1":"0"), chuoi[8],
+                                                     (chuoi[9] ==""? Convert.DBNull:chuoi[9]), (chuoi[10] ==""? Convert.DBNull:chuoi[10]), (chuoi[11] ==""? Convert.DBNull:chuoi[11]), (chuoi[12] ==""? Convert.DBNull:chuoi[12]), idNguoiDung};
+        if (Connect.Exec(sql, paraName, paraValue))
             Response.Write("Success");
     }
     #endregion   

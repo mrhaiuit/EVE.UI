@@ -26,19 +26,15 @@ public partial class ASP_Page_Default : System.Web.UI.Page
     string tenDangNhap_HienTai = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"] != null)
+        if (Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"] != null)
         {
-            string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_QLCongTrinh_KimNgoc_VSW"].Value; 
+            string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value; 
             string idLoaiNguoiDung = StaticData.getField("tb_NguoiDung", "idLoaiNguoiDung", "TenDangNhap", TenDangNhap_Cookie.ToString());
-            themeColor = StaticData.getField("tb_NguoiDung", "themeSoftware", "TenDangNhap", TenDangNhap_Cookie);
-            breadscrumColor.Attributes.Add("class", "breadcrumb breadcrumb-col-" + themeColor);
-
-            mQuyen = StaticData.getField("tb_LoaiNguoiDung", "TenLoaiNguoiDung", "idLoaiNguoiDung", idLoaiNguoiDung);
-            if (mQuyen != "Admin")
-                Response.Redirect("../Home/Default.aspx");
+            themeColor = "cyan";
+            breadscrumColor.Attributes.Add("class", "breadcrumb breadcrumb-col-" + themeColor); 
         }
         else
-            Response.Redirect("../Home/Login.aspx");
+            Response.Redirect("../../Home/Login.aspx");
 
         if (!IsPostBack)
         {
@@ -59,7 +55,11 @@ public partial class ASP_Page_Default : System.Web.UI.Page
                 slUserType.Value = pQuyen;
             }
             catch { }
-            Load_SelectHTML("select * from tb_LoaiNguoiDung", "TenLoaiNguoiDung", "idLoaiNguoiDung", true, "-- Chọn quyền --", slUserType);
+            Load_SelectHTML("select * from EduLevel", "EduLevelName", "EduLevelCode", true, "-- Chọn Cấp --", slUserType);
+            Load_SelectHTML("select * from EduMinistry", "EduMinistryName", "EduMinistryCode", false, "-- Chọn cấp Bộ --", slEduMinistry);
+            Load_SelectHTML("select * from EduProvince", "EduProvinceName", "EduProvinceId", true, "-- Chọn cấp Sở --", slEduProvince);
+            //Load_SelectHTML("select * from EduDepartment", "EduDepartmentName", "EduDepartmentId", true, "-- Chọn cấp Phòng --", slEduDepartment);
+            //Load_SelectHTML("select * from School", "School", "SchoolId", true, "-- Chọn cấp Trường --", slEduSchoold);
             LoadDanhSach();
         }
     }
@@ -152,13 +152,13 @@ public partial class ASP_Page_Default : System.Web.UI.Page
         string sql = "";
         sql += @"select * from
                 (
-                  SELECT ROW_NUMBER() OVER(order by idNguoiDung desc)AS RowNumber
-                  ,ND.* , LND.TenLoaiNguoiDung
-                  FROM tb_NguoiDung ND LEFT JOIN tb_LoaiNguoiDung LND ON LND.idLoaiNguoiDung=ND.idLoaiNguoiDung where '1'='1'   ";
+                  SELECT ROW_NUMBER() OVER(order by EmployeeId desc)AS RowNumber
+                  ,Em.* , EL.EduLevelName
+                  FROM Employee Em LEFT JOIN EduLevel EL ON EL.EduLevelCode=Em.EduLevelCode where '1'='1'   ";
         if (pChuoiTimKiem != "")
-            sql += " and (HoTen like N'%" + pChuoiTimKiem + "%' OR SDT LIKE '%" + pChuoiTimKiem + "%' OR Email LIKE '%" + pChuoiTimKiem + "%' OR TenDangNhap LIKE N'%" + pChuoiTimKiem + "%' )";
+            sql += " and (EmployeeName like N'%" + pChuoiTimKiem + "%' OR PhoneNumber LIKE '%" + pChuoiTimKiem + "%' OR Address LIKE '%" + pChuoiTimKiem + "%' )";
         if (pQuyen != "")
-            sql += " and ND.idLoaiNguoiDung = '" + pQuyen + "'";
+            sql += " and Em.EduLevelCode = '" + pQuyen + "'";
         sql += ") as tb1 ";
         int AllRowNumber = Connect.GetTable(sql).Rows.Count;
         sql += "WHERE RowNumber BETWEEN (" + Page_web + " - 1) * " + PageSize + " + 1 AND (((" + Page_web + " - 1) * " + PageSize + " + 1) + " + PageSize + ") - 1";
@@ -170,13 +170,11 @@ public partial class ASP_Page_Default : System.Web.UI.Page
                                 <thead>
                                     <tr>
                                         <th class='bg-" + themeColor + @"' style='max-width:5rem;'>#</th> 
-                                        <th class='bg-" + themeColor + @"' style='min-width:20rem;'>HỌ TÊN</th>
-                                        <th class='bg-" + themeColor + @"'>QUYỀN</th> 
-                                        <th class='bg-" + themeColor + @"'>SĐT</th>
-                                        <th class='bg-" + themeColor + @"'>EMAIL</th>
+                                        <th class='bg-" + themeColor + @"' style='min-width:15rem;'>HỌ TÊN</th>
+                                        <th class='bg-" + themeColor + @"'>MÃ NHÂN VIÊN</th> 
+                                        <th class='bg-" + themeColor + @"'>SĐT</th> 
                                         <th class='bg-" + themeColor + @"'>ĐỊA CHỈ</th> 
-                                        <th class='bg-" + themeColor + @"'>TÊN ĐĂNG NHẬP</th> 
-                                        <th class='bg-" + themeColor + @"'>MẬT KHẨU</th> 
+                                        <th class='bg-" + themeColor + @"'>CẤP</th>
                                         <th class='bg-" + themeColor + @" align-center'></th>
                                     </tr>
                                 </thead>
@@ -187,17 +185,15 @@ public partial class ASP_Page_Default : System.Web.UI.Page
             {
                 html += @"          <tr>
                                         <th scope='row'>" + (((Page_web - 1) * PageSize) + i + 1) + @"</th> 
-                                        <td>" + table.Rows[i]["HoTen"] + @"</td> 
-                                        <td>" + table.Rows[i]["TenLoaiNguoiDung"] + @"</td>
-                                        <td>" + table.Rows[i]["SDT"] + @"</td> 
-                                        <td>" + table.Rows[i]["Email"] + @"</td> 
-                                        <td>" + table.Rows[i]["DiaChi"] + @"</td> 
-                                        <td>" + table.Rows[i]["TenDangNhap"] + @"</td> 
-                                        <td>" + table.Rows[i]["MatKhau"] + @"</td> 
-                                        <td class='align-center'>";
-                html += "                       <a onclick='OpenModal_EditUser(" + table.Rows[i]["idNguoiDung"] + ")' class='btn bg-green waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Sửa'><i class='fa fa-pencil'></i></a>";
-                if(tenDangNhap_HienTai != table.Rows[i]["TenDangNhap"].ToString().Trim())
-                    html += "                       <a onclick='DeleteUser("+ table.Rows[i]["idNguoiDung"] + ")' class='btn bg-red waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Xoá'><i class='fa fa-trash'></i></a>";
+                                        <td>" + table.Rows[i]["EmployeeName"] + @"</td> 
+                                        <td>" + table.Rows[i]["EmployeeCode"] + @"</td>
+                                        <td>" + table.Rows[i]["PhoneNumber"] + @"</td>  
+                                        <td>" + table.Rows[i]["Address"] + @"</td> 
+                                        <td>" + table.Rows[i]["EduLevelName"] + @"</td>  
+                                        <td class='align-center text-nowrap'>";
+                html += "                       <a onclick='OpenModal_EditUser(" + table.Rows[i]["EmployeeId"] + ")' class='btn bg-green waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Sửa'><i class='fa fa-pencil'></i></a>";
+                if(tenDangNhap_HienTai != table.Rows[i]["UserName"].ToString().Trim())
+                    html += "                       <a onclick='DeleteUser("+ table.Rows[i]["EmployeeId"] + ")' class='btn bg-red waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Xoá'><i class='fa fa-trash'></i></a>";
                 html += @"              </td> 
                                     </tr>   ";
             }
