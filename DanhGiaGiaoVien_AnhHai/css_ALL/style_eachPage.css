@@ -1,0 +1,134 @@
+﻿
+.select2-container .select2-selection--single {
+    height: 34px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 5px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    margin-top: 2px;
+}
+
+@media (max-width: 767px) {
+    .modal-lg {
+        width: 95%;
+    }
+}
+
+/*Trang Người dùng*/
+.PageUser .form-group span {
+    color: #ca0000;
+    font-size: 13px;
+}
+
+.PageUser .popover {
+    max-width: 750px;
+}
+
+/*Trang Phân quyền*/
+.PhanQuyenPage .form-group span {
+    color: #ca0000;
+    font-size: 13px;
+}
+
+.PhanQuyenPage .select2-container .select2-selection--single {
+    height: 37px !important;
+}
+
+.PhanQuyenPage .modal-lg {
+    width: 80%;
+}
+
+/*Trang Đợt đánh giá*/
+.DotDanhGiaPage .form-group span {
+    color: #ca0000;
+    font-size: 13px;
+}
+
+.DotDanhGiaPage .select2-container .select2-selection--single {
+    height: 37px !important;
+}
+
+.DotDanhGiaPage .tr-header {
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: antiquewhite;
+}
+
+.DotDanhGiaPage .My-td::before {
+    content: "● ";
+}
+
+.DotDanhGiaPage .modal-lg {
+    width: 80%;
+}
+
+/*Phòng giáo dục*/
+.PhongGiaoDucPage .form-group span {
+    color: #ca0000;
+    font-size: 13px;
+}
+
+.PhongGiaoDucPage .select2-container .select2-selection--single {
+    height: 37px !important;
+}
+
+.PhongGiaoDucPage .modal-lg {
+    width: 80%;
+}
+
+/*Trang Tiêu chuẩn tiêu chí*/
+
+.TieuChuanTieuChiPage .form-group span {
+    color: #ca0000;
+    font-size: 13px;
+}
+
+.TieuChuanTieuChiPage .tr-header {
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: antiquewhite;
+}
+
+.TieuChuanTieuChiPage .popover {
+    max-width: 750px;
+}
+
+/*Trang Trường học*/
+.TruongHocPage .form-group span {
+    color: #ca0000;
+    font-size: 13px;
+}
+
+.TruongHocPage .select2-container .select2-selection--single {
+    height: 37px !important;
+}
+
+.TruongHocPage .modal-lg {
+    width: 80%;
+}
+
+/*Đánh giá giáo viên*/ 
+.DanhGiaGiaoVienPage .form-group span {
+    color: #ca0000;
+    font-size: 13px;
+}
+
+.DanhGiaGiaoVienPage .tr-header {
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: antiquewhite;
+}
+
+.DanhGiaGiaoVienPage .My-td::before {
+    content: "● ";
+}
+
+.DanhGiaGiaoVienPage .popover {
+    max-width: 750px;
+}

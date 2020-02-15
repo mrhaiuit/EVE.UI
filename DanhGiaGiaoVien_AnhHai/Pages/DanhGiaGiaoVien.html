@@ -27,52 +27,14 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../css_ALL/all-themes.css" rel="stylesheet" />
 
+    <link href="../../css_ALL/style_eachPage.css" rel="stylesheet" />
+
     <title>Welcome To | Phần Mềm Đánh Giá Giáo Viên</title>
 
-    <!-- More Css Each Page-->
-    <style>
-        .form-group span {
-            color: #ca0000;
-            font-size: 13px;
-        }
-
-        .tr-header {
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            background-color: antiquewhite;
-        }
-
-        .My-td::before {
-            content: "● ";
-        }
-
-        .popover {
-            max-width: 750px;
-        }
-    </style>
+    <!-- More Css Each Page--> 
 
     <!-- #END# More Css Each Page -->
-
-    <style>
-        .select2-container .select2-selection--single {
-            height: 34px;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            top: 5px;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            margin-top: 2px;
-        }
-
-        @media (max-width: 767px) {
-            .modal-lg {
-                width: 95%;
-            }
-        }
-    </style>
+     
     <script>
         function collapesSideBar() {
             var width_window = parseInt($(window).width());
@@ -359,13 +321,13 @@
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
             <!-- User Info -->
-            <div class="user-info" id="user_info" runat="server">
+            <div class="user-info" id="user_info" >
                 <div class="image">
-                    <img id="avatarUser" runat="server" src="../images/user.png" width="48" height="48" alt="UserAvatar" />
+                    <img id="avatarUser"  src="../images/user.png" width="48" height="48" alt="UserAvatar" />
                 </div>
                 <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="UserFullname" runat="server">Le Thanh Vinh</div>
-                    <div class="email" id="emailUser" runat="server">vinh.le@example.com</div>
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="UserFullname" >Le Thanh Vinh</div>
+                    <div class="email" id="emailUser" >vinh.le@example.com</div>
                     <div class="btn-group user-helper-dropdown hidden">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
@@ -541,10 +503,10 @@
 
     <!-- Body of Page -->
 
-    <section class="content">
+    <section class="content DanhGiaGiaoVienPage">
         <div class="container-fluid">
             <div class="block-header hidden">
-                <ol class="breadcrumb" id="breadscrumColor" runat="server">
+                <ol class="breadcrumb" id="breadscrumColor" >
                     <li><a href="../Pages/index.html"><i class="material-icons">home</i> Trang chủ</a></li>
                     <li class="active"><a href="../Pages/DANHGIAGIAOVIEN.html"><i class="fa fa-user m-r-10"></i>Đánh giá giáo viên</a></li>
                 </ol>
