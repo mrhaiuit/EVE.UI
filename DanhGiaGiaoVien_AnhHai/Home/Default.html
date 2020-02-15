@@ -98,7 +98,7 @@
                     }
                 }
             }
-            xmlhttp.open("GET", "../Ajax.aspx?Action=ChangeTheme&color=" + color, true);
+            xmlhttp.open("GET", "../Ajax.html?Action=ChangeTheme&color=" + color, true);
             xmlhttp.send();
         }
         function Logout() {
@@ -121,14 +121,14 @@
                 xmlhttp.onreadystatechange = function () {
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                         if (xmlhttp.responseText == "Success") {
-                            window.location.href = '../Home/Login.aspx';
+                            window.location.href = '../Home/Login.html';
                         }
                         else {
                             alert("Error !");
                         }
                     }
                 }
-                xmlhttp.open("GET", "../Ajax.aspx?Action=Logout", true);
+                xmlhttp.open("GET", "../Ajax.html?Action=Logout", true);
                 xmlhttp.send();
 
             });
@@ -347,7 +347,7 @@
                     <div class="btn-group user-helper-dropdown hidden">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="../ASP_page/DanhMuc/Profile.aspx"><i class="material-icons">person</i>Trang cá nhân</a></li>
+                            <li><a href="../Pages/DanhMuc/Profile.html"><i class="material-icons">person</i>Trang cá nhân</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="javascript:Logout();"><i class="material-icons">input</i>Đăng xuất</a></li>
                         </ul>
@@ -359,46 +359,46 @@
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 451px;">
                     <ul class="list" style="overflow: hidden; width: auto; height: 451px;">
                         <li class="header">MAIN NAVIGATION</li>
-                        <li class="active">
+                        <li >
                             <a href="javascript:void(0);" class="menu-toggle toggled waves-effect waves-block" data-toggle="tooltip" data-placement="right" title="" data-original-title="DANH MỤC">
                                 <i class="material-icons">view_module</i>
                                 <span>DANH MỤC</span>
                             </a>
                             <ul class="ml-menu" style="display: block;">
                                 <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Danh mục người dùng">
-                                    <a href="../ASP_page/DanhMuc/SECTION_USER.aspx" class="toggled waves-effect waves-block">
+                                    <a href="../Pages/DanhMuc/SECTION_USER.html" class="toggled waves-effect waves-block">
                                         <span>Người dùng</span>
                                     </a>
                                 </li>
                                 <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Danh mục đợt đánh giá">
-                                    <a href="../ASP_page/DanhMuc/SECTION_DOTDANHGIA.aspx" class="toggled waves-effect waves-block">
+                                    <a href="../Pages/DanhMuc/SECTION_DOTDANHGIA.html" class="toggled waves-effect waves-block">
                                         <span>Đợt đánh giá</span>
                                     </a>
                                 </li>
                                 <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Tiêu chuẩn/tiêu chí">
-                                    <a href="../ASP_page/DanhMuc/SECTION_TIEUCHUANTIEUCHI.aspx" class="toggled waves-effect waves-block">
+                                    <a href="../Pages/DanhMuc/SECTION_TIEUCHUANTIEUCHI.html" class="toggled waves-effect waves-block">
                                         <span>Tiêu chuẩn/tiêu chí</span>
                                     </a>
                                 </li>
                                 <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Phòng giáo dục">
-                                    <a href="../ASP_page/DanhMuc/SECTION_PHONGGIAODUC.aspx" class="toggled waves-effect waves-block">
+                                    <a href="../Pages/DanhMuc/SECTION_PHONGGIAODUC.html" class="toggled waves-effect waves-block">
                                         <span>Phòng giáo dục</span>
                                     </a>
                                 </li>
-                                <li class="active" data-toggle="tooltip" data-placement="right" title="" data-original-title="Trường học">
-                                    <a href="../ASP_page/DanhMuc/SECTION_TRUONGHOC.aspx" class="toggled waves-effect waves-block">
+                                <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Trường học">
+                                    <a href="../Pages/DanhMuc/SECTION_TRUONGHOC.html" class="toggled waves-effect waves-block">
                                         <span>Trường học</span>
                                     </a>
                                 </li>
                                 <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Phân quyền">
-                                    <a href="../ASP_page/DanhMuc/SECTION_CAPQUYEN.aspx" class="toggled waves-effect waves-block">
+                                    <a href="../Pages/DanhMuc/SECTION_CAPQUYEN.html" class="toggled waves-effect waves-block">
                                         <span>Phân quyền</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="../ASP_page/DANHGIAGIAOVIEN.aspx" data-toggle="tooltip" data-placement="right" title="" data-original-title="Đánh giá giáo viên" class=" waves-effect waves-block">
+                            <a href="../Pages/DANHGIAGIAOVIEN.html" data-toggle="tooltip" data-placement="right" title="" data-original-title="Đánh giá giáo viên" class=" waves-effect waves-block">
                                 <i class="material-icons">contacts</i>
                                 <span>ĐÁNH GIÁ GIÁO VIÊN</span>
                             </a>
