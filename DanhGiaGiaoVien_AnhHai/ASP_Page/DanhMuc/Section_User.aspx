@@ -6,6 +6,7 @@
             color: #ca0000;
             font-size: 13px;
         }
+
         .popover {
             max-width: 750px;
         }
@@ -383,7 +384,7 @@
                                     <a class="btn btn-warning waves-effect js-search" data-close="true" style="width: 100%; box-shadow: none;"><i class="material-icons">search</i><span>Tìm kiếm</span></a>
                                     <asp:LinkButton ID="btnSearch" OnClick="btnSearch_Click" runat="server" Style="display: none"></asp:LinkButton>
                                     <!-- #END# Call Search -->
-                                </div> 
+                                </div>
                             </div>
                         </div>
                         <div class="body table-responsive" id="dvtable" runat="server">
@@ -400,7 +401,7 @@
                         </div>
                         <div class="modal-body">
                             <h5 class="card-inside-title " style="margin-bottom: 0px;">Thông tin cá nhân</h5>
-                            <hr class="m-t-0"/>
+                            <hr class="m-t-0" />
                             <div class="row">
                                 <div class="col-md-3 col-lg-3">
                                     <div class="form-group form-float">
@@ -463,7 +464,7 @@
                                             <label class="form-label">Ghi chú</label>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="col-md-3 col-lg-3">
                                     <select class="form-control" id="slActive" runat="server" style="width: 100%;">
                                         <option value="">-- Chọn active --</option>
@@ -472,10 +473,10 @@
                                     </select>
                                 </div>
                             </div>
-                             
-                            
+
+
                             <h5 class="card-inside-title " style="margin-bottom: 0px;">Thông tin tài khoản</h5>
-                            <hr class="m-t-0"/>
+                            <hr class="m-t-0" />
                             <div class="row">
                                 <div class="col-md-3 col-lg-3">
                                     <select class="form-control" id="slUserType" runat="server" style="width: 100%;">

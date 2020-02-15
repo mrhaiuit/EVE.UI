@@ -70,8 +70,8 @@
                 $("#txtUsername").val('');
                 $("#txtPassword").val('');
                 $("#txtGhiChu").val('');
-                $("#ContentMaster_slUserType").val('').trigger('change');
-                $("#ContentMaster_slActive").val('').trigger('change');
+                $("#slUserType").val('').trigger('change');
+                $("#slActive").val('').trigger('change');
                 $("#btnModalSave").attr('onclick', 'AddNewUser();');
 
                 $("#myModalTile").html('THÊM MỚI NHÂN VIÊN');
@@ -418,7 +418,7 @@
                         <li class="header">MAIN NAVIGATION</li>
                         <li class="active">
                             <a href="javascript:void(0);" class="menu-toggle toggled waves-effect waves-block" data-toggle="tooltip" data-placement="right" title="" data-original-title="DANH MỤC">
-                                <i class="material-icons">view_module</i>
+                                <i class="material-icons">dashboard</i>
                                 <span>DANH MỤC</span>
                             </a>
                             <ul class="ml-menu" style="display: block;">
@@ -596,7 +596,7 @@
                                         <div class="search-icon">
                                             <i class="material-icons">search</i>
                                         </div>
-                                        <input type="text" placeholder="Tìm theo tên..." id="txtSearch"  onkeypress="javascript:if(event.keyCode == 13) document.getElementById('ContentMaster_btnSearch').click();">
+                                        <input type="text" placeholder="Tìm theo tên..." id="txtSearch"  onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnSearch').click();">
                                         <div class="close-search">
                                             <i class="material-icons">close</i>
                                         </div>
@@ -744,7 +744,14 @@
                             <hr class="m-t-0" />
                             <div class="row">
                                 <div class="col-md-3 col-lg-3">
-                                    <select class="form-control" id="slUserType"  style="width: 100%;"></select>
+                                    <select class="form-control" id="slUserType"  style="width: 100%;"> 
+                                        <option value="DEPARMENT">Cấp phòng giáo dục</option>
+                                        <option value="MINISTRY">Cấp bộ giáo dục</option>
+                                        <option value="PROVINCE">Cấp sở giáo dục</option>
+                                        <option value="SCHOOL">Cấp trường</option>
+                                        <option value="TADMIN">Quản trị hệ thống</option>
+                                        <option selected="selected" value="">-- Chọn Cấp --</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
                                     <div class="form-group form-float">
@@ -774,16 +781,28 @@
 
                             <div class="row">
                                 <div class="col-md-3 col-lg-3 hidden">
-                                    <select class="form-control" id="slEduMinistry"  style="width: 100%;"></select>
+                                    <select class="form-control" id="slEduMinistry"  style="width: 100%;">
+                                    </select>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
-                                    <select class="form-control" id="slEduProvince"  style="width: 100%;" onchange="slEduProvince_onchange(this.value);"></select>
+                                    <select class="form-control" id="slEduProvince"  style="width: 100%;" > 
+                                        <option selected="selected" value="">-- Chọn cấp Sở --</option>
+                                        <option value="1">Sở Giáo Dục Và Đào Tạo TP Hồ Chí Minh</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
-                                    <select class="form-control" id="slEduDepartment"  style="width: 100%;" onchange="slEduDepartment_onchange(this.value);"></select>
+                                    <select class="form-control" id="slEduDepartment"  style="width: 100%;" >
+                                        <option value=""  >-- Chọn cấp Phòng --</option>
+                                        <option value="1"  >Phòng Giáo Dục Và Đào Tạo Quận 1</option>
+                                        <option value="2"  >Phòng Giáo Dục Và Đào Tạo Quận 2</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
-                                    <select class="form-control" id="slEduSchoold"  style="width: 100%;"></select>
+                                    <select class="form-control" id="slEduSchoold"  style="width: 100%;">
+                                        <option value=""  >-- Chọn cấp Trường --</option>
+                                        <option value="1" >Trường Tiểu Học Trần Khánh Dư</option>
+                                        <option value="2" >Trường Tiểu Học Trần Quang Khải</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -821,45 +840,8 @@
     <!-- More JS each Page --> 
     <link href="../../plugins/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" />
     <script src="../../plugins/jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
-    <script>
-        function slEduProvince_onchange(value) {
-            var xmlhttp;
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {// code for IE6, IE5
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    if (xmlhttp.responseText != "") {
-                        $("#ContentMaster_slEduDepartment").html(xmlhttp.responseText);
-                    }
-                }
-            }
-            xmlhttp.open("GET", "../../Ajax.html?Action=Load_EduDepartment&IDEduProvince=" + value, true);
-            xmlhttp.send();
-        }
-
-        function slEduDepartment_onchange(value) {
-            var xmlhttp;
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {// code for IE6, IE5
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    if (xmlhttp.responseText != "") {
-                        $("#ContentMaster_slEduSchoold").html(xmlhttp.responseText);
-                    }
-                }
-            }
-            xmlhttp.open("GET", "../../Ajax.html?Action=Load_EduSchoold&IDEduDepartment=" + value, true);
-            xmlhttp.send();
-        }
-        $("#ContentMaster_slUserType,#ContentMaster_slEduMinistry,#ContentMaster_slEduProvince,#ContentMaster_slEduDepartment,#ContentMaster_slEduSchoold").select2();
+    <script> 
+        $("#slUserType,#slEduMinistry,#slEduProvince,#slEduDepartment,#slEduSchoold").select2();
 
         //datetimepicker jquery
         jQuery.datetimepicker.setLocale('vi');//chỉ cần dòng này là có thể đổi được ngôn ngữ

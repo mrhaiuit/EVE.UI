@@ -2469,7 +2469,7 @@
     }
 
 .bg-cyan {
-    background-color: rgb(108, 167, 183); !important;
+    background-color: rgb(108, 167, 183) !important;
     color: #fff;
 }
 
@@ -2637,7 +2637,7 @@
 }
 
 .col-cyan {
-    color: rgb(108, 167, 183); !important;
+    color: rgb(108, 167, 183) !important;
 }
 
 .col-teal {
@@ -6340,7 +6340,7 @@ section.content {
 }
 
     .panel-group .panel-col-cyan .panel-title {
-        background-color: rgb(108, 167, 183); !important;
+        background-color: rgb(108, 167, 183) !important;
         color: #fff;
     }
 
@@ -7267,12 +7267,12 @@ fieldset[disabled] .form-control {
         }
 
 .breadcrumb-col-cyan li a {
-    color: rgb(108, 167, 183); !important;
+    color: rgb(108, 167, 183) !important;
     font-weight: bold;
 }
 
 .breadcrumb-bg-cyan {
-    background-color: rgb(108, 167, 183); !important;
+    background-color: rgb(108, 167, 183) !important;
 }
 
     .breadcrumb-bg-cyan li {
@@ -10442,21 +10442,20 @@ fieldset[disabled] .form-control {
             }
 
             .sidebar .menu .list .ml-menu li a {
-                padding-left: 55px;
+                padding-left: 20px;
                 padding-top: 7px;
                 padding-bottom: 7px;
             }
 
             .sidebar .menu .list .ml-menu li.active a.toggled:not(.menu-toggle) {
-                font-weight: 600;
-                margin-left: 5px;
+                font-weight: 600; 
             }
 
-                .sidebar .menu .list .ml-menu li.active a.toggled:not(.menu-toggle):before {
+                .sidebar .menu .list .ml-menu li.active a.toggled:not(.menu-toggle):after {
                     content: '\E315';
                     font-family: 'Material Icons';
                     position: relative;
-                    font-size: 21px;
+                    font-size: 25px;
                     height: 20px;
                     top: -5px;
                     right: 0px;
