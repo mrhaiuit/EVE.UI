@@ -1,5 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Home_Login" %>
-
+﻿
 <!DOCTYPE html>
 
 <html>
@@ -87,7 +86,7 @@
             left: 50%;
             width: 13rem;
             height: 13rem;
-            background-image: url(/images/logo.png);
+            background-image: url(../images/logo.png);
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
@@ -166,7 +165,8 @@
 
             if (!flag)
                 return;
-            document.getElementById("btnLogin").click();
+            
+            window.location.href = "../Home/Default.html";
         }
         function hasUnicode(str) {
             for (var i = 0; i < str.length; i++) {
@@ -177,8 +177,9 @@
     </script>
     <title>ĐĂNG NHẬP | Phần Mềm Đánh Giá Giáo Viên</title>
 </head>
+
 <body>
-    <form id="form1" runat="server">
+    <form id="form1">
         <div>
             <div id="particle-container">
                 <div class="particle"></div>
@@ -219,7 +220,7 @@
                     <div class="col-sm-12">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" class="form-control" id="txtUsername" runat="server" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
+                                <input type="text" class="form-control" id="txtUsername" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
                                 <label class="form-label">Tên đăng nhập</label>
                             </div>
                             <span id="spUsername">Error</span>
@@ -228,21 +229,31 @@
                     <div class="col-sm-12">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="password" class="form-control" id="txtPassword" runat="server" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
+                                <input type="password" class="form-control" id="txtPassword" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
                                 <label class="form-label">Mật khẩu</label>
                             </div>
                             <span id="spPassword">Error</span>
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <select class="form-group form-control" id="slUserGroup" runat="server"></select>
+                        <select class="form-group form-control" id="slUserGroup">
+                            <option value="MNST">Bộ giáo dục đào tạo</option>
+                            <option value="PROV">Sở giáo dục vào đào tạo</option>
+                            <option value="DEPT">Phòng giáo dục</option>
+                            <option value="PRIN">Hiệu trưởng</option>
+                            <option value="GSCH">Tổng hợp cấp trường</option>
+                            <option value="TEAC">Giáo viên</option>
+                            <option value="ITSC">IT cấp trường</option>
+                            <option value="ITST">IT hệ thống</option>
+                            <option selected="selected" value="">-- Chọn nhóm người dùng --</option>
+                        </select>
                     </div>
                     <div class="col-sm-12">
                         <a href="javascript:$('.formLogin').fadeOut().hide(); $('.formForgot').removeAttr('style').addClass('animated shake');"><i class="fa fa-key m-r-10"></i>Quên mật khẩu</a>
                     </div>
                     <div class="col-sm-12">
                         <a class="btn btn-default waves-effect" style="float: right; font-size: 18px; padding: 5px 20px;" onclick="btnLogin_clickJS();"><i class="fa fa-sign-in m-r-20"></i>ĐĂNG NHẬP</a>
-                        <asp:LinkButton ID="btnLogin" OnClick="btnLogin_Click" runat="server" Style="display: none;"></asp:LinkButton>
+                        <asp:LinkButton ID="btnLogin" OnClick="btnLogin_Click" Style="display: none;"></asp:LinkButton>
                     </div>
                 </div>
             </div>
@@ -254,7 +265,7 @@
                     <div class="col-sm-12">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" class="form-control" id="Text1" runat="server" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
+                                <input type="text" class="form-control" id="Text1" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
                                 <label class="form-label">Số điện thoại</label>
                             </div>
                         </div>
@@ -262,7 +273,7 @@
                     <div class="col-sm-12">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" class="form-control" id="Text2" runat="server" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
+                                <input type="text" class="form-control" id="Text2" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
                                 <label class="form-label">Email</label>
                             </div>
                         </div>
@@ -270,7 +281,7 @@
                     <div class="col-sm-12">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="password" class="form-control" id="Password1" runat="server" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
+                                <input type="password" class="form-control" id="Password1" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
                                 <label class="form-label">Mật khẩu mới</label>
                             </div>
                         </div>
@@ -280,7 +291,7 @@
                     </div>
                     <div class="col-sm-12">
                         <a class="btn btn-default waves-effect" style="float: right; font-size: 18px; padding: 5px 20px;" onclick=""><i class="fa fa-refresh m-r-20"></i>KHÔI PHỤC</a>
-                        <asp:LinkButton ID="LinkButto1" runat="server" Style="display: none;"></asp:LinkButton>
+
                     </div>
                 </div>
 

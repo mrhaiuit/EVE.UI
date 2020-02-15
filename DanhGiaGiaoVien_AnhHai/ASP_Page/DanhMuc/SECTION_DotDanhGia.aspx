@@ -119,14 +119,11 @@
                                     <!-- Call Search -->
                                     <a class="btn btn-warning waves-effect js-search" style="width: 100%; box-shadow: none;"><i class="material-icons">search</i><span>Tìm kiếm</span></a>
                                     <!-- #END# Call Search -->
-                                </div>
-                                <div class="col-lg-1 col-md-1 col-sm-4 col-xs-4 align-right">
-                                    <a class="btn btn-warning waves-effect" href="Section_DOTDANHGIA.aspx" style="width: 100%; box-shadow: none;" data-toggle='tooltip' data-placement='top' title='' data-original-title='Refresh'><i class="material-icons">cached</i></a>
                                 </div> 
                                 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
                                     <a class="btn bg-purple waves-effect" href="javascript:void(0);"><i class="material-icons">file_download</i> <span>XUẤT EXCEL</span></a>
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 align-right">
+                                <div class="col-lg-5 col-md-5 col-sm-4 col-xs-6 align-right">
                                     <a class="btn btn-warning waves-effect" href="javascript:OpenModal_AddDotDanhGia();"><i class="material-icons">playlist_add</i> <span>THÊM MỚI</span></a>
                                 </div>
                             </div>

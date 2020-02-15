@@ -82,6 +82,24 @@ public partial class Layout_MasterPage : System.Web.UI.MasterPage
                                           <span>Tiêu chuẩn/tiêu chí</span>
                                     </a>
                                 </li>  ";
+            //if (mQuyen == "ADMIN")
+            html += @"     <li " + ((URL.Contains("/SECTION_PHONGGIAODUC.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Phòng giáo dục'>
+                                    <a href='../../ASP_page/DanhMuc/SECTION_PHONGGIAODUC.aspx' class='toggled waves-effect waves-block' >
+                                          <span>Phòng giáo dục</span>
+                                    </a>
+                                </li>  ";
+            //if (mQuyen == "ADMIN")
+            html += @"     <li " + ((URL.Contains("/SECTION_TRUONGHOC.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Trường học'>
+                                    <a href='../../ASP_page/DanhMuc/SECTION_TRUONGHOC.aspx' class='toggled waves-effect waves-block' >
+                                          <span>Trường học</span>
+                                    </a>
+                                </li>  ";
+            //if (mQuyen == "ADMIN")
+            html += @"     <li " + ((URL.Contains("/SECTION_CAPQUYEN.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Phân quyền'>
+                                    <a href='../../ASP_page/DanhMuc/SECTION_CAPQUYEN.aspx' class='toggled waves-effect waves-block' >
+                                          <span>Phân quyền</span>
+                                    </a>
+                                </li>  ";
             html += @"      </ul>
                         </li>";
         } 

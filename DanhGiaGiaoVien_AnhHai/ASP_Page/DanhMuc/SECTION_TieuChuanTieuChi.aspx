@@ -64,11 +64,8 @@
                                     <!-- Call Search -->
                                     <a class="btn btn-warning waves-effect js-search" data-close="true" style="width: 100%; box-shadow: none;"><i class="material-icons">search</i><span>Tìm kiếm</span></a>
                                     <!-- #END# Call Search -->
-                                </div>
-                                <div class="col-lg-1 col-md-1 col-sm-3 col-xs-3 align-right">
-                                    <a class="btn btn-warning waves-effect" href="Section_TieuChuanTieuChi.aspx" style="width: 100%; box-shadow: none;" data-toggle='tooltip' data-placement='top' title='' data-original-title='Refresh'><i class="material-icons">cached</i></a>
-                                </div>
-                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 align-right">
+                                </div> 
+                                <div class="col-lg-3 col-md-3 col-sm-2 col-xs-2 align-right">
                                     <a class="btn btn-warning waves-effect" href="javascript:OpenModal_AddNewTieuChuan();"><i class="material-icons">playlist_add</i> <span>THÊM MỚI</span></a>
                                 </div>
                             </div>
@@ -171,6 +168,21 @@
                                     </tr>
                                     <%--///////////////////////////--%>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="15" class="footertable align-center">
+                                            <ul class="pagination margin-0">
+                                                <li><a href="SECTION_TieuChuanTIeuChi.aspx?Page=1" class="waves-effect"><i class="material-icons">chevron_left</i></a></li>
+                                                <li class="active"><a href="SECTION_PSECTION_TieuChuanTIeuChihongGIaoDuc.aspx?Page=1" class="waves-effect bg-cyan">1</a></li>
+                                                <li class="hidden"><a href="SECTION_TieuChuanTIeuChi.aspx?Page=" class="waves-effect"></a></li>
+                                                <li class="hidden"><a href="SECTION_TieuChuanTIeuChi.aspx?Page=" class="waves-effect"></a></li>
+                                                <li class="hidden"><a href="SECTION_TieuChuanTIeuChi.aspx?Page=" class="waves-effect"></a></li>
+                                                <li class="hidden"><a href="SECTION_TieuChuanTIeuChi.aspx?Page=" class="waves-effect"></a></li>
+                                                <li><a href="SECTION_TieuChuanTIeuChi.aspx?Page=1" class="waves-effect"><i class="material-icons">chevron_right</i></a></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>

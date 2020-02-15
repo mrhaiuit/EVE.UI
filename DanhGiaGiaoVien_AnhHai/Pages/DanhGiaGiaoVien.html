@@ -1,0 +1,884 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Favicon-->
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <!-- Bootstrap Core Css -->
+    <link href="../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- font-awesome Css -->
+    <link href="../plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- SweetAlert Css -->
+    <link href="../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- select2 Css -->
+    <link href="../plugins/select2/select2.min.css" rel="stylesheet" />
+    <!-- Waves Effect Css -->
+    <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
+    <!-- Animation Css -->
+    <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link href="../css/style.css" rel="stylesheet">
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="../css/themes/all-themes.css" rel="stylesheet" />
+
+    <title>Welcome To | Phần Mềm Đánh Giá Giáo Viên</title>
+
+    <!-- More Css Each Page-->
+    <style>
+        .form-group span {
+            color: #ca0000;
+            font-size: 13px;
+        }
+
+        .tr-header {
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: antiquewhite;
+        }
+
+        .My-td::before {
+            content: "● ";
+        }
+
+        .popover {
+            max-width: 750px;
+        }
+    </style>
+
+    <!-- #END# More Css Each Page -->
+
+    <style>
+        .select2-container .select2-selection--single {
+            height: 34px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            top: 5px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            margin-top: 2px;
+        }
+
+        @media (max-width: 767px) {
+            .modal-lg {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function collapesSideBar() {
+            var width_window = parseInt($(window).width());
+            if (width_window >= 1170) {
+                $('.sidebar').addClass('sidebar-collapse');
+                $(".sidebar .menu .list a span").css('display', 'none');
+                $("head").append("<style>.sidebar .menu .list .menu-toggle:before{content:'';}.sidebar .menu .list .menu-toggle:after{content:'';}</style>");
+                $('section.content').css('margin-left', '5rem');
+                $('.navbar').addClass('navbar-collapseV');
+                $('.sidebar .menu .list .header').css({ 'display': 'none' });
+                $('.sidebar .user-info').css('padding-left', '0');
+                $('.sidebar .user-info .info-container').css('display', 'none');
+                $(".navbar-brand").attr("onclick", "openSideBar();");
+            }
+        }
+        function openSideBar() {
+            var width_window = parseInt($(window).width());
+            if (width_window >= 1170) {
+                $('.sidebar').removeClass('sidebar-collapse');
+                $(".sidebar .menu .list a span").css('display', 'block');
+                $("head").append("<style>.sidebar .menu .list .menu-toggle:before{content:'+';}.sidebar .menu .list .menu-toggle:after{content:'_';}</style>");
+                $('section.content').css('margin-left', '23rem');
+                $('.navbar').removeClass('navbar-collapseV');
+                $('.sidebar .menu .list .header').css({ 'display': 'block' });
+                $('.sidebar .user-info').css('padding-left', '15px');
+                $('.sidebar .user-info .info-container').css('display', 'block');
+                $(".navbar-brand").attr("onclick", "collapesSideBar();");
+            }
+        }
+        function ChangeTheme(color) {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    if (xmlhttp.responseText == "Success") {
+                        $("#idbody").attr('class', 'theme-' + color);
+                    }
+                    else {
+                        alert("Error !");
+                    }
+                }
+            }
+            xmlhttp.open("GET", "../Ajax.html?Action=ChangeTheme&color=" + color, true);
+            xmlhttp.send();
+        }
+        function Logout() {
+            swal({
+                title: 'Bạn có muốn đăng xuất ?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#F44336',
+                cancelButtonColor: '#ef4848',
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Không'
+            }, function () {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (xmlhttp.responseText == "Success") {
+                            window.location.href = '../Home/Login.html';
+                        }
+                        else {
+                            alert("Error !");
+                        }
+                    }
+                }
+                xmlhttp.open("GET", "../Ajax.html?Action=Logout", true);
+                xmlhttp.send();
+
+            });
+        }
+        function KiemTraKhongNhap(txt) {
+
+            try {
+                var a = parseFloat(Number);
+            }
+            catch (e) {
+                Number = "0";
+            }
+            if (txt == "") {
+                txt = "0";
+            }
+            else if (txt == undefined) {
+                txt = "0";
+            }
+            else if (txt == "-") {
+                txt = "0";
+            }
+            else//bỏ dấu chấm 100.000  => 100000
+            {
+                try {
+                    txt = txt.replace(/\,/g, '').trim();
+                } catch (e) { }
+            }
+            return txt;
+        }
+        function onlyNumber(evt) {
+            var theEvent = evt || window.event;
+
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+                // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /[0-9]|\./;
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        }
+        function DinhDangTien(id) {
+            var check = $('#' + id).val().replace(/\,/g, '');
+            if (isNaN(check)) {
+                $('#' + id).val("0");
+            }
+            else {
+                $('#' + id).val($('#' + id).val().replace(/\,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(/^\s+/, '').replace(/\s+$/, ''));
+            }
+        }
+    </script>
+</head>
+<body class="theme-cyan">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Vui lòng chờ...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header" style="margin-left: -2rem;">
+                <a class="logoutIcon" href="javascript:Logout();"><i class="fa fa-sign-out"></i></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" onclick="collapesSideBar();"><i class="material-icons SoftwareName">reorder</i><span>PHẦN MỀM ĐÁNH GIÁ GIÁO VIÊN</span></a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Notifications -->
+                    <li class="dropdown hidden">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="material-icons">notifications</i>
+                            <span class="label-count">0</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">NOTIFICATIONS</li>
+                            <li class="body">
+                                <ul class="menu">
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-light-green">
+                                                <i class="material-icons">person_add</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>0 new members joined</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 0 mins ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-cyan">
+                                                <i class="material-icons">add_shopping_cart</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>0 sales made</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 0 mins ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-red">
+                                                <i class="material-icons">delete_forever</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>Nancy Doe</b> deleted account</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 0 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-orange">
+                                                <i class="material-icons">mode_edit</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>Nancy</b> changed name</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 0 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-blue-grey">
+                                                <i class="material-icons">comment</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>John</b> commented your post</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 0 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-light-green">
+                                                <i class="material-icons">cached</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>John</b> updated status</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 0 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-purple">
+                                                <i class="material-icons">settings</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Settings updated</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> Yesterday
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <a href="javascript:void(0);">View All Notifications</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- #END# Notifications -->
+                    <li class="pull-right hidden"><a href="javascript:void(0);" class="js-right-sidebar"><i class="material-icons">more_vert</i></a></li>
+                    <li class="pull-right"><a href="javascript:Logout();"><i class="material-icons">call_missed_outgoing</i> Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+    <section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->
+            <div class="user-info" id="user_info" runat="server">
+                <div class="image">
+                    <img id="avatarUser" runat="server" src="../images/user.png" width="48" height="48" alt="UserAvatar" />
+                </div>
+                <div class="info-container">
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="UserFullname" runat="server">Le Thanh Vinh</div>
+                    <div class="email" id="emailUser" runat="server">vinh.le@example.com</div>
+                    <div class="btn-group user-helper-dropdown hidden">
+                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="../Pages/DanhMuc/Profile.html"><i class="material-icons">person</i>Trang cá nhân</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:Logout();"><i class="material-icons">input</i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- #User Info -->
+            <!-- Menu --><div id="MainNavigation" class="menu">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 451px;">
+                    <ul class="list" style="overflow: hidden; width: auto; height: 451px;">
+                        <li class="header">MAIN NAVIGATION</li>
+                        <li >
+                            <a href="javascript:void(0);" class="menu-toggle toggled waves-effect waves-block" data-toggle="tooltip" data-placement="right" title="" data-original-title="DANH MỤC">
+                                <i class="material-icons">view_module</i>
+                                <span>DANH MỤC</span>
+                            </a>
+                            <ul class="ml-menu" style="display: block;">
+                                <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Danh mục người dùng">
+                                    <a href="../Pages/DanhMuc/SECTION_USER.html" class="toggled waves-effect waves-block">
+                                        <span>Người dùng</span>
+                                    </a>
+                                </li>
+                                <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Danh mục đợt đánh giá">
+                                    <a href="../Pages/DanhMuc/SECTION_DOTDANHGIA.html" class="toggled waves-effect waves-block">
+                                        <span>Đợt đánh giá</span>
+                                    </a>
+                                </li>
+                                <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Tiêu chuẩn/tiêu chí">
+                                    <a href="../Pages/DanhMuc/SECTION_TIEUCHUANTIEUCHI.html" class="toggled waves-effect waves-block">
+                                        <span>Tiêu chuẩn/tiêu chí</span>
+                                    </a>
+                                </li>
+                                <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Phòng giáo dục">
+                                    <a href="../Pages/DanhMuc/SECTION_PHONGGIAODUC.html" class="toggled waves-effect waves-block">
+                                        <span>Phòng giáo dục</span>
+                                    </a>
+                                </li>
+                                <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Trường học">
+                                    <a href="../Pages/DanhMuc/SECTION_TRUONGHOC.html" class="toggled waves-effect waves-block">
+                                        <span>Trường học</span>
+                                    </a>
+                                </li>
+                                <li data-toggle="tooltip" data-placement="right" title="" data-original-title="Phân quyền">
+                                    <a href="../Pages/DanhMuc/SECTION_CAPQUYEN.html" class="toggled waves-effect waves-block">
+                                        <span>Phân quyền</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li  class="active">
+                            <a href="../Pages/DANHGIAGIAOVIEN.html" data-toggle="tooltip" data-placement="right" title="" data-original-title="Đánh giá giáo viên" class=" waves-effect waves-block">
+                                <i class="material-icons">contacts</i>
+                                <span>ĐÁNH GIÁ GIÁO VIÊN</span>
+                            </a>
+                        </li>
+                    </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 451px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                </div>
+            </div>
+            <!-- #Menu -->
+            <!-- Footer -->
+            <div class="legal hidden">
+                <div class="copyright">
+                    &copy; 2020 <a href="https://xep.vn">CTY PHẦN MỀM XEP</a>.
+                </div>
+            </div>
+            <!-- #Footer -->
+        </aside>
+        <!-- #END# Left Sidebar -->
+        <!-- Right Sidebar -->
+        <aside id="rightsidebar" class="right-sidebar">
+            <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                <li role="presentation" class="active"><a href="#skins" data-toggle="tab">NAVBARS</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
+                    <ul class="demo-choose-skin">
+                        <li data-theme="red" class="active" onclick="ChangeTheme('red');">
+                            <div class="red"></div>
+                            <span>Red</span>
+                        </li>
+                        <li data-theme="pink" onclick="ChangeTheme('pink');">
+                            <div class="pink"></div>
+                            <span>Pink</span>
+                        </li>
+                        <li data-theme="purple" onclick="ChangeTheme('purple');">
+                            <div class="purple"></div>
+                            <span>Purple</span>
+                        </li>
+                        <li data-theme="deep-purple" onclick="ChangeTheme('deep-purple');">
+                            <div class="deep-purple"></div>
+                            <span>Deep Purple</span>
+                        </li>
+                        <li data-theme="indigo" onclick="ChangeTheme('indio');">
+                            <div class="indigo"></div>
+                            <span>Indigo</span>
+                        </li>
+                        <li data-theme="blue" onclick="ChangeTheme('blue');">
+                            <div class="blue"></div>
+                            <span>Blue</span>
+                        </li>
+                        <li data-theme="light-blue" onclick="ChangeTheme('light-blue');">
+                            <div class="light-blue"></div>
+                            <span>Light Blue</span>
+                        </li>
+                        <li data-theme="cyan" onclick="ChangeTheme('cyan');">
+                            <div class="cyan"></div>
+                            <span>Cyan</span>
+                        </li>
+                        <li data-theme="teal" onclick="ChangeTheme('teal');">
+                            <div class="teal"></div>
+                            <span>Teal</span>
+                        </li>
+                        <li data-theme="green" onclick="ChangeTheme('green');">
+                            <div class="green"></div>
+                            <span>Green</span>
+                        </li>
+                        <li data-theme="light-green" onclick="ChangeTheme('light-green');">
+                            <div class="light-green"></div>
+                            <span>Light Green</span>
+                        </li>
+                        <li data-theme="lime" onclick="ChangeTheme('lime');">
+                            <div class="lime"></div>
+                            <span>Lime</span>
+                        </li>
+                        <li data-theme="yellow" onclick="ChangeTheme('yellow');">
+                            <div class="yellow"></div>
+                            <span>Yellow</span>
+                        </li>
+                        <li data-theme="amber" onclick="ChangeTheme('amber');">
+                            <div class="amber"></div>
+                            <span>Amber</span>
+                        </li>
+                        <li data-theme="orange" onclick="ChangeTheme('orange');">
+                            <div class="orange"></div>
+                            <span>Orange</span>
+                        </li>
+                        <li data-theme="deep-orange" onclick="ChangeTheme('deep-orange');">
+                            <div class="deep-orange"></div>
+                            <span>Deep Orange</span>
+                        </li>
+                        <li data-theme="brown" onclick="ChangeTheme('brown');">
+                            <div class="brown"></div>
+                            <span>Brown</span>
+                        </li>
+                        <li data-theme="grey" onclick="ChangeTheme('grey');">
+                            <div class="grey"></div>
+                            <span>Grey</span>
+                        </li>
+                        <li data-theme="blue-grey" onclick="ChangeTheme('blue-grey');">
+                            <div class="blue-grey"></div>
+                            <span>Blue Grey</span>
+                        </li>
+                        <li data-theme="black" onclick="ChangeTheme('black');">
+                            <div class="black"></div>
+                            <span>Black</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <!-- #END# Right Sidebar -->
+    </section>
+
+    <!-- Body of Page -->
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header hidden">
+                <ol class="breadcrumb" id="breadscrumColor" runat="server">
+                    <li><a href="../Pages/index.html"><i class="material-icons">home</i> Trang chủ</a></li>
+                    <li class="active"><a href="../Pages/DANHGIAGIAOVIEN.html"><i class="fa fa-user m-r-10"></i>Đánh giá giáo viên</a></li>
+                </ol>
+            </div>
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <h4>ĐÁNH GIÁ GIÁO VIÊN</h4>
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;">Chọn kỳ đánh giá</h5>
+                                    <select class="form-control" id="slKyDanhGia">
+                                        <option>-- Chọn kỳ --</option>
+                                        <option>Đánh giá kỳ 1</option>
+                                        <option>Đánh giá kỳ 2</option>
+                                        <option>Đánh giá kỳ 3</option>
+                                        <option>Đánh giá kỳ 4</option>
+                                        <option>Đánh giá kỳ 5</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;">Chọn giáo viên</h5>
+                                    <select class="form-control" id="slGiaoVien">
+                                        <option>-- Chọn giáo viên --</option>
+                                        <option>Lê Văn A</option>
+                                        <option>Lê Văn B</option>
+                                        <option>Lê Văn C</option>
+                                        <option>Lê Văn D</option>
+                                        <option>Lê Văn E</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12  align-right">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;visibility:hidden;">A</h5>
+                                    <a class="btn btn-success waves-effect m-r-10" href="javascript:void(0);"><i class="material-icons">done_all</i> <span>LƯU</span></a>
+                                    <a class="btn bg-red  waves-effect" href="javascript:HuyDanhGia();"><i class="material-icons">clear</i> <span>HUỶ</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="body table-responsive">
+                            <table class='table table-bordered table-hover'>
+                                <thead>
+                                    <tr>
+                                        <th class='bg-cyan' style='min-width: 20rem;'>TIÊU CHUẨN/TIÊU CHÍ</th>
+                                        <th class='bg-cyan' style='min-width: 15rem;'>MỨC ĐÁNH GIÁ TIÊU CHÍ</th>
+                                        <th class='bg-cyan' style='min-width: 10rem;'>MINH CHỨNG</th>
+                                        <th class='bg-cyan align-center'>ĐÍNH KÈM</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    <tr class="tr-header">
+                                        <td colspan="4">Tiêu chuẩn 1: PHẨM CHẤT NGHỀ NGHIỆP <b><i class='fa fa-chevron-down'></i></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="My-td">Tiêu chí 1. Đạo đức nghề nghiệp</td>
+                                        <td>
+                                            <select class="form-control" style="width: 63%; display: inline-block;">
+                                                <option>-- Chọn mức đánh giá --</option>
+                                                <option>Mức 1</option>
+                                                <option>Mức 2</option>
+                                                <option>Mức 3</option>
+                                                <option>Mức 4</option>
+                                            </select>
+                                            <button onclick="return false;" class='btn bg-green waves-effect' data-trigger="focus" data-container="body" data-content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." data-toggle="popover" data-placement="bottom" title="" data-original-title="Diễn giải tiêu chí và mức đánh giá">Chi tiết</button>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" id="txtMinhChung1" type="text" placeholder="Nhập minh chứng ... " onclick="ShowPopup_NhapMinhChung(this.id);" />
+                                        </td>
+                                        <td>
+                                            <a class='btn bg-green waves-effect' href="javascript:document.getElementById('file_DinhKem1').click();">Upload</a>
+                                            <input type="file" class="hidden" id="file_DinhKem1" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="My-td">Tiêu chí 2. Tư tưởng đổi mới trong lãnh đạo</td>
+                                        <td>
+                                            <select class="form-control" style="width: 63%; display: inline-block;">
+                                                <option>-- Chọn mức đánh giá --</option>
+                                                <option>Mức 1</option>
+                                                <option>Mức 2</option>
+                                                <option>Mức 3</option>
+                                                <option>Mức 4</option>
+                                            </select>
+                                            <button onclick="return false;" class='btn bg-green waves-effect' data-trigger="focus" data-container="body" data-content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." data-toggle="popover" data-placement="bottom" title="" data-original-title="Diễn giải tiêu chí và mức đánh giá">Chi tiết</button>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" id="txtMinhChung2" type="text" placeholder="Nhập minh chứng ... " onclick="ShowPopup_NhapMinhChung(this.id);" />
+                                        </td>
+                                        <td>
+                                            <a class='btn bg-green waves-effect' href="javascript:document.getElementById('file_DinhKem2').click();">Upload</a>
+                                            <input type="file" class="hidden" id="file_DinhKem2" />
+                                        </td>
+                                    </tr>  
+                                    <tr class="tr-header">
+                                        <td colspan="4">Tiêu chuẩn 2: QUẢN TRỊ NHÀ TRƯỜNG <b><i class='fa fa-chevron-down'></i></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="My-td">Tiêu chí 4. Tổ chức xây dựng kế hoạch phát</td>
+                                        <td>
+                                            <select class="form-control" style="width: 63%; display: inline-block;">
+                                                <option>-- Chọn mức đánh giá --</option>
+                                                <option>Mức 1</option>
+                                                <option>Mức 2</option>
+                                                <option>Mức 3</option>
+                                                <option>Mức 4</option>
+                                            </select>
+                                            <button onclick="return false;" class='btn bg-green waves-effect' data-trigger="focus" data-container="body" data-content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." data-toggle="popover" data-placement="bottom" title="" data-original-title="Diễn giải tiêu chí và mức đánh giá">Chi tiết</button>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" id="txtMinhChung3" type="text" placeholder="Nhập minh chứng ... " onclick="ShowPopup_NhapMinhChung(this.id);" />
+                                        </td>
+                                        <td>
+                                            <a class='btn bg-green waves-effect' href="javascript:document.getElementById('file_DinhKem3').click();">Upload</a>
+                                            <input type="file" class="hidden" id="file_DinhKem3" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="My-td">Tiêu chí 5. Quản trị hoạt động dạy học, giáo dục</td>
+                                        <td>
+                                            <select class="form-control" style="width: 63%; display: inline-block;">
+                                                <option>-- Chọn mức đánh giá --</option>
+                                                <option>Mức 1</option>
+                                                <option>Mức 2</option>
+                                                <option>Mức 3</option>
+                                                <option>Mức 4</option>
+                                            </select>
+                                            <button onclick="return false;" class='btn bg-green waves-effect' data-trigger="focus" data-container="body" data-content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." data-toggle="popover" data-placement="bottom" title="" data-original-title="Diễn giải tiêu chí và mức đánh giá">Chi tiết</button>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" id="txtMinhChung4" type="text" placeholder="Nhập minh chứng ... " onclick="ShowPopup_NhapMinhChung(this.id);" />
+                                        </td>
+                                        <td>
+                                            <a class='btn bg-green waves-effect' href="javascript:document.getElementById('file_DinhKem4').click();">Upload</a>
+                                            <input type="file" class="hidden" id="file_DinhKem4" />
+                                        </td>
+                                    </tr> 
+                                    <tr class="tr-header">
+                                        <td colspan="4">Tiêu chuẩn 3: PHẨM CHẤT NGHỀ NGHIỆP <b><i class='fa fa-chevron-down'></i></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="My-td">Tiêu chí 1. Đạo đức nghề nghiệp</td>
+                                        <td>
+                                            <select class="form-control" style="width: 63%; display: inline-block;">
+                                                <option>-- Chọn mức đánh giá --</option>
+                                                <option>Mức 1</option>
+                                                <option>Mức 2</option>
+                                                <option>Mức 3</option>
+                                                <option>Mức 4</option>
+                                            </select>
+                                            <button onclick="return false;" class='btn bg-green waves-effect' data-trigger="focus" data-container="body" data-content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." data-toggle="popover" data-placement="bottom" title="" data-original-title="Diễn giải tiêu chí và mức đánh giá">Chi tiết</button>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" id="txtMinhChung5" type="text" placeholder="Nhập minh chứng ... " onclick="ShowPopup_NhapMinhChung(this.id);" />
+                                        </td>
+                                        <td>
+                                            <a class='btn bg-green waves-effect' href="javascript:document.getElementById('file_DinhKem5').click();">Upload</a>
+                                            <input type="file" class="hidden" id="file_DinhKem5" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="My-td">Tiêu chí 2. Tư tưởng đổi mới trong lãnh đạo</td>
+                                        <td>
+                                            <select class="form-control" style="width: 63%; display: inline-block;">
+                                                <option>-- Chọn mức đánh giá --</option>
+                                                <option>Mức 1</option>
+                                                <option>Mức 2</option>
+                                                <option>Mức 3</option>
+                                                <option>Mức 4</option>
+                                            </select>
+                                            <button onclick="return false;" class='btn bg-green waves-effect' data-trigger="focus" data-container="body" data-content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." data-toggle="popover" data-placement="bottom" title="" data-original-title="Diễn giải tiêu chí và mức đánh giá">Chi tiết</button>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" id="txtMinhChung6" type="text" placeholder="Nhập minh chứng ... " onclick="ShowPopup_NhapMinhChung(this.id);" />
+                                        </td>
+                                        <td>
+                                            <a class='btn bg-green waves-effect' href="javascript:document.getElementById('file_DinhKem6').click();">Upload</a>
+                                            <input type="file" class="hidden" id="file_DinhKem6" />
+                                        </td>
+                                    </tr> 
+                                     
+                                    <tr class="tr-header">
+                                        <td colspan="4">Tiêu chuẩn 4: QUẢN TRỊ NHÀ TRƯỜNG <b><i class='fa fa-chevron-down'></i></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="My-td">Tiêu chí 4. Tổ chức xây dựng kế hoạch phát</td>
+                                        <td>
+                                            <select class="form-control" style="width: 63%; display: inline-block;">
+                                                <option>-- Chọn mức đánh giá --</option>
+                                                <option>Mức 1</option>
+                                                <option>Mức 2</option>
+                                                <option>Mức 3</option>
+                                                <option>Mức 4</option>
+                                            </select>
+                                            <button onclick="return false;" class='btn bg-green waves-effect' data-trigger="focus" data-container="body" data-content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." data-toggle="popover" data-placement="bottom" title="" data-original-title="Diễn giải tiêu chí và mức đánh giá">Chi tiết</button>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" id="txtMinhChung7" type="text" placeholder="Nhập minh chứng ... " onclick="ShowPopup_NhapMinhChung(this.id);" />
+                                        </td>
+                                        <td>
+                                            <a class='btn bg-green waves-effect' href="javascript:document.getElementById('file_DinhKem7').click();">Upload</a>
+                                            <input type="file" class="hidden" id="file_DinhKem7" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="My-td">Tiêu chí 5. Quản trị hoạt động dạy học, giáo dục</td>
+                                        <td>
+                                            <select class="form-control" style="width: 63%; display: inline-block;">
+                                                <option>-- Chọn mức đánh giá --</option>
+                                                <option>Mức 1</option>
+                                                <option>Mức 2</option>
+                                                <option>Mức 3</option>
+                                                <option>Mức 4</option>
+                                            </select>
+                                            <button onclick="return false;" class='btn bg-green waves-effect' data-trigger="focus" data-container="body" data-content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." data-toggle="popover" data-placement="bottom" title="" data-original-title="Diễn giải tiêu chí và mức đánh giá">Chi tiết</button>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" id="txtMinhChung8" type="text" placeholder="Nhập minh chứng ... " onclick="ShowPopup_NhapMinhChung(this.id);" />
+                                        </td>
+                                        <td>
+                                            <a class='btn bg-green waves-effect' href="javascript:document.getElementById('file_DinhKem8').click();">Upload</a>
+                                            <input type="file" class="hidden" id="file_DinhKem8" />
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                                <tfoot>
+                                    <tr style="background-color:lightsalmon;color:black;">
+                                        <td class="align-right">Tổng kết</td>
+                                        <td class="align-center">Tổng điểm : <b>40 điểm</b></td>
+                                        <td class="align-center">Xếp loại : <b>Đạt</b> </td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- vertical Modal -->
+            <div class="modal fade" id="verticalModal" tabindex="-1" role="dialog" aria-labelledby="verticalModal" data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="border-radius: 10px;">
+                        <div class="modal-header hidden">
+                            <h4 class="modal-title" id="myModalTile">THÊM MỚI</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="form-group form-float">
+                                        <div class="form-line" id="fltxtMinhChung">
+                                            <textarea cols="40" rows="8" class="form-control" id="txtMinhChung_Modal"></textarea>
+                                            <label class="form-label">Minh chứng </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times m-r-10"></i>ĐÓNG</a>
+                            <a class="btn btn-success" id="btnModalSave"><i class="fa fa-check m-r-10"></i>LƯU</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END vertical Modal -->
+        </div>
+    </section>
+    <!-- #END# Body of Page -->
+    <!-- Jquery Core Js -->
+    <script src="../plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core Js -->
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Slimscroll Plugin Js -->
+    <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <!-- Waves Effect Plugin Js -->
+    <script src="../plugins/node-waves/waves.js"></script>
+    <!-- sweetalert Js -->
+    <script src="../plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- select2 Js -->
+    <script src="../plugins/select2/select2.min.js"></script>
+    <!-- Tooltips Js -->
+    <script src="../js/pages/ui/tooltips-popovers.js"></script>
+    <!-- Custom Js -->
+    <script src="../js/admin.js"></script>
+    <!-- Notify JS-->
+    <script src="../css/notify.min.js"></script>
+
+    <!-- More JS each Page -->
+    <script>
+
+        $("#slKyDanhGia,#slGiaoVien").select2();
+        $('.tr-header').click(function () {
+            var $this = $(this);
+            $(this).nextUntil('tr.tr-header').slideToggle(100).promise().done(function () {
+                var i = $this.find('b').children("i").attr("class");
+                if (i == "fa fa-chevron-down")
+                    $this.find('b').children("i").attr("class", "fa fa-chevron-right");
+                else
+                    $this.find('b').children("i").attr("class", "fa fa-chevron-down");
+            });
+        });
+        function HuyDanhGia()
+        {
+            swal({
+                title: 'Bạn có chắc muốn huỷ không ?',
+                type: 'warning',
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+                confirmButtonColor: '#F44336',
+                cancelButtonColor: '#ef4848',
+                confirmButtonText: 'Huỷ',
+                cancelButtonText: 'Không'
+            }, function () //
+            {
+                swal("Đã huỷ bài đánh giá!");
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+
+            });
+        }
+        function ShowPopup_NhapMinhChung(id) {
+            $("#fltxtMinhChung_Modal").addClass('focused');
+            $('#txtMinhChung_Modal').val($('#' + id).val());
+            $("#btnModalSave").attr('onclick', "$('#" + id + "').val($('#txtMinhChung_Modal').val()); $('#verticalModal').modal('hide');");
+
+            //$("#myModalTile").html('THÊM MỚI');
+            $("#verticalModal").modal('show');
+            $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
+        }
+    </script>
+    <!-- #END# More JS each Page -->
+    <!-- Demo Js -->
+    <script src="../js/demo.js"></script>
+</body>
+</html>

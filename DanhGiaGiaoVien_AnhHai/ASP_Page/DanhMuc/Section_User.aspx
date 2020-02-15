@@ -383,10 +383,7 @@
                                     <a class="btn btn-warning waves-effect js-search" data-close="true" style="width: 100%; box-shadow: none;"><i class="material-icons">search</i><span>Tìm kiếm</span></a>
                                     <asp:LinkButton ID="btnSearch" OnClick="btnSearch_Click" runat="server" Style="display: none"></asp:LinkButton>
                                     <!-- #END# Call Search -->
-                                </div>
-                                <div class="col-lg-1 col-md-1 col-sm-3 col-xs-3 align-right">
-                                    <a class="btn btn-warning waves-effect" href="Section_User.aspx" style="width: 100%; box-shadow: none;" data-toggle='tooltip' data-placement='top' title='' data-original-title='Refresh'><i class="material-icons">cached</i></a>
-                                </div>
+                                </div> 
                             </div>
                         </div>
                         <div class="body table-responsive" id="dvtable" runat="server">
@@ -402,6 +399,8 @@
                             <h4 class="modal-title" id="myModalTile">THÊM MỚI NHÂN VIÊN</h4>
                         </div>
                         <div class="modal-body">
+                            <h5 class="card-inside-title " style="margin-bottom: 0px;">Thông tin cá nhân</h5>
+                            <hr class="m-t-0"/>
                             <div class="row">
                                 <div class="col-md-3 col-lg-3">
                                     <div class="form-group form-float">
@@ -411,7 +410,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-2 col-lg-2">
+                                    <select class="form-control" id="slGioiTinh" style="width: 100%;">
+                                        <option value="">-- Giới tính --</option>
+                                        <option value="0">Nữ</option>
+                                        <option value="1">Nam</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-lg-2">
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtPhoneUser">
                                             <input type="text" class="form-control" id="txtPhoneUser">
@@ -419,7 +425,23 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-lg-6">
+                                <div class="col-md-2 col-lg-2">
+                                    <div class="form-group form-float">
+                                        <div class="form-line" id="fltxtNgaySinh">
+                                            <input type="text" class="form-control" id="txtNgaySinh">
+                                            <label class="form-label">Ngày sinh</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="form-group form-float">
+                                        <div class="form-line" id="fltxtEmail">
+                                            <input type="text" class="form-control" id="txtEmail">
+                                            <label class="form-label">Email</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9 col-lg-9">
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtAddresslUser">
                                             <input type="text" class="form-control" id="txtAddresslUser">
@@ -427,14 +449,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
                                 <div class="col-md-3 col-lg-3">
-                                    <select class="form-control" id="slActive" runat="server" style="width: 100%;">
-                                        <option value="">-- Chọn active --</option>
-                                        <option value="True">Active</option>
-                                        <option value="False">Disable</option>
+                                    <select class="form-control" id="slChucVu" style="width: 100%;">
+                                        <option value="">-- Chức vụ --</option>
+                                        <option value="1">Chức vụ A</option>
+                                        <option value="2">Chức vụ B</option>
                                     </select>
                                 </div>
                                 <div class="col-md-9 col-lg-9">
@@ -444,10 +463,24 @@
                                             <label class="form-label">Ghi chú</label>
                                         </div>
                                     </div>
+                                </div> 
+                                <div class="col-md-3 col-lg-3">
+                                    <select class="form-control" id="slActive" runat="server" style="width: 100%;">
+                                        <option value="">-- Chọn active --</option>
+                                        <option value="True">Active</option>
+                                        <option value="False">Disable</option>
+                                    </select>
                                 </div>
                             </div>
-
+                             
+                            
+                            <h5 class="card-inside-title " style="margin-bottom: 0px;">Thông tin tài khoản</h5>
+                            <hr class="m-t-0"/>
                             <div class="row">
+                                <div class="col-md-3 col-lg-3">
+                                    <select class="form-control" id="slUserType" runat="server" style="width: 100%;">
+                                    </select>
+                                </div>
                                 <div class="col-md-3 col-lg-3">
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtCodeUser">
@@ -472,14 +505,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
-                                    <select class="form-control" id="slUserType" runat="server" style="width: 100%;">
-                                    </select>
-                                </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-3 col-lg-3 hidden">
                                     <select class="form-control" id="slEduMinistry" runat="server" style="width: 100%;">
                                     </select>
                                 </div>
@@ -491,7 +520,7 @@
                                     <select class="form-control" id="slEduDepartment" runat="server" style="width: 100%;" onchange="slEduDepartment_onchange(this.value);">
                                     </select>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-6 col-lg-6">
                                     <select class="form-control" id="slEduSchoold" runat="server" style="width: 100%;">
                                     </select>
                                 </div>
@@ -511,6 +540,8 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterMaster" runat="Server">
+    <link href="../../plugins/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" />
+    <script src="../../plugins/jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
     <script>
         function slEduProvince_onchange(value) {
             var xmlhttp;
@@ -550,5 +581,21 @@
             xmlhttp.send();
         }
         $("#ContentMaster_slUserType,#ContentMaster_slEduMinistry,#ContentMaster_slEduProvince,#ContentMaster_slEduDepartment,#ContentMaster_slEduSchoold").select2();
+
+        //datetimepicker jquery
+        jQuery.datetimepicker.setLocale('vi');//chỉ cần dòng này là có thể đổi được ngôn ngữ
+
+        $('#txtNgaySinh').datetimepicker({
+            lang: "vi",
+            autoclose: true,
+            todayHighlight: true,
+            timepicker: false,
+            format: 'd/m/Y',
+            //step:60,//số phút cách
+            //format: 'd/m/Y H:i',
+            //formatTime: 'H',
+            //datepicker: true,
+            //allowTimes: ['12:00', '13:00', '15:00','17:00', '17:05', '17:20', '19:00', '20:00'], //chỉ cho vài giờ để chọn
+        });
     </script>
 </asp:Content>
