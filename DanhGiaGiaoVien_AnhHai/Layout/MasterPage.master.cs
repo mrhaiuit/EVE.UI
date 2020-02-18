@@ -21,7 +21,7 @@ public partial class Layout_MasterPage : System.Web.UI.MasterPage
         }
         else
         {
-            Response.Redirect("../Home/Login.aspx");
+           // Response.Redirect("../Home/Login.aspx");
         }
 
         if (!IsPostBack)
@@ -67,36 +67,42 @@ public partial class Layout_MasterPage : System.Web.UI.MasterPage
             //if (mQuyen == "ADMIN")
                 html += @"     <li " + ((URL.Contains("/SECTION_USER.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Danh mục người dùng'>
                                     <a href='../../ASP_page/DanhMuc/SECTION_USER.aspx' class='toggled waves-effect waves-block' >
+                                          <i class='material-icons'>person</i>
                                           <span>Người dùng</span>
                                     </a>
                                 </li>  ";
             //if (mQuyen == "ADMIN")
             html += @"     <li " + ((URL.Contains("/SECTION_DOTDANHGIA.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Danh mục đợt đánh giá'>
                                     <a href='../../ASP_page/DanhMuc/SECTION_DOTDANHGIA.aspx' class='toggled waves-effect waves-block' >
+                                          <i class='material-icons'>border_color</i>
                                           <span>Đợt đánh giá</span>
                                     </a>
                                 </li>  ";
             //if (mQuyen == "ADMIN")
             html += @"     <li " + ((URL.Contains("/SECTION_TIEUCHUANTIEUCHI.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Tiêu chuẩn/tiêu chí'>
                                     <a href='../../ASP_page/DanhMuc/SECTION_TIEUCHUANTIEUCHI.aspx' class='toggled waves-effect waves-block' >
+                                          <i class='material-icons'>playlist_add_check</i>
                                           <span>Tiêu chuẩn/tiêu chí</span>
                                     </a>
                                 </li>  ";
             //if (mQuyen == "ADMIN")
             html += @"     <li " + ((URL.Contains("/SECTION_PHONGGIAODUC.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Phòng giáo dục'>
                                     <a href='../../ASP_page/DanhMuc/SECTION_PHONGGIAODUC.aspx' class='toggled waves-effect waves-block' >
+                                          <i class='material-icons'>store_mall_directory</i>
                                           <span>Phòng giáo dục</span>
                                     </a>
                                 </li>  ";
             //if (mQuyen == "ADMIN")
             html += @"     <li " + ((URL.Contains("/SECTION_TRUONGHOC.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Trường học'>
                                     <a href='../../ASP_page/DanhMuc/SECTION_TRUONGHOC.aspx' class='toggled waves-effect waves-block' >
+                                          <i class='material-icons'>school</i>
                                           <span>Trường học</span>
                                     </a>
                                 </li>  ";
             //if (mQuyen == "ADMIN")
             html += @"     <li " + ((URL.Contains("/SECTION_CAPQUYEN.ASPX")) ? " class='active'" : "") + @" data-toggle='tooltip' data-placement='right' title='' data-original-title='Phân quyền'>
                                     <a href='../../ASP_page/DanhMuc/SECTION_CAPQUYEN.aspx' class='toggled waves-effect waves-block' >
+                                          <i class='material-icons'>local_library</i>
                                           <span>Phân quyền</span>
                                     </a>
                                 </li>  ";

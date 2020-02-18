@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server"> 
     <script>
         window.onload = function () {
-            window.location.href = "../Home/Default.html";
+            //window.location.href = "../Home/Default.html";
         }
     </script>
 </asp:Content>

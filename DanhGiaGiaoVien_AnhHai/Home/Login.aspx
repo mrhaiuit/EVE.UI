@@ -241,7 +241,7 @@
                         <a href="javascript:$('.formLogin').fadeOut().hide(); $('.formForgot').removeAttr('style').addClass('animated shake');"><i class="fa fa-key m-r-10"></i>Quên mật khẩu</a>
                     </div>
                     <div class="col-sm-12">
-                        <a class="btn btn-default waves-effect" style="float: right; font-size: 18px; padding: 5px 20px;" onclick="btnLogin_clickJS();"><i class="fa fa-sign-in m-r-20"></i>ĐĂNG NHẬP</a>
+                        <button class="btn btn-default waves-effect" style="float: right; font-size: 18px; padding: 5px 20px;" onclick="btnLogin_clickJS();return false;"><i class="fa fa-sign-in m-r-20"></i>ĐĂNG NHẬP</button>
                         <asp:LinkButton ID="btnLogin" OnClick="btnLogin_Click" runat="server" Style="display: none;"></asp:LinkButton>
                     </div>
                 </div>

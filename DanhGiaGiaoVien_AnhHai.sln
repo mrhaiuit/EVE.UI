@@ -6,30 +6,65 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DanhGiaGiaoVien_AnhHai", "DanhGiaGiaoVien_AnhHai\", "{8E55D2B9-0114-4FA9-BA4A-B8E4BB354DB8}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		ProjectReferences = "{5c9c5935-e0ce-4e3b-b30e-b7d27d49a768}|EVE.ApiModels.dll;{3B38F3F7-1C80-4009-8D68-7D9E4D3520DC}|EVE.Commons.dll;{6F4B542A-F584-43D9-A9B3-A703BAB14D24}|EVE.Data.dll;{BA7A75ED-1606-4F70-99B0-641D5A322BDA}|EVE.WebApi.Shared.dll;{2bfbd7ff-af53-454d-9ddf-68b26611685a}|EVE.TransportLayer.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_59806"
-		Debug.AspNetCompiler.PhysicalPath = "D:\Workspace\TFS_DuAnThem\DanhGiaGiaoVien_AnhHai\Code\DanhGiaGiaoVien_AnhHai\"
+		Debug.AspNetCompiler.PhysicalPath = "DanhGiaGiaoVien_AnhHai\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_59806\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/localhost_59806"
-		Release.AspNetCompiler.PhysicalPath = "D:\Workspace\TFS_DuAnThem\DanhGiaGiaoVien_AnhHai\Code\DanhGiaGiaoVien_AnhHai\"
+		Release.AspNetCompiler.PhysicalPath = "DanhGiaGiaoVien_AnhHai\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_59806\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "59806"
+		SlnRelativePath = "DanhGiaGiaoVien_AnhHai\"
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVE.ApiModels", "..\EVE.Commons\EVE.ApiModels\EVE.ApiModels.csproj", "{5C9C5935-E0CE-4E3B-B30E-B7D27D49A768}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVE.Commons", "..\EVE.Commons\EVE.Common\EVE.Commons.csproj", "{3B38F3F7-1C80-4009-8D68-7D9E4D3520DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVE.Data", "..\EVE.Commons\EVE.Data\EVE.Data.csproj", "{6F4B542A-F584-43D9-A9B3-A703BAB14D24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVE.WebApi.Shared", "..\EVE.Commons\EVE.WebApi.Shared\EVE.WebApi.Shared.csproj", "{BA7A75ED-1606-4F70-99B0-641D5A322BDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVE.TransportLayer", "..\EVE.Commons\EVE.TransportLayer\EVE.TransportLayer.csproj", "{2BFBD7FF-AF53-454D-9DDF-68B26611685A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8E55D2B9-0114-4FA9-BA4A-B8E4BB354DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E55D2B9-0114-4FA9-BA4A-B8E4BB354DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E55D2B9-0114-4FA9-BA4A-B8E4BB354DB8}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E55D2B9-0114-4FA9-BA4A-B8E4BB354DB8}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{5C9C5935-E0CE-4E3B-B30E-B7D27D49A768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C9C5935-E0CE-4E3B-B30E-B7D27D49A768}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C9C5935-E0CE-4E3B-B30E-B7D27D49A768}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C9C5935-E0CE-4E3B-B30E-B7D27D49A768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B38F3F7-1C80-4009-8D68-7D9E4D3520DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B38F3F7-1C80-4009-8D68-7D9E4D3520DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B38F3F7-1C80-4009-8D68-7D9E4D3520DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B38F3F7-1C80-4009-8D68-7D9E4D3520DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F4B542A-F584-43D9-A9B3-A703BAB14D24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F4B542A-F584-43D9-A9B3-A703BAB14D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F4B542A-F584-43D9-A9B3-A703BAB14D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F4B542A-F584-43D9-A9B3-A703BAB14D24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA7A75ED-1606-4F70-99B0-641D5A322BDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA7A75ED-1606-4F70-99B0-641D5A322BDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA7A75ED-1606-4F70-99B0-641D5A322BDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA7A75ED-1606-4F70-99B0-641D5A322BDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BFBD7FF-AF53-454D-9DDF-68B26611685A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BFBD7FF-AF53-454D-9DDF-68B26611685A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BFBD7FF-AF53-454D-9DDF-68B26611685A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BFBD7FF-AF53-454D-9DDF-68B26611685A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
