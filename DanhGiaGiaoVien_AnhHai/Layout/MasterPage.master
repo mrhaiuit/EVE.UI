@@ -52,6 +52,13 @@
         }
     </style>
     <script>
+        //get QueryString JS
+        function getQueryString(QueryString) {
+            let searchParams = new URLSearchParams(window.location.search)
+            searchParams.has(QueryString)
+            let param = searchParams.get(QueryString)
+            return param;
+        }
         function collapesSideBar() {
             var width_window = parseInt($(window).width());
             if (width_window >= 1170) {

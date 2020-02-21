@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Layout/MasterPage.master" AutoEventWireup="true" CodeFile="SECTION_DotDanhGia.aspx.cs" Inherits="ASP_Page_Default" %>
+﻿<%@ Page Language="C#" Async="true" MasterPageFile="~/Layout/MasterPage.master" AutoEventWireup="true" CodeFile="SECTION_DotDanhGia.aspx.cs" Inherits="ASP_Page_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <style>
@@ -29,20 +29,211 @@
     <script>
         {
             function OpenModal_AddDotDanhGia() {
-                $("#btnModalSave").attr('onclick', 'AddDotDanhGia();');
+                $("#txtTenDotDanhGia,#txtTuNgay, #txtDenNgay").val("");
+                $("#slNam_Modal, #ContentMaster_slEduProvince, #ContentMaster_slEduDepartment, #ContentMaster_slEduSchoold").val("").trigger('change');
 
+                $("#btnModalSave").attr('onclick', 'AddDotDanhGia();');
                 $("#myModalTile").html('THÊM MỚI ĐỢT ĐÁNH GIÁ');
                 $("#verticalModal").modal('show');
                 $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
             }
-            function OpenModal_EditDotDanhGia() {
-                $("#btnModalSave").attr('onclick', 'EditDotDanhGia();');
+            function AddDotDanhGia() {
+                var TenDotDanhGia = $("#txtTenDotDanhGia").val();
+                var TuNgay = $("#txtTuNgay").val();
+                var DenNgay = $("#txtDenNgay").val();
 
-                $("#myModalTile").html('CHỈNH SỬA THÔNG TIN ĐỢT ĐÁNH GIÁ');
-                $("#verticalModal").modal('show');
-                $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
+                var Nam = $("#slNam_Modal").val();
+                var TruongHoc = $("#ContentMaster_slEduSchoold").val();
+
+                var flag_OK = true;
+                if (TenDotDanhGia == "")//
+                {
+                    $("#txtTenDotDanhGia").notify("Vui lòng nhập tên Đợt đánh giá!", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#fltxtTenDotDanhGia").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#fltxtTenDotDanhGia").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+                if (TruongHoc == "")//
+                {
+                    $("#ContentMaster_slEduSchoold").notify("Vui lòng chọn Trường!", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#ContentMaster_slEduSchoold").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#ContentMaster_slEduSchoold").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+
+                var value = TenDotDanhGia + "@_@" + TuNgay + "@_@" + DenNgay + "@_@" + Nam + "@_@" + TruongHoc;
+                if (!flag_OK)
+                    return;
+                $('.page-loader-wrapper').fadeIn(300);//mở hiệu ứng chờ
+
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (xmlhttp.responseText == "Success")//
+                        {
+                            window.location.reload();
+                        }
+                        else {
+                            $('.page-loader-wrapper').fadeOut();//tắt hiệu ứng chờ
+                            swal("Lỗi !", "", "error");
+                        }
+
+                    }
+                }
+                xmlhttp.open("GET", "../../Ajax.aspx?Action=AddDotDanhGia&value=" + value, true);
+                xmlhttp.send();  
             }
 
+            function OpenModal_EditDotDanhGia(value) {
+
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (xmlhttp.responseText != "")//
+                        {
+                            $("#fltxtTuNgay,#fltxtTenDotDanhGia,#fltxtDenNgay").addClass("focused");
+
+                            //0 : TenDotDanhGia
+                            //1 : TuNgay
+                            //2 : DenNgay
+                            //3 : Nam
+                            //4 : Sở ID 
+                            //5 : Phòng ID 
+                            //6 : Trường ID   
+                            var arr = xmlhttp.responseText.split("@_@");
+                            $("#txtTenDotDanhGia").val(arr[0]);
+                            $("#txtTuNgay").val(arr[1]);
+                            $("#txtDenNgay").val(arr[2]);
+                            $("#slNam_Modal").val(arr[3]).trigger('change');
+                            $("#ContentMaster_slEduProvince").val(arr[4]).trigger('change');
+                            setTimeout(function () { $("#ContentMaster_slEduDepartment").val(arr[5]).trigger('change'); }, 500);
+                            setTimeout(function () { $("#ContentMaster_slEduSchoold").val(arr[6]).trigger('change'); }, 1000);
+
+
+                            $("#btnModalSave").attr('onclick', 'EditDotDanhGia(' + value + ');');
+
+                            $("#myModalTile").html('CHỈNH SỬA THÔNG TIN ĐỢT ĐÁNH GIÁ');
+                            $("#verticalModal").modal('show');
+                            $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
+                        }
+                        else {
+                            swal("Lỗi !", "", "error");
+                        }
+                    }
+                }
+                xmlhttp.open("GET", "../../Ajax.aspx?Action=LoadDotDanhGia&value=" + value, true);
+                xmlhttp.send();
+            }
+            function EditDotDanhGia(DotDanhGia) {
+                var TenDotDanhGia = $("#txtTenDotDanhGia").val();
+                var TuNgay = $("#txtTuNgay").val();
+                var DenNgay = $("#txtDenNgay").val();
+
+                var Nam = $("#slNam_Modal").val();
+                var TruongHoc = $("#ContentMaster_slEduSchoold").val();
+
+                var flag_OK = true;
+                if (TenDotDanhGia == "")//
+                {
+                    $("#txtTenDotDanhGia").notify("Vui lòng nhập tên Đợt đánh giá!", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#fltxtTenDotDanhGia").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#fltxtTenDotDanhGia").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+                if (TruongHoc == "")//
+                {
+                    $("#ContentMaster_slEduSchoold").notify("Vui lòng chọn Trường!", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#ContentMaster_slEduSchoold").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#ContentMaster_slEduSchoold").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+
+                var value = TenDotDanhGia + "@_@" + TuNgay + "@_@" + DenNgay + "@_@" + Nam + "@_@" + TruongHoc;
+                if (!flag_OK)
+                    return;
+                $('.page-loader-wrapper').fadeIn(300);//mở hiệu ứng chờ
+
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (xmlhttp.responseText == "Success")//
+                        {
+                            window.location.reload();
+                        }
+                        else {
+                            $('.page-loader-wrapper').fadeOut();//tắt hiệu ứng chờ
+                            swal("Lỗi !", "", "error");
+                        }
+
+                    }
+                }
+                xmlhttp.open("GET", "../../Ajax.aspx?Action=EditDotDanhGia&value=" + value + "&DotDanhGia=" + DotDanhGia, true);
+                xmlhttp.send();
+            }
+
+            function DeleteDotDanhGia(DotDanhGia) {
+                swal({
+                    title: 'Bạn có chắc muốn xoá ?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true,
+                    confirmButtonColor: '#F44336',
+                    cancelButtonColor: '#ef4848',
+                    confirmButtonText: 'Xoá',
+                    cancelButtonText: 'Không'
+                }, function () {
+
+                    var xmlhttp;
+                    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp = new XMLHttpRequest();
+                    }
+                    else {// code for IE6, IE5
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            if (xmlhttp.responseText == "Success") {
+                                swal("Đã xoá!");
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 200);
+                            }
+                            else {
+                                swal("Lỗi !", "", "error");
+                            }
+                        }
+                    }
+                    xmlhttp.open("GET", "../../Ajax.aspx?Action=DeleteDotDanhGia&DotDanhGia=" + DotDanhGia, true);
+                    xmlhttp.send();
+                });
+            }
             function slEduProvince_onchange(value) {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -61,7 +252,6 @@
                 xmlhttp.open("GET", "../../Ajax.aspx?Action=Load_EduDepartment&IDEduProvince=" + value, true);
                 xmlhttp.send();
             }
-
             function slEduDepartment_onchange(value) {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -106,8 +296,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                    <select class="form-control" id="slNam" style="width: 100%;">
-                                        <option>-- Chọn tìm năm đánh giá --</option>
+                                    <select class="form-control" id="slNam" style="width: 100%;" runat="server">
+                                        <option value="">── Chọn tìm năm đánh giá ──</option>
                                         <option value='2020'>2020</option>
                                         <option value='2021'>2021</option>
                                         <option value='2022'>2022</option>
@@ -117,9 +307,9 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-8 col-xs-8">
                                     <!-- Call Search -->
-                                    <a class="btn btn-warning waves-effect js-search" style="width: 100%; box-shadow: none;"><i class="material-icons">search</i><span>Tìm kiếm</span></a>
+                                    <asp:LinkButton OnClick="btnSearch_Click" runat="server" class="btn btn-warning waves-effect js-search" Style="width: 100%;"><i class="material-icons">search</i><span>Tìm kiếm</span></asp:LinkButton>
                                     <!-- #END# Call Search -->
-                                </div> 
+                                </div>
                                 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
                                     <a class="btn bg-purple waves-effect" href="javascript:void(0);"><i class="material-icons">file_download</i> <span>XUẤT EXCEL</span></a>
                                 </div>
@@ -145,7 +335,7 @@
                                         <th class='bg-cyan align-center'></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tbody_DSDotDanhGia" runat="server">
                                     <%--///////////////////////////--%>
                                     <tr>
                                         <td>1</td>
@@ -234,7 +424,7 @@
                             <div class="row">
                                 <div class="col-md-3 col-lg-3">
                                     <select class="form-control" id="slNam_Modal" style="width: 100%;">
-                                        <option>-- Chọn năm đánh giá --</option>
+                                        <option value="">-- Chọn năm đánh giá --</option>
                                         <option value='2020'>2020</option>
                                         <option value='2021'>2021</option>
                                         <option value='2022'>2022</option>
@@ -269,15 +459,15 @@
                             </div>
                             <h5 class="card-inside-title " style="margin-bottom: 10px;">Chọn trường</h5>
                             <div class="row">
-                                <div class="col-md-2 col-lg-2">
+                                <div class="col-md-2 col-lg-2 hidden">
                                     <select class="form-control" id="slEduMinistry" runat="server" style="width: 100%;">
                                     </select>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-4 col-lg-4">
                                     <select class="form-control" id="slEduProvince" runat="server" style="width: 100%;" onchange="slEduProvince_onchange(this.value);">
                                     </select>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-4 col-lg-4">
                                     <select class="form-control" id="slEduDepartment" runat="server" style="width: 100%;" onchange="slEduDepartment_onchange(this.value);">
                                     </select>
                                 </div>
@@ -379,7 +569,7 @@
             });
         });
 
-        $("#slNam,#slNam_Modal").select2();
+        $("#ContentMaster_slNam,#slNam_Modal").select2();
         $("#ContentMaster_slEduMinistry,#ContentMaster_slEduProvince,#ContentMaster_slEduDepartment,#ContentMaster_slEduSchoold").select2();
 
         //datetimepicker jquery

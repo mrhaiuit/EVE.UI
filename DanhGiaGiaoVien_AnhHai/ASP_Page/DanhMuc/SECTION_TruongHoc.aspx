@@ -17,6 +17,15 @@
     </style>
     <script>
         {
+            window.onload = function ()//
+            {
+                var SGD = getQueryString("SGD");
+                var PGD = getQueryString("PGD");
+                if (SGD != "") 
+                    $("#ContentMaster_slSoGiaoDuc").val(SGD).trigger('change');
+                if (PGD != "")
+                    setTimeout(function () { $("#ContentMaster_slPhongGiaoDuc").val(PGD).trigger('change'); }, 500); 
+            }
             function OpenModal_AddTruongHoc() {
                 $("#txtTenTruongHoc,#txtTenDuong").val("");
                 $("#ContentMaster_slSoGiaoDuc_modal, #slPhongGiaoDuc_modal, #ContentMaster_slCapTruong_modal").val("").trigger('change');
@@ -64,15 +73,7 @@
                         $("#ContentMaster_slCapTruong_modal").removeClass("animated shake");
                     }, 1000);
                     flag_OK = false;
-                }
-                var TenTruong = $("#txtTenTruongHoc").val();
-                var TenDuong = $("#txtTenDuong").val();
-                var EduProvince = $("#ContentMaster_slSoGiaoDuc_modal").val();
-                var EduDepartment = $("#slPhongGiaoDuc_modal").val();
-                var SchoolLevelCode = $("#ContentMaster_slCapTruong_modal").val();
-                var Province = $("#ContentMaster_slTinhThanh").val();
-                var District = $("#slQuanHuyen").val();
-                var Ward = $("#slPhuongXa").val();
+                } 
 
                 var value = TenTruong + "@_@" + TenDuong + "@_@" + EduProvince + "@_@" + EduDepartment + "@_@" + SchoolLevelCode + "@_@" + Province + "@_@" + District + "@_@" + Ward;
                 if (!flag_OK)
@@ -103,14 +104,8 @@
                 xmlhttp.send();
 
             }
-            function OpenModal_EditTruongHoc() {
-                $("#btnModalSave").attr('onclick', 'EditTruongHoc();');
-
-                $("#myModalTile").html('CHỈNH SỬA THÔNG TIN TRƯỜNG HỌC');
-                $("#verticalModal").modal('show');
-                $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
-            }
-            function slSoGiaoDuc_onchange(value, id) {
+            function OpenModal_EditTruongHoc(value)//
+            {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
                     xmlhttp = new XMLHttpRequest();
@@ -122,7 +117,118 @@
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                         if (xmlhttp.responseText != "")//
                         {
+                            $("#fltxtTenTruongHoc,#fltxtTenDuong").addClass("focused");
 
+                            var arr = xmlhttp.responseText.split("@_@");
+                            $("#ContentMaster_slSoGiaoDuc_modal").val(arr[0]).trigger('change');
+                            setTimeout(function () { $("#slPhongGiaoDuc_modal").val(arr[1]).trigger('change'); }, 500);
+                            $("#ContentMaster_slCapTruong_modal").val(arr[2]);
+                            $("#txtTenTruongHoc").val(arr[3]);
+                            $("#txtTenDuong").val(arr[4]);
+                            //$("#ContentMaster_slTinhThanh").val();
+                            //$("#slQuanHuyen").val();
+                            //$("#slPhuongXa").val();
+
+
+                            $("#btnModalSave").attr('onclick', 'EditTruongHoc('+value+');');
+
+                            $("#myModalTile").html('CHỈNH SỬA THÔNG TIN TRƯỜNG HỌC');
+                            $("#verticalModal").modal('show');
+                            $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
+                        }
+                        else {
+                            swal("Lỗi !", "", "error");
+                        }
+                    }
+                }
+                xmlhttp.open("GET", "../../Ajax.aspx?Action=LoadTruongHoc&value=" + value, true);
+                xmlhttp.send();
+            }  
+            function EditTruongHoc(TruongHoc) {
+                var TenTruong = $("#txtTenTruongHoc").val();
+                var TenDuong = $("#txtTenDuong").val();
+                var EduProvince = $("#ContentMaster_slSoGiaoDuc_modal").val();
+                var EduDepartment = $("#slPhongGiaoDuc_modal").val();
+                var SchoolLevelCode = $("#ContentMaster_slCapTruong_modal").val();
+                var Province = $("#ContentMaster_slTinhThanh").val();
+                var District = $("#slQuanHuyen").val();
+                var Ward = $("#slPhuongXa").val();
+
+                var flag_OK = true;
+                if (TenTruong == "")//
+                {
+                    $("#txtTenTruongHoc").notify("Vui lòng nhập tên Trường!", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#fltxtTenTruongHoc").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#fltxtTenTruongHoc").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+                if (TenDuong == "")//
+                {
+                    $("#txtTenDuong").notify("Vui lòng nhập tên Đường!", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#fltxtTenDuong").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#fltxtTenDuong").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+                if (SchoolLevelCode == "")//
+                {
+                    $("#ContentMaster_slCapTruong_modal").notify("Vui lòng chọn Cấp Trường!", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#ContentMaster_slCapTruong_modal").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#ContentMaster_slCapTruong_modal").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                } 
+
+                var value = TenTruong + "@_@" + TenDuong + "@_@" + EduProvince + "@_@" + EduDepartment + "@_@" + SchoolLevelCode + "@_@" + Province + "@_@" + District + "@_@" + Ward;
+                if (!flag_OK)
+                    return;
+                $('.page-loader-wrapper').fadeIn(300);//mở hiệu ứng chờ
+
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (xmlhttp.responseText == "Success")//
+                        {
+                            window.location.reload();
+                        }
+                        else {
+                            $('.page-loader-wrapper').fadeOut();//tắt hiệu ứng chờ
+                            swal("Lỗi !", "", "error");
+                        }
+
+                    }
+                }
+                xmlhttp.open("GET", "../../Ajax.aspx?Action=EditTruongHoc&value=" + value + "&TruongHoc=" + TruongHoc, true);
+                xmlhttp.send();
+
+            }
+            function slSoGiaoDuc_onchange(value, id)//
+            {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (xmlhttp.responseText != "")//
+                        {
+                            if (id == "modal")
+                                $("#slPhongGiaoDuc_modal").html(xmlhttp.responseText);
+                            else
+                                $("#ContentMaster_slPhongGiaoDuc").html(xmlhttp.responseText);
                         }
                         else {
                             //swal("Lỗi !", "", "error");
@@ -132,6 +238,91 @@
                 }
                 xmlhttp.open("GET", "../../Ajax.aspx?Action=slSoGiaoDuc_onchange&value=" + value, true);
                 xmlhttp.send();
+            }
+            function slTinhThanh_onchange(value) {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (xmlhttp.responseText != "")//
+                        {
+                            $("#slQuanHuyen").html(xmlhttp.responseText);
+                        }
+                        else {
+                            //swal("Lỗi !", "", "error");
+                        }
+
+                    }
+                }
+                xmlhttp.open("GET", "../../Ajax.aspx?Action=slTinhThanh_onchange&value=" + value, true);
+                xmlhttp.send();
+            }
+            function slQuanHuyen_onchange(value) {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (xmlhttp.responseText != "")//
+                        {
+                            $("#slPhuongXa").html(xmlhttp.responseText);
+                        }
+                        else {
+                            //swal("Lỗi !", "", "error");
+                        }
+
+                    }
+                }
+                xmlhttp.open("GET", "../../Ajax.aspx?Action=slQuanHuyen_onchange&value=" + value, true);
+                xmlhttp.send();
+            }
+            function DeleteTruongHoc(TruongHoc)
+            {
+                swal({
+                    title: 'Bạn có chắc muốn xoá ?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true,
+                    confirmButtonColor: '#F44336',
+                    cancelButtonColor: '#ef4848',
+                    confirmButtonText: 'Xoá',
+                    cancelButtonText: 'Không'
+                }, function () {
+
+                    var xmlhttp;
+                    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp = new XMLHttpRequest();
+                    }
+                    else {// code for IE6, IE5
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            if (xmlhttp.responseText == "Success") {
+                                swal("Đã xoá!");
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 200);
+
+                            }
+                            else {
+                                swal("Lỗi !", "", "error");
+                            }
+                        }
+                    }
+                    xmlhttp.open("GET", "../../Ajax.aspx?Action=DeleteTruongHoc&TruongHoc=" + TruongHoc, true);
+                    xmlhttp.send();
+                });
             }
         }
     </script>
@@ -170,29 +361,20 @@
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <select class="form-control" id="slSoGiaoDuc" style="width: 100%;" runat="server" onchange="slSoGiaoDuc_onchange(this.value,'select_timkiem');">
-                                        <option>-- Chọn sở giáo dục --</option>
-                                        <option value='0'>Sở A</option>
-                                        <option value='1'>Sở B</option>
-                                        <option value='2'>Sở C</option>
-                                        <option value='3'>Sở D</option>
-                                        <option value='4'>Sở E</option>
+                                        <option>── Chọn sở giáo dục ──</option> 
                                     </select>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                    <select class="form-control" id="slPhongGiaoDuc" style="width: 100%;" runat="server">
-                                        <option>-- Chọn phòng giáo dục --</option>
-                                        <option value='0'>Phòng A</option>
-                                        <option value='1'>Phòng B</option>
-                                        <option value='2'>Phòng C</option>
-                                        <option value='3'>Phòng D</option>
-                                        <option value='4'>Phòng E</option>
+                                    <select class="form-control" id="slPhongGiaoDuc" style="width: 100%;" runat="server" onchange="$('#ContentMaster_txtPhongGiaoDuc').val(this.value);">
+                                        <option>── Chọn phòng giáo dục ──</option> 
                                     </select>
+                                    <input type="hidden" id="txtPhongGiaoDuc" runat="server" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
                                     <!-- Call Search -->
-                                    <a class="btn btn-warning waves-effect js-search" style="width: 100%; box-shadow: none;"><i class="material-icons">search</i><span>Tìm kiếm</span></a>
+                                    <asp:LinkButton ID="btnSearch" OnClick="btnSearch_Click" runat="server" class="btn btn-warning waves-effect js-search" style="width: 100%; box-shadow: none;"><i class="material-icons">search</i><span>Tìm kiếm</span></asp:LinkButton>
                                     <!-- #END# Call Search -->
                                 </div>
                                 <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6 align-right">
@@ -272,7 +454,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-lg-6">
-                                    <select class="form-control" id="slSoGiaoDuc_modal" style="width: 100%;" runat="server">
+                                    <select class="form-control" id="slSoGiaoDuc_modal" style="width: 100%;" runat="server" onchange="slSoGiaoDuc_onchange(this.value,'modal');">
                                         <option>-- Chọn sở giáo dục --</option>
                                     </select>
                                 </div>
@@ -313,12 +495,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
-                                    <select class="form-control" id="slTinhThanh" style="width: 100%;" runat="server">
+                                    <select class="form-control" id="slTinhThanh" style="width: 100%;" runat="server" onchange="slTinhThanh_onchange(this.value);">
                                         <option>-- Chọn tỉnh/thành phố --</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
-                                    <select class="form-control" id="slQuanHuyen" style="width: 100%;">
+                                    <select class="form-control" id="slQuanHuyen" style="width: 100%;" onchange="slQuanHuyen_onchange(this.value);">
                                         <option>-- Chọn quận/huyện --</option>
                                     </select>
                                 </div>

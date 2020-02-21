@@ -10,12 +10,13 @@ using Zen.Barcode;
 using System.Text;
 using EVE.TransportLayer;
 using EVE.Data;
+using EVE.ApiModels.Catalog;
 
 public partial class Ajax : System.Web.UI.Page
 {
     ApiAuthentication _apiAuthentication = new ApiAuthentication();
 
-    protected async void Page_Load(object sender, EventArgs e)
+    protected void Page_Load(object sender, EventArgs e)
     {
         string action = Request.QueryString["Action"].Trim();
         switch (action)
@@ -25,6 +26,12 @@ public partial class Ajax : System.Web.UI.Page
                 Logout(); break;
             case "ChangeTheme":
                 ChangeTheme(); break;
+            case "slSoGiaoDuc_onchange":
+                slSoGiaoDuc_onchange(); break;
+            case "slTinhThanh_onchange":
+                slTinhThanh_onchange(); break;
+            case "slQuanHuyen_onchange":
+                slQuanHuyen_onchange(); break;
             ///////////////////////////////  NGƯỜI DÙNG  
             case "DeleteUser":
                 DeleteUser(); break;
@@ -42,11 +49,53 @@ public partial class Ajax : System.Web.UI.Page
                 Load_EduDepartment(); break;
             case "Load_EduSchoold":
                 Load_EduSchoold(); break;
-            ///////////////////////////////  NGƯỜI DÙNG  
-            case "slSoGiaoDuc_onchange":
-                slSoGiaoDuc_onchange(); break;
+            ///////////////////////////////  TRƯỜNG HỌC
             case "AddTruongHoc":
                 AddTruongHoc(); break;
+            case "EditTruongHoc":
+                EditTruongHoc(); break;
+            case "DeleteTruongHoc":
+                DeleteTruongHoc(); break;
+            case "LoadTruongHoc":
+                LoadTruongHoc(); break;
+            ///////////////////////////////  ĐỢT ĐÁNH GIÁ
+            case "AddDotDanhGia":
+                AddDotDanhGia(); break;
+            case "EditDotDanhGia":
+                EditDotDanhGia(); break;
+            case "DeleteDotDanhGia":
+                DeleteDotDanhGia(); break;
+            case "LoadDotDanhGia":
+                LoadDotDanhGia(); break;
+            ///////////////////////////////  TIÊU CHUẨN 
+            case "AddTieuChuan":
+                AddTieuChuan(); break;
+            case "EditTieuChuan":
+                EditTieuChuan(); break;
+            case "DeleteTieuChuan":
+                DeleteTieuChuan(); break;
+            case "LoadTieuChuan":
+                LoadTieuChuan(); break;
+            case "LoadTieuChi_TrongTieuChuan":
+                LoadTieuChi_TrongTieuChuan(); break;
+            ///////////////////////////////  TIÊU CHÍ
+            case "AddTieuChi":
+                AddTieuChi(); break;
+            case "EditTieuChi":
+                EditTieuChi(); break;
+            case "DeleteTieuChi":
+                DeleteTieuChi(); break;
+            case "LoadTieuChi":
+                LoadTieuChi(); break;
+            ///////////////////////////////  PHÒNG GIÁO DỤC
+            case "AddPhongGiaoDuc":
+                AddPhongGiaoDuc(); break;
+            case "EditPhongGiaoDuc":
+                EditPhongGiaoDuc(); break;
+            case "DeletePhongGiaoDuc":
+                DeletePhongGiaoDuc(); break;
+            case "LoadPhongGiaoDuc":
+                LoadPhongGiaoDuc(); break;
 
         }
     }
@@ -68,12 +117,45 @@ public partial class Ajax : System.Web.UI.Page
                 Response.Write("Success");
         }
     }
+    async void slSoGiaoDuc_onchange()
+    {
+        string DataValue = Request.QueryString["value"].Trim();
+        string html = "<option value='' >── Chọn phòng giáo dục ──</option>";
+        var result = await _apiAuthentication.GetEduDepartment_ByEduProvinceID(int.Parse(DataValue == "" ? "0" : DataValue));
+        var list = result.Data;
+        if (list != null)
+            for (int i = 0; i < list.Count; i++)
+                html += "<option value='" + list[i].EduDepartmentId + "' >" + list[i].EduDepartmentName + "</option>";
+        Response.Write(html);
+    }
+    async void slTinhThanh_onchange()
+    {
+        string DataValue = Request.QueryString["value"].Trim();
+        string html = "<option value='' >── Chọn quận/huyện ──</option>";
+        var result = await _apiAuthentication.GetDistrict_ByProviceID(int.Parse(DataValue == "" ? "0" : DataValue));
+        var list = result.Data;
+        if (list != null)
+            for (int i = 0; i < list.Count; i++)
+                html += "<option value='" + list[i].DistrictId + "' >" + list[i].DistrictName + "</option>";
+        Response.Write(html);
+    }
+    async void slQuanHuyen_onchange()
+    {
+        string DataValue = Request.QueryString["value"].Trim();
+        string html = "<option value='' >── Chọn phường/xã ──</option>";
+        var result = await _apiAuthentication.GetWard_ByDistrictID(int.Parse(DataValue == "" ? "0" : DataValue));
+        var list = result.Data;
+        if (list != null)
+            for (int i = 0; i < list.Count; i++)
+                html += "<option value='" + list[i].WardId + "' >" + list[i].WardName + "</option>";
+        Response.Write(html);
+    }
     ///////////////////////////////////////  NGƯỜI DÙNG
     #region NGƯỜI DÙNG 
     void Load_EduDepartment()
     {
         string IDEduProvince = (Request.QueryString["IDEduProvince"].Trim());
-        string html = "<option value=''>-- Chọn cấp Phòng --</option>";
+        string html = "<option value=''>── Chọn cấp Phòng ──</option>";
         DataTable table = Connect.GetTable(@"select EduDepartmentId,EduDepartmentName from EduDepartment where EduProvinceId='" + IDEduProvince + "'");
 
         for (int i = 0; i < table.Rows.Count; i++)
@@ -84,11 +166,11 @@ public partial class Ajax : System.Web.UI.Page
     void Load_EduSchoold()
     {
         string IDEduDepartment = (Request.QueryString["IDEduDepartment"].Trim());
-        string html = "<option value=''>-- Chọn cấp Trường --</option>";
-        DataTable table = Connect.GetTable(@"select SchoolId, School from School where EduDepartmentId='" + IDEduDepartment + "'");
+        string html = "<option value=''>── Chọn cấp Trường ──</option>";
+        DataTable table = Connect.GetTable(@"select SchoolId, SchoolName from School where EduDepartmentId='" + IDEduDepartment + "'");
 
         for (int i = 0; i < table.Rows.Count; i++)
-            html += "<option value='" + table.Rows[i]["SchoolId"] + "'>" + table.Rows[i]["School"] + "</option>";
+            html += "<option value='" + table.Rows[i]["SchoolId"] + "'>" + table.Rows[i]["SchoolName"] + "</option>";
 
         Response.Write(html);
     }
@@ -256,11 +338,6 @@ public partial class Ajax : System.Web.UI.Page
     #endregion
     ///////////////////////////////////////  TRƯỜNG HỌC
     #region TRƯỜNG HỌC
-    void slSoGiaoDuc_onchange()
-    {
-        string DataValue = Request.QueryString["DataValue"].Trim();
-
-    }
     async void AddTruongHoc()
     {
         string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
@@ -271,15 +348,351 @@ public partial class Ajax : System.Web.UI.Page
         //4 : SchoolLevelCode
         //5 : Province
         //6 : District
-        //7 : Ward 
-        School sch = new School
+        //7 : Ward  
+        SchoolInsertReq sch = new SchoolInsertReq
         {
-            School1 = DataValue[0]
+            SchoolName = DataValue[0],
+            Address = DataValue[1],
+            EduProvinceId = int.Parse(DataValue[2]),
+            EduDepartmentId = int.Parse(DataValue[3]),
+            SchoolLevelCode = DataValue[4],
+            PhoneNumber = "",
+            HotLine = "",
+            MinistryofEducationaCode = "VNA",
         };
-
         var result = await _apiAuthentication.Insert_School(sch);
         if (!result.IsError)
             Response.Write("Success");
+    }
+    async void LoadTruongHoc()
+    {
+        string DataValue = Request.QueryString["value"].Trim();
+        var result = await _apiAuthentication.GetSchool_ById(int.Parse(DataValue == "" ? "0" : DataValue));
+        string KQ = "";
+        var School = result.Data;
+        if (School != null)
+            KQ = School.EduProvinceId + "@_@" + School.EduDepartmentId + "@_@" + School.SchoolLevelCode + "@_@" + School.SchoolName + "@_@" + School.Address;
+        //KQ = "" + "@_@" + "" + "@_@" + "" + "@_@" + "" + "@_@" + "";
+        Response.Write(KQ);
+    }
+    async void EditTruongHoc()
+    {
+        string ID = Request.QueryString["TruongHoc"].Trim();
+        string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : TenTruong
+        //1 : TenDuong
+        //2 : EduProvinceID
+        //3 : EduDepartmentID
+        //4 : SchoolLevelCode
+        //5 : Province
+        //6 : District
+        //7 : Ward 
+        SchoolUpdateReq sch = new SchoolUpdateReq
+        {
+            SchoolName = DataValue[0],
+            Address = DataValue[1],
+            EduProvinceId = int.Parse(DataValue[2] == "" ? "0" : DataValue[2]),
+            EduDepartmentId = int.Parse(DataValue[3] == "" ? "0" : DataValue[3]),
+            SchoolLevelCode = DataValue[4],
+            PhoneNumber = "",
+            HotLine = "",
+            MinistryofEducationaCode = "VNA",
+            SchoolId = int.Parse(ID == "" ? "0" : ID)
+        };
+
+
+        var result = await _apiAuthentication.Update_School(sch);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    async void DeleteTruongHoc()
+    {
+        string ID = Request.QueryString["TruongHoc"].Trim();
+        var result = await _apiAuthentication.Delete_School(int.Parse(ID == "" ? "0" : ID));
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    #endregion
+    ///////////////////////////////////////  ĐỢT ĐÁNH GIÁ
+    #region ĐỢT ĐÁNH GIÁ 
+    async void AddDotDanhGia()
+    {
+        string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : TenDotDanhGia
+        //1 : TuNgay
+        //2 : DenNgay
+        //3 : Nam
+        //4 : TruongHoc 
+        EvalPeriodInsertReq peri = new EvalPeriodInsertReq
+        {
+            PeriodName = DataValue[0],
+            FromDate = DateTime.Parse(DataValue[1].ConvertDDMMtoMMDD()),
+            ToDate = DateTime.Parse(DataValue[2].ConvertDDMMtoMMDD()),
+            Year = int.Parse(DataValue[3] == "" ? "0" : DataValue[3]),
+            SchoolId = int.Parse(DataValue[4] == "" ? "0" : DataValue[4]),
+        };
+        var result = await _apiAuthentication.Insert_EvalPeriod(peri);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    async void LoadDotDanhGia()
+    {
+        string DataValue = Request.QueryString["value"].Trim();
+        var result = await _apiAuthentication.GetEvalPeriod_ById(int.Parse(DataValue == "" ? "0" : DataValue));
+        string KQ = "";
+        var Period = result.Data;
+        if (Period != null)
+        {
+            string EduDepartmentId = StaticData.getField("School", "EduDepartmentId", "SchoolId", Period.SchoolId.ToString());
+            string EduProvinceId = StaticData.getField("School", "EduProvinceId", "SchoolId", Period.SchoolId.ToString());
+
+            KQ = Period.PeriodName + "@_@" + Period.FromDate.ToString().ConvertMMDDYYtoDDMMYY() + "@_@" + Period.ToDate.ToString().ConvertMMDDYYtoDDMMYY() + "@_@" + Period.Year + "@_@" + EduProvinceId + "@_@" + EduDepartmentId + "@_@" + Period.SchoolId;
+        }
+        Response.Write(KQ);
+    }
+    async void EditDotDanhGia()
+    {
+        string ID = Request.QueryString["DotDanhGia"].Trim();
+        string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : TenDotDanhGia
+        //1 : TuNgay
+        //2 : DenNgay
+        //3 : Nam
+        //4 : TruongHoc 
+        EvalPeriodUpdateReq peri = new EvalPeriodUpdateReq
+        {
+            PeriodName = DataValue[0],
+            FromDate = DateTime.Parse(DataValue[1].ConvertDDMMtoMMDD()),
+            ToDate = DateTime.Parse(DataValue[2].ConvertDDMMtoMMDD()),
+            Year = int.Parse(DataValue[3] == "" ? "0" : DataValue[3]),
+            SchoolId = int.Parse(DataValue[4] == "" ? "0" : DataValue[4]),
+            EvalPeriodId = int.Parse(ID == "" ? "0" : ID)
+        };
+
+        var result = await _apiAuthentication.Update_EvalPeriod(peri);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    async void DeleteDotDanhGia()
+    {
+        string ID = Request.QueryString["DotDanhGia"].Trim();
+        var result = await _apiAuthentication.Delete_EvalPeriod(int.Parse(ID == "" ? "0" : ID));
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    #endregion
+    ///////////////////////////////////////  TIÊU CHUẨN
+    #region TIEEU CHUẨN
+    async void AddTieuChuan()
+    {
+        string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : TenTieuChuan
+        //1 : GhiChu
+        //2 : LoaiTieuChuan
+        //3 : CapGiaoDuc
+        EvalStandardInsertReq std = new EvalStandardInsertReq
+        {
+            EvalStandardName = DataValue[0],
+            Remarks = DataValue[1],
+            EvalTypeCode = DataValue[2],
+            SchoolLevelCode = DataValue[3]
+        };
+        var result = await _apiAuthentication.Insert_EvalStandard(std);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    async void LoadTieuChuan()
+    {
+        string DataValue = Request.QueryString["value"].Trim();
+        var result = await _apiAuthentication.GetEvalStandard_ById(int.Parse(DataValue == "" ? "0" : DataValue));
+        string KQ = "";
+        var Period = result.Data;
+        if (Period != null)
+            KQ = Period.EvalStandardName + "@_@" + Period.Remarks + "@_@" + Period.EvalTypeCode + "@_@" + Period.SchoolLevelCode;
+        Response.Write(KQ);
+    }
+    async void EditTieuChuan()
+    {
+        string ID = Request.QueryString["TieuChuan"].Trim();
+        string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : TenTieuChuan
+        //1 : GhiChu 
+        //2 : LoaiTieuChuan
+        //3 : CapGiaoDuc
+        EvalStandardUpdateReq peri = new EvalStandardUpdateReq
+        {
+            EvalStandardName = DataValue[0],
+            Remarks = DataValue[1],
+            EvalTypeCode = DataValue[2],
+            SchoolLevelCode = DataValue[3],
+            EvalStandardId = int.Parse(ID == "" ? "0" : ID)
+        };
+
+        var result = await _apiAuthentication.Update_EvalStandard(peri);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    async void DeleteTieuChuan()
+    {
+        string ID = Request.QueryString["TieuChuan"].Trim();
+        var result = await _apiAuthentication.Delete_EvalStandard(int.Parse(ID == "" ? "0" : ID));
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    async void LoadTieuChi_TrongTieuChuan()
+    {
+        string ID = Request.QueryString["TieuChuan"].Trim();
+        var result = await _apiAuthentication.GetEvalCriteria_ByStandardId(int.Parse(ID == "" ? "0" : ID));
+        string html = "";
+        if (result != null)
+            if (result.Data != null)
+            {
+                var EvalCriteria = result.Data;
+                for (int i = 0; i < EvalCriteria.Count; i++)
+                {
+                    html += @"<tr>
+                                  <td>" + (i + 1) + @"</td>
+                                  <td>" + EvalCriteria[i].EvalCriteriaName + @"</td>
+                                  <td class='text-nowrap  align-center'>
+                                      <a href=" + "\"" + "javascript:DeleteTieuChi(" + EvalCriteria[i].EvalCriteriaId + ",'TrongTieuChuan'," + ID + ");" + "\"" + @" class='btn bg-red waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Xoá'><i class='fa fa-trash'></i></a>
+                                  </td>
+                              </tr>";
+                }
+            }
+        Response.Write(html);
+    }
+    #endregion
+    ///////////////////////////////////////  TIÊU CHÍ
+    #region TIÊU CHÍ
+    async void AddTieuChi()
+    {
+        string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : TenTieuChi 
+        //1 : idTieuChuan 
+        //2 : Idx 
+        EvalCriteriaInsertReq std = new EvalCriteriaInsertReq
+        {
+            EvalCriteriaName = DataValue[0],
+            EvalStandardId = int.Parse(DataValue[1] == "" ? "0" : DataValue[1]),
+            Idx = DataValue[2]
+            //Idx = int.Parse(DataValue[2] == "" ? "0" : DataValue[2])
+        };
+        var result = await _apiAuthentication.Insert_EvalCriteria(std);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    async void LoadTieuChi()
+    {
+        string DataValue = Request.QueryString["value"].Trim();
+        var result = await _apiAuthentication.GetEvalCriteria_ById(int.Parse(DataValue == "" ? "0" : DataValue));
+        string KQ = "";
+        var Period = result.Data;
+        if (Period != null)
+            KQ = Period.EvalCriteriaName + "@_@" + Period.Idx;
+        Response.Write(KQ);
+    }
+    async void EditTieuChi()
+    {
+        string ID = Request.QueryString["TieuChi"].Trim();
+        string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : TenTieuChi 
+        //1 : idTieuChuan 
+        //2 : Idx 
+        EvalCriteriaUpdateReq peri = new EvalCriteriaUpdateReq
+        {
+            EvalCriteriaName = DataValue[0],
+            EvalStandardId = int.Parse(DataValue[1] == "" ? "0" : DataValue[1]),
+            Idx = DataValue[2],
+            EvalCriteriaId = int.Parse(ID == "" ? "0" : ID)
+        };
+
+        var result = await _apiAuthentication.Update_EvalCriteria(peri);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    async void DeleteTieuChi()
+    {
+        string ID = Request.QueryString["TieuChi"].Trim();
+        var result = await _apiAuthentication.Delete_EvalCriteria(int.Parse(ID == "" ? "0" : ID));
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    #endregion
+    ///////////////////////////////////////  PHÒNG GIÁO DỤC
+    #region PHÒNG GIAO DỤC
+    async void AddPhongGiaoDuc()
+    {
+        string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : TenPhongGiaoDuc 
+        //1 : DiaChi 
+        //2 : idTinhThanh
+        //3 : idQUanHuyen
+        //4 : idPhuongXa
+        //5 : Idx
+        EduDepartmentInsertReq std = new EduDepartmentInsertReq
+        {
+            EduDepartmentName = DataValue[0],
+            Address = DataValue[1],
+            DistrictId = int.Parse(DataValue[3] == "" ? "0" : DataValue[3]),
+            Idx = int.Parse(DataValue[5] == "" ? "0" : DataValue[5])
+        };
+        var result = await _apiAuthentication.Insert_EduDepartment(std);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    async void LoadPhongGiaoDuc()
+    {
+        string DataValue = Request.QueryString["value"].Trim();
+        var result = await _apiAuthentication.GetEduDepartment_ById(int.Parse(DataValue == "" ? "0" : DataValue));
+        string KQ = "";
+        var EduDept = result.Data;
+        if (EduDept != null)
+            KQ = EduDept.EduDepartmentName + "@_@" + EduDept.Address + "@_@" + EduDept.Idx;
+        Response.Write(KQ);
+    }
+    async void EditPhongGiaoDuc()
+    {
+        string ID = Request.QueryString["PhongGiaoDuc"].Trim();
+        string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : TenPhongGiaoDuc 
+        //1 : DiaChi 
+        //2 : idTinhThanh
+        //3 : idQUanHuyen
+        //4 : idPhuongXa
+        //5 : Idx
+        EduDepartmentUpdateReq std = new EduDepartmentUpdateReq
+        {
+            EduDepartmentName = DataValue[0],
+            Address = DataValue[1],
+            DistrictId = int.Parse(DataValue[3] == "" ? "0" : DataValue[3]),
+            Idx = int.Parse(DataValue[5] == "" ? "0" : DataValue[5]),
+            EduDepartmentId = int.Parse(ID == "" ? "0" : ID)
+        };
+
+        var result = await _apiAuthentication.Update_EduDepartment(std);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    async void DeletePhongGiaoDuc()
+    {
+        string ID = Request.QueryString["PhongGiaoDuc"].Trim();
+        var result = await _apiAuthentication.Delete_EduDepartment(int.Parse(ID == "" ? "0" : ID));
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
     }
     #endregion
 }

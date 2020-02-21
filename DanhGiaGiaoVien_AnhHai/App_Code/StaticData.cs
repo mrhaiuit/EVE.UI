@@ -63,7 +63,7 @@ public static class StaticData
 
         return returnValue;
     }
-    public static string KiemTraKhongNhap_LoadLen(string SoTien)
+    public static string KiemTraKhongNhap_LoadLen(this string SoTien)
     {
         string KQ = "0";
         try
@@ -323,7 +323,7 @@ public static class StaticData
         return Thang + "/" + Ngay + "/" + Nam + " " + Gio + ":" + Phut + ":" + Giay;
     }
     #region convert date
-    public static string ConvertDDMMtoMMDD(string ngay)
+    public static string ConvertDDMMtoMMDD(this string ngay)
     {
         if (ngay.Equals(""))
         {
@@ -337,7 +337,7 @@ public static class StaticData
             return thangC + "/" + ngayC + "/" + namC;
         }
     }
-    public static string ConvertMMDDYYtoDDMMYY(string ngay)
+    public static string ConvertMMDDYYtoDDMMYY(this string ngay)
     {
         if (ngay.Trim() == "")
         {
