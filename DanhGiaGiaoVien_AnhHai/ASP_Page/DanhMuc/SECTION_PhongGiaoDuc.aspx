@@ -111,9 +111,9 @@
                             $("#txtTenPhongGiaoDuc").val(arr[0]);
                             $("#txtTenDuong").val(arr[1]);
                             $("#txtSTT").val(arr[2]);
-                            //$("#ContentMaster_slTinhThanh").val();
-                            //$("#slQuanHuyen").val();
-                            //$("#slPhuongXa").val();
+                            $("#ContentMaster_slTinhThanh").val(arr[3]).trigger('change');
+                            setTimeout(function () { $("#slQuanHuyen").val(arr[4]).trigger('change'); }, 300);
+                            //setTimeout(function () { $("#slPhuongXa").val(arr[7]).trigger('change'); }, 600);
 
 
                             $("#btnModalSave").attr('onclick', 'EditPhongGiaoDuc(' + value + ');');
@@ -289,8 +289,7 @@
                     xmlhttp.open("GET", "../../Ajax.aspx?Action=DeletePhongGiaoDuc&PhongGiaoDuc=" + PhongGiaoDuc, true);
                     xmlhttp.send();
                 });
-            }
-
+            } 
         }
     </script>
 </asp:Content>

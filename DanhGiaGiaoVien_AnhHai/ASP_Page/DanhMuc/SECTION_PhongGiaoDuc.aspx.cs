@@ -68,11 +68,20 @@ public partial class ASP_Page_Default : System.Web.UI.Page
             {
                 var school = result.Data;
                 for (int i = 0; i < school.Count; i++)
-                {
+                { 
+                    string ProvinceID = StaticData.getField("district", "ProvinceID", "districtID", school[i].DistrictId+"");
+
+                    string DistrictName = StaticData.getField("District", "DistrictName", "districtID", school[i].DistrictId+"");
+                    string ProvinceName = StaticData.getField("Province", "ProvinceName", "ProvinceID", ProvinceID);
+                    //string WardName = StaticData.getField("ward", "WardName", "wardID", school[i].DistrictId + "");
+                    string WardName = "";
+
+                    string DiaChi = school[i].Address + ", " + WardName + ", " + DistrictName + ", " + ProvinceName;
+
                     html += @" <tr>
                                   <td>" + (i + 1) + @"</td>
                                   <td>" + school[i].EduDepartmentName + @"</td>
-                                  <td>" + school[i].Address + @"</td>
+                                  <td>" + DiaChi + @"</td>
                                   <td class='text-nowrap align-center'>
                                       <a href='javascript:OpenModal_EditPhongGiaoDuc(" + school[i].EduDepartmentId + @");' class='btn bg-green waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Sửa'><i class='fa fa-pencil'></i></a>
                                       <a href='javascript:DeletePhongGiaoDuc(" + school[i].EduDepartmentId + @")' class='btn bg-red waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Xoá'><i class='fa fa-trash'></i></a>

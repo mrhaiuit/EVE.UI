@@ -345,7 +345,7 @@
 
     <section class="content">
         <div class="container-fluid">
-            <div class="block-header">
+            <div class="block-header hidden">
                 <ol class="breadcrumb" id="breadscrumColor" runat="server">
                     <li><a href="../../Asp_page/index.aspx"><i class="material-icons">home</i> Trang chủ</a></li>
                     <li class="active"><a href="../../Asp_page/DanhMuc/section_user.aspx"><i class="fa fa-user m-r-10"></i>Người dùng</a></li>

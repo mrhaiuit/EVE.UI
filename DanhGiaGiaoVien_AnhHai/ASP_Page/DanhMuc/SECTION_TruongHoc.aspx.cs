@@ -100,12 +100,20 @@ public partial class ASP_Page_Default : System.Web.UI.Page
                 var school = result.Data;
                 for (int i = 0; i < school.Count; i++)
                 {
+                    string DistrictID = StaticData.getField("ward", "districtID", "wardID", school[i].WardId + "");
+                    string ProvinceID = StaticData.getField("district", "ProvinceID", "districtID", DistrictID);
+
+                    string DistrictName = StaticData.getField("District", "DistrictName", "districtID", DistrictID);
+                    string ProvinceName = StaticData.getField("Province", "ProvinceName", "ProvinceID", ProvinceID);
+                    string WardName = StaticData.getField("ward", "WardName", "wardID", school[i].WardId + "");
+
+                    string DiaChi = school[i].Address + ", " + WardName + ", " + DistrictName + ", " + ProvinceName;
                     html += @"          <tr>
                                         <th scope='row'>" + (i + 1) + @"</th> 
                                         <td>" + StaticData.getField("EduDepartment", "EduDepartmentName", "EduDepartmentId", school[i].EduDepartmentId + "") + @"</td> 
                                         <td class='text-center'>" + StaticData.getField("SchoolLevel", "SchoolLevelName", "SchoolLevelCode", school[i].SchoolLevelCode + "") + @"</td>  
                                         <td>" + school[i].SchoolName + @"</td>  
-                                        <td>" + school[i].Address + @"</td>  
+                                        <td>" + DiaChi + @"</td>  
                                         <td class='align-center text-nowrap'>";
                     html += "                       <a onclick='OpenModal_EditTruongHoc(" + school[i].SchoolId + ")' class='btn bg-green waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Sửa'><i class='fa fa-pencil'></i></a>";
                     html += "                       <a onclick='DeleteTruongHoc(" + school[i].SchoolId + ")' class='btn bg-red waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Xoá'><i class='fa fa-trash'></i></a>";

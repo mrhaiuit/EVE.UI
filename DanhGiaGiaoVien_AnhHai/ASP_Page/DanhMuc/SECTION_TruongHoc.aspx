@@ -73,7 +73,16 @@
                         $("#ContentMaster_slCapTruong_modal").removeClass("animated shake");
                     }, 1000);
                     flag_OK = false;
-                } 
+                }
+                if (Ward == "")//
+                {
+                    $("#slPhuongXa").notify("Vui lòng chọn Phường/Xã !", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#slPhuongXa").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#slPhuongXa").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
 
                 var value = TenTruong + "@_@" + TenDuong + "@_@" + EduProvince + "@_@" + EduDepartment + "@_@" + SchoolLevelCode + "@_@" + Province + "@_@" + District + "@_@" + Ward;
                 if (!flag_OK)
@@ -125,10 +134,9 @@
                             $("#ContentMaster_slCapTruong_modal").val(arr[2]);
                             $("#txtTenTruongHoc").val(arr[3]);
                             $("#txtTenDuong").val(arr[4]);
-                            //$("#ContentMaster_slTinhThanh").val();
-                            //$("#slQuanHuyen").val();
-                            //$("#slPhuongXa").val();
-
+                            $("#ContentMaster_slTinhThanh").val(arr[5]).trigger('change');
+                            setTimeout(function () { $("#slQuanHuyen").val(arr[6]).trigger('change'); }, 300);
+                            setTimeout(function () { $("#slPhuongXa").val(arr[7]).trigger('change'); }, 600);
 
                             $("#btnModalSave").attr('onclick', 'EditTruongHoc('+value+');');
 
@@ -181,7 +189,16 @@
                         $("#ContentMaster_slCapTruong_modal").removeClass("animated shake");
                     }, 1000);
                     flag_OK = false;
-                } 
+                }
+                if (Ward == "")//
+                {
+                    $("#slPhuongXa").notify("Vui lòng chọn Phường/Xã !", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#slPhuongXa").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#slPhuongXa").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
 
                 var value = TenTruong + "@_@" + TenDuong + "@_@" + EduProvince + "@_@" + EduDepartment + "@_@" + SchoolLevelCode + "@_@" + Province + "@_@" + District + "@_@" + Ward;
                 if (!flag_OK)

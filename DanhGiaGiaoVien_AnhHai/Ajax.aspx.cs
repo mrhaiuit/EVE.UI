@@ -11,6 +11,7 @@ using System.Text;
 using EVE.TransportLayer;
 using EVE.Data;
 using EVE.ApiModels.Catalog;
+using EVE.ApiModels.Authentication.Request;
 
 public partial class Ajax : System.Web.UI.Page
 {
@@ -96,6 +97,15 @@ public partial class Ajax : System.Web.UI.Page
                 DeletePhongGiaoDuc(); break;
             case "LoadPhongGiaoDuc":
                 LoadPhongGiaoDuc(); break;
+            /////////////////////////////// CẤP QUYỀN 
+            case "AddCapQuyen":
+                AddCapQuyen(); break;
+            case "DeleteCapQuyen":
+                DeleteCapQuyen(); break;
+            case "LoadCapQuyen":
+                LoadCapQuyen(); break;
+            case "ChangeLockAccount":
+                ChangeLockAccount(); break;
 
         }
     }
@@ -358,6 +368,7 @@ public partial class Ajax : System.Web.UI.Page
             SchoolLevelCode = DataValue[4],
             PhoneNumber = "",
             HotLine = "",
+            WardId = int.Parse(DataValue[7]),
             MinistryofEducationaCode = "VNA",
         };
         var result = await _apiAuthentication.Insert_School(sch);
@@ -369,10 +380,17 @@ public partial class Ajax : System.Web.UI.Page
         string DataValue = Request.QueryString["value"].Trim();
         var result = await _apiAuthentication.GetSchool_ById(int.Parse(DataValue == "" ? "0" : DataValue));
         string KQ = "";
-        var School = result.Data;
-        if (School != null)
-            KQ = School.EduProvinceId + "@_@" + School.EduDepartmentId + "@_@" + School.SchoolLevelCode + "@_@" + School.SchoolName + "@_@" + School.Address;
-        //KQ = "" + "@_@" + "" + "@_@" + "" + "@_@" + "" + "@_@" + "";
+        if (result != null)
+        {
+            var School = result.Data;
+            if (School != null)
+            {
+                string DistrictID = StaticData.getField("ward", "districtID", "wardID", School.WardId + "");
+                string ProvinceID = StaticData.getField("district", "ProvinceID", "districtID", DistrictID);
+
+                KQ = School.EduProvinceId + "@_@" + School.EduDepartmentId + "@_@" + School.SchoolLevelCode + "@_@" + School.SchoolName + "@_@" + School.Address + "@_@" + ProvinceID + "@_@" + DistrictID + "@_@" + School.WardId;
+            }
+        }
         Response.Write(KQ);
     }
     async void EditTruongHoc()
@@ -396,6 +414,7 @@ public partial class Ajax : System.Web.UI.Page
             SchoolLevelCode = DataValue[4],
             PhoneNumber = "",
             HotLine = "",
+            WardId = int.Parse(DataValue[7]),
             MinistryofEducationaCode = "VNA",
             SchoolId = int.Parse(ID == "" ? "0" : ID)
         };
@@ -657,9 +676,15 @@ public partial class Ajax : System.Web.UI.Page
         string DataValue = Request.QueryString["value"].Trim();
         var result = await _apiAuthentication.GetEduDepartment_ById(int.Parse(DataValue == "" ? "0" : DataValue));
         string KQ = "";
-        var EduDept = result.Data;
-        if (EduDept != null)
-            KQ = EduDept.EduDepartmentName + "@_@" + EduDept.Address + "@_@" + EduDept.Idx;
+        if (result != null)
+        {
+            var EduDept = result.Data;
+            if (EduDept != null)
+            {
+                string ProvinceID = StaticData.getField("district", "ProvinceID", "districtID", EduDept.DistrictId + ""); 
+                KQ = EduDept.EduDepartmentName + "@_@" + EduDept.Address + "@_@" + EduDept.Idx + "@_@" + ProvinceID + "@_@" + EduDept.DistrictId;
+            }
+        }
         Response.Write(KQ);
     }
     async void EditPhongGiaoDuc()
@@ -693,6 +718,57 @@ public partial class Ajax : System.Web.UI.Page
         if (result != null)
             if (!result.IsError)
                 Response.Write("Success");
+    }
+    #endregion
+    ///////////////////////////////////////  CẤP QUYỀN
+    #region  CẤP QUYỀN
+    async void AddCapQuyen()
+    {
+        string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
+        //0 : NhanVienID 
+        //1 : NhomQuyen 
+        UserGroupEmployeeInsertReq std = new UserGroupEmployeeInsertReq
+        {
+            EmployeeId = int.Parse(DataValue[0] == "" ? "0" : DataValue[0]),
+            UserGroupCode = DataValue[1]
+        };
+        var result = await _apiAuthentication.Insert_UserGroup_Employee(std);
+        if (result != null)
+        {
+            if (!result.IsError)
+                Response.Write("Success");
+            else if (result.Message.ToUpper().Contains("ĐÃ TỒN TẠI"))
+                Response.Write("Already");
+        }
+    }
+    async void LoadCapQuyen()
+    {
+        string NhanVien = Request.QueryString["NhanVien"].Trim();
+        string NhomQuyen = Request.QueryString["NhomQuyen"].Trim();
+        var result = await _apiAuthentication.Get_UserGroup_Employee_ById(int.Parse(NhanVien == "" ? "0" : NhanVien), NhomQuyen);
+        string KQ = "";
+        var UG = result.Data;
+        if (UG != null)
+            KQ = UG.EmployeeId + "@_@" + UG.UserGroupCode;
+        Response.Write(KQ);
+    }
+    async void DeleteCapQuyen()
+    {
+        string NhanVien = Request.QueryString["NhanVien"].Trim();
+        string NhomQuyen = Request.QueryString["NhomQuyen"].Trim();
+        var result = await _apiAuthentication.Delete_UserGroup_Employee(int.Parse(NhanVien == "" ? "0" : NhanVien), NhomQuyen);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
+    }
+    void ChangeLockAccount()
+    {
+        string status = Request.QueryString["status"].Trim();
+        string[] id = Request.QueryString["id"].Trim().Split('_');
+        //0 : status Active  
+        string sql = "update Employee SET Active='" + status + "' where EmployeeID='" + id[1] + "' ";
+        if (Connect.Exec(sql))
+            Response.Write("Success");
     }
     #endregion
 }
