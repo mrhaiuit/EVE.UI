@@ -1,4 +1,7 @@
-﻿using System;
+﻿using EVE.Commons.Response;
+using EVE.Data;
+using EVE.TransportLayer;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -24,14 +27,14 @@ public partial class ASP_Page_Default : System.Web.UI.Page
     string mQuyen;
     string themeColor;
     string tenDangNhap_HienTai = "";
+    ApiAuthentication _apiAuthentication = new ApiAuthentication();
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"] != null)
         {
-            string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value; 
-            string idLoaiNguoiDung = StaticData.getField("tb_NguoiDung", "idLoaiNguoiDung", "TenDangNhap", TenDangNhap_Cookie.ToString());
+            string TenDangNhap_Cookie = tenDangNhap_HienTai = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value;
             themeColor = "cyan";
-            breadscrumColor.Attributes.Add("class", "breadcrumb breadcrumb-col-" + themeColor); 
+            breadscrumColor.Attributes.Add("class", "breadcrumb breadcrumb-col-" + themeColor);
         }
         else
             Response.Redirect("../../Home/Login.aspx");
@@ -55,9 +58,10 @@ public partial class ASP_Page_Default : System.Web.UI.Page
                 slUserType.Value = pQuyen;
             }
             catch { }
-            Load_SelectHTML("select * from EduLevel", "EduLevelName", "EduLevelCode", true, "-- Chọn Cấp --", slUserType);
-            Load_SelectHTML("select * from EduMinistry", "EduMinistryName", "EduMinistryCode", false, "-- Chọn cấp Bộ --", slEduMinistry);
-            Load_SelectHTML("select * from EduProvince", "EduProvinceName", "EduProvinceId", true, "-- Chọn cấp Sở --", slEduProvince);
+
+            LoadEduLevel();
+            Load_SelectHTML("select * from EduMinistry", "EduMinistryName", "EduMinistryCode", false, "── Chọn cấp Bộ ──", slEduMinistry);
+            Load_SelectHTML("select * from EduProvince", "EduProvinceName", "EduProvinceId", true, "── Chọn cấp Sở ──", slEduProvince);
             //Load_SelectHTML("select * from EduDepartment", "EduDepartmentName", "EduDepartmentId", true, "-- Chọn cấp Phòng --", slEduDepartment);
             //Load_SelectHTML("select * from School", "School", "SchoolId", true, "-- Chọn cấp Trường --", slEduSchoold);
             LoadDanhSach();
@@ -147,6 +151,38 @@ public partial class ASP_Page_Default : System.Web.UI.Page
         }
     }
     #endregion
+    async void LoadEduLevel()
+    {
+        string EmployeeID = StaticData.getField("Employee", "EmployeeID", "userName", tenDangNhap_HienTai);
+        string UserGroup_DB = StaticData.getField("Employee Em JOIN UserGroup_Employee UG ON Em.EmployeeId=UG.EmployeeId ", "UG.UserGroupCode", "Em.EmployeeId", EmployeeID);
+
+        ClientResponse<List<EduLevel>> result = new ClientResponse<List<EduLevel>>();
+        result = await _apiAuthentication.Get_EduLevel_ByUserGroup(UserGroup_DB);
+        if (result != null)
+            if (result.Data != null)
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add("EduLevelCode");
+                table.Columns.Add("EduLevelName");
+
+                var edu = result.Data;
+                for (int i = 0; i < edu.Count; i++)
+                {
+                    DataRow row = table.NewRow();
+                    row["EduLevelCode"] = edu[i].EduLevelCode;
+                    row["EduLevelName"] = edu[i].EduLevelName;
+                    table.Rows.Add(row);
+                }
+
+                slUserType.DataSource = table;
+                slUserType.DataTextField = "EduLevelName";
+                slUserType.DataValueField = "EduLevelCode";
+                slUserType.DataBind();
+                slUserType.Items.Add(new ListItem("── Chọn Cấp ──", ""));
+                slUserType.Items.FindByText("── Chọn Cấp ──").Selected = true;
+            }
+
+    }
     void LoadDanhSach()
     {
         string sql = "";
@@ -192,8 +228,8 @@ public partial class ASP_Page_Default : System.Web.UI.Page
                                         <td>" + table.Rows[i]["EduLevelName"] + @"</td>  
                                         <td class='align-center text-nowrap'>";
                 html += "                       <a onclick='OpenModal_EditUser(" + table.Rows[i]["EmployeeId"] + ")' class='btn bg-green waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Sửa'><i class='fa fa-pencil'></i></a>";
-                if(tenDangNhap_HienTai != table.Rows[i]["UserName"].ToString().Trim())
-                    html += "                       <a onclick='DeleteUser("+ table.Rows[i]["EmployeeId"] + ")' class='btn bg-red waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Xoá'><i class='fa fa-trash'></i></a>";
+                if (tenDangNhap_HienTai != table.Rows[i]["UserName"].ToString().Trim())
+                    html += "                       <a onclick='DeleteUser(" + table.Rows[i]["EmployeeId"] + ")' class='btn bg-red waves-effect' style='padding: 0 7px 3px 7px;' data-toggle='tooltip' data-placement='top' title='' data-original-title='Xoá'><i class='fa fa-trash'></i></a>";
                 html += @"              </td> 
                                     </tr>   ";
             }

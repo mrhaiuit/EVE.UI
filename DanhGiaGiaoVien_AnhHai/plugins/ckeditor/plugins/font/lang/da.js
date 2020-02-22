@@ -1,1 +1,0 @@
-CKEDITOR.plugins_GiaoDien2.setLang("font","da",{fontSize:{label:"Skriftstørrelse",voiceLabel:"Skriftstørrelse",panelTitle:"Skriftstørrelse"},label:"Skrifttype",panelTitle:"Skrifttype",voiceLabel:"Skrifttype"});

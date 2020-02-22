@@ -47,6 +47,7 @@ public partial class ASP_Page_Default : System.Web.UI.Page
         {
             Load_SelectHTML("select * from EduMinistry", "EduMinistryName", "EduMinistryCode", false, "── Chọn cấp Bộ ──", slEduMinistry);
             Load_SelectHTML("select * from EduProvince", "EduProvinceName", "EduProvinceId", true, "── Chọn cấp Sở ──", slEduProvince);
+            Load_SelectHTML("select * from EduProvince", "EduProvinceName", "EduProvinceId", true, "── Chọn cấp Sở ──", slEduProvince_TimKiem);
 
             LoadQueryString();
             LoadDanhSach();
@@ -110,9 +111,12 @@ public partial class ASP_Page_Default : System.Web.UI.Page
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         string Nam = slNam.Value.Trim();
+        string Truong = slEduSchoold_TimKiem.Value.Trim();
         string url = "Section_DotDanhGia.aspx?";
         if (Nam != "")
             url += "Nam=" + Nam + "&";
+        if (Truong != "")
+            url += "Truong=" + Truong + "&";
         Response.Redirect(url);
     }
     void Load_SelectHTML(string sql, string TextField, string ValueField, bool AddANewItem, string ItemName, System.Web.UI.HtmlControls.HtmlSelect select)

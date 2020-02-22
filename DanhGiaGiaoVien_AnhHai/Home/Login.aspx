@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Home_Login" %>
+﻿<%@ Page Language="C#"  Async="true" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Home_Login" %>
 
 <!DOCTYPE html>
 
@@ -13,23 +13,23 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <!-- Bootstrap Core Css -->
-    <link href="../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css_ALL/bootstrap.min.css" rel="stylesheet">
     <!-- Waves Effect Css -->
-    <link href="../plugins/node-waves/waves.css" rel="stylesheet" />
+    <link href="../css_ALL/waves.css" rel="stylesheet" />
     <!-- Animation Css -->
-    <link href="../plugins/animate-css/animate.css" rel="stylesheet" />
+    <link href="../css_ALL/animate.css" rel="stylesheet" />
     <!-- Bootstrap Material Datetime Picker Css -->
-    <link href="../plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="../css_ALL/bootstrap-material-datetimepicker.css" rel="stylesheet" />
     <!-- font-awesome Css -->
-    <link href="../plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../css_ALL/font-awesome.min.css" rel="stylesheet" />
     <!-- Wait Me Css -->
-    <link href="../plugins/waitme/waitMe.css" rel="stylesheet" />
+    <link href="../css_ALL/waitMe.css" rel="stylesheet" />
     <!-- Bong bóng bay Css -->
-    <link href="../plugins/css bong bong bay/particle-background.css" rel="stylesheet" />
+    <link href="../css_ALL/particle-background.css" rel="stylesheet" />
     <!-- Custom Css -->
-    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css_ALL/style.css" rel="stylesheet">
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="../css/themes/all-themes.css" rel="stylesheet" />
+    <link href="../css_ALL/all-themes.css" rel="stylesheet" />
     <style>
         html {
             background: url('../images/login-background.jpg') no-repeat left center fixed;
@@ -174,6 +174,28 @@
             }
             return false;
         }
+        function txtUserName_onchange(value)
+        {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    if (xmlhttp.responseText != "") {
+                        $("#slUserGroup").html(xmlhttp.responseText);
+                    }
+                    else {
+                        $("#slUserGroup").html("");
+                    }
+                }
+            }
+            xmlhttp.open("GET", "../../Ajax.aspx?Action=txtUserName_onchange&value=" + value, true);
+            xmlhttp.send(); 
+        }
     </script>
     <title>ĐĂNG NHẬP | Phần Mềm Đánh Giá Giáo Viên</title>
 </head>
@@ -219,7 +241,7 @@
                     <div class="col-sm-12">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" class="form-control" id="txtUsername" runat="server" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();">
+                                <input type="text" class="form-control" id="txtUsername" runat="server" onkeypress="javascript:if(event.keyCode == 13) document.getElementById('btnLogin').click();" onchange="txtUserName_onchange(this.value);">
                                 <label class="form-label">Tên đăng nhập</label>
                             </div>
                             <span id="spUsername">Error</span>
@@ -235,7 +257,9 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <select class="form-group form-control" id="slUserGroup" runat="server"></select>
+                        <select class="form-group form-control" id="slUserGroup" runat="server">
+                            <option value=''>─ Chọn nhóm người dùng ─</option>
+                        </select>
                     </div>
                     <div class="col-sm-12">
                         <a href="javascript:$('.formLogin').fadeOut().hide(); $('.formForgot').removeAttr('style').addClass('animated shake');"><i class="fa fa-key m-r-10"></i>Quên mật khẩu</a>
@@ -289,25 +313,25 @@
         </div>
     </form>
     <!-- Jquery Core Js -->
-    <script src="../plugins/jquery/jquery.min.js"></script>
+    <script src="../js_ALL/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->
-    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js_ALL/bootstrap.min.js"></script>
     <!-- Slimscroll Plugin Js -->
-    <script src="../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="../js_ALL/jquery.slimscroll.js"></script>
     <!-- Waves Effect Plugin Js -->
-    <script src="../plugins/node-waves/waves.js"></script>
+    <script src="../js_ALL/waves.js"></script>
     <!-- Autosize Plugin Js -->
-    <script src="../plugins/autosize/autosize.js"></script>
+    <script src="../js_ALL/autosize.js"></script>
     <!-- Moment Plugin Js -->
-    <script src="../plugins/momentjs/moment.js"></script>
+    <script src="../js_ALL/moment.js"></script>
     <!-- Bootstrap Material Datetime Picker Plugin Js -->
-    <script src="../plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+    <script src="../js_ALL/bootstrap-material-datetimepicker.js"></script>
 
     <!-- Demo Js -->
-    <script src="../js/demo.js"></script>
-    <script src="../js/pages/forms/basic-form-elements.js"></script>
-    <script src="../js/admin.js"></script>
+    <script src="../js_ALL/demo.js"></script>
+    <script src="../js_ALL/basic-form-elements.js"></script>
+    <script src="../js_ALL/admin.js"></script>
     <!-- Custom Js -->
-    <script src="../js/pages/ui/dialogs.js"></script>
+    <script src="../js_ALL/dialogs.js"></script>
 </body>
 </html>

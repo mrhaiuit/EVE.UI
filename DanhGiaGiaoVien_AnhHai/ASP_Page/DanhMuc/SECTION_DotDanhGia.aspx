@@ -242,7 +242,7 @@
                     xmlhttp.send();
                 });
             }
-            function slEduProvince_onchange(value) {
+            function slEduProvince_onchange(value, Loai) {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
                     xmlhttp = new XMLHttpRequest();
@@ -253,14 +253,17 @@
                 xmlhttp.onreadystatechange = function () {
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                         if (xmlhttp.responseText != "") {
-                            $("#ContentMaster_slEduDepartment").html(xmlhttp.responseText);
+                            if (Loai != "" && Loai != undefined)
+                                $("#ContentMaster_slEduDepartment" + Loai).html(xmlhttp.responseText);
+                            else
+                                $("#ContentMaster_slEduDepartment").html(xmlhttp.responseText);
                         }
                     }
                 }
                 xmlhttp.open("GET", "../../Ajax.aspx?Action=Load_EduDepartment&IDEduProvince=" + value, true);
                 xmlhttp.send();
             }
-            function slEduDepartment_onchange(value) {
+            function slEduDepartment_onchange(value,Loai) {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
                     xmlhttp = new XMLHttpRequest();
@@ -270,7 +273,11 @@
                 }
                 xmlhttp.onreadystatechange = function () {
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                        if (xmlhttp.responseText != "") {
+                        if (xmlhttp.responseText != "")//
+                        {
+                            if (Loai != "" && Loai != undefined)
+                                $("#ContentMaster_slEduSchoold" + Loai).html(xmlhttp.responseText);
+                            else
                             $("#ContentMaster_slEduSchoold").html(xmlhttp.responseText);
                         }
                     }
@@ -278,8 +285,7 @@
                 xmlhttp.open("GET", "../../Ajax.aspx?Action=Load_EduSchoold&IDEduDepartment=" + value, true);
                 xmlhttp.send();
             }
-            function LoadInfoNhanVien()
-            {
+            function LoadInfoNhanVien() {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
                     xmlhttp = new XMLHttpRequest();
@@ -289,8 +295,7 @@
                 }
                 xmlhttp.onreadystatechange = function () {
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                        if (xmlhttp.responseText != "")
-                        {
+                        if (xmlhttp.responseText != "") {
                             var arr = xmlhttp.responseText.split("@_@");
                             $("#ContentMaster_slEduProvince").val(arr[10]).trigger('change');
                             setTimeout(function () {
@@ -330,8 +335,10 @@
                                 <br />
                                 <br />
                             </div>
-                            <div class="row">
+
+                            <div class="row m-b-10">
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;">Năm đánh giá</h5>
                                     <select class="form-control" id="slNam" style="width: 100%;" runat="server">
                                         <option value="">── Chọn tìm năm đánh giá ──</option>
                                         <option value='2020'>2020</option>
@@ -341,7 +348,25 @@
                                         <option value='2024'>2024</option>
                                     </select>
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-8 col-xs-8">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;">Cấp sở</h5>
+                                    <select class="form-control" id="slEduProvince_TimKiem" runat="server" style="width: 100%;" onchange="slEduProvince_onchange(this.value,'_TimKiem');">
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;">Cấp phòng</h5>
+                                    <select class="form-control" id="slEduDepartment_TimKiem" runat="server" style="width: 100%;" onchange="slEduDepartment_onchange(this.value,'_TimKiem');">
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;">Cấp trường</h5>
+                                    <select class="form-control" id="slEduSchoold_TimKiem" runat="server" style="width: 100%;">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <!-- Call Search -->
                                     <asp:LinkButton OnClick="btnSearch_Click" runat="server" class="btn btn-warning waves-effect js-search" Style="width: 100%;"><i class="material-icons">search</i><span>Tìm kiếm</span></asp:LinkButton>
                                     <!-- #END# Call Search -->
@@ -349,7 +374,7 @@
                                 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
                                     <a class="btn bg-purple waves-effect" href="javascript:void(0);"><i class="material-icons">file_download</i> <span>XUẤT EXCEL</span></a>
                                 </div>
-                                <div class="col-lg-5 col-md-5 col-sm-4 col-xs-6 align-right">
+                                <div class="col-lg-8 col-md-8 col-sm-4 col-xs-6 align-right">
                                     <a class="btn btn-warning waves-effect" href="javascript:OpenModal_AddDotDanhGia();"><i class="material-icons">playlist_add</i> <span>THÊM MỚI</span></a>
                                 </div>
                             </div>
@@ -459,7 +484,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 col-lg-6">
-                                    <h5 class="card-inside-title " style="margin-bottom: 5px;margin-top:0;">Năm đánh giá</h5>
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0;">Năm đánh giá</h5>
                                     <select class="form-control" id="slNam_Modal" style="width: 100%;">
                                         <option value="">-- Chọn năm đánh giá --</option>
                                         <option value='2020'>2020</option>
@@ -470,7 +495,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
-                                    <h5 class="card-inside-title " style="margin-bottom: 5px;margin-top:0;visibility:hidden;">Tên đợt đánh giá</h5>
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0; visibility: hidden;">Tên đợt đánh giá</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtTenDotDanhGia">
                                             <input type="text" class="form-control" id="txtTenDotDanhGia">
@@ -501,17 +526,17 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
-                            <h5 class="card-inside-title " style="margin-bottom: 10px;">Cấp sở</h5>
-                                    <select class="form-control" id="slEduProvince" runat="server" style="width: 100%;" onchange="slEduProvince_onchange(this.value);">
+                                    <h5 class="card-inside-title " style="margin-bottom: 10px;">Cấp sở</h5>
+                                    <select class="form-control" id="slEduProvince" runat="server" style="width: 100%;" onchange="slEduProvince_onchange(this.value,'');">
                                     </select>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
-                            <h5 class="card-inside-title " style="margin-bottom: 10px;">Cấp phòng</h5>
-                                    <select class="form-control" id="slEduDepartment" runat="server" style="width: 100%;" onchange="slEduDepartment_onchange(this.value);">
+                                    <h5 class="card-inside-title " style="margin-bottom: 10px;">Cấp phòng</h5>
+                                    <select class="form-control" id="slEduDepartment" runat="server" style="width: 100%;" onchange="slEduDepartment_onchange(this.value,'');">
                                     </select>
                                 </div>
                                 <div class="col-md-12 col-lg-12">
-                            <h5 class="card-inside-title " style="margin-bottom: 10px;">Cấp trường</h5>
+                                    <h5 class="card-inside-title " style="margin-bottom: 10px;">Cấp trường</h5>
                                     <select class="form-control" id="slEduSchoold" runat="server" style="width: 100%;">
                                     </select>
                                 </div>
@@ -611,6 +636,7 @@
 
         $("#ContentMaster_slNam,#slNam_Modal").select2();
         $("#ContentMaster_slEduMinistry,#ContentMaster_slEduProvince,#ContentMaster_slEduDepartment,#ContentMaster_slEduSchoold").select2();
+        $("#ContentMaster_slEduProvince_TimKiem,#ContentMaster_slEduDepartment_TimKiem,#ContentMaster_slEduSchoold_TimKiem").select2();
 
         //datetimepicker jquery
         jQuery.datetimepicker.setLocale('vi');//chỉ cần dòng này là có thể đổi được ngôn ngữ

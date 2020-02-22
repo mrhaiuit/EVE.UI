@@ -25,6 +25,8 @@ public partial class Ajax : System.Web.UI.Page
             //Đăng xuất 
             case "Logout":
                 Logout(); break;
+            case "txtUserName_onchange":
+                txtUserName_onchange(); break;
             case "ChangeTheme":
                 ChangeTheme(); break;
             case "slSoGiaoDuc_onchange":
@@ -50,7 +52,9 @@ public partial class Ajax : System.Web.UI.Page
                 Load_EduDepartment(); break;
             case "Load_EduSchoold":
                 Load_EduSchoold(); break;
-            ///////////////////////////////  TRƯỜNG HỌC
+            case "slUserType_onchange":
+                slUserType_onchange(); break;
+            ///////////////////////////////  TRƯỜNG HỌC 
             case "AddTruongHoc":
                 AddTruongHoc(); break;
             case "EditTruongHoc":
@@ -116,6 +120,11 @@ public partial class Ajax : System.Web.UI.Page
         HttpCookie CC_PhanMemDanhGiaGiaoVien_VSW = new HttpCookie("CC_PhanMemDanhGiaGiaoVien_VSW", "");
         CC_PhanMemDanhGiaGiaoVien_VSW.Expires = DateTime.Now;
         HttpContext.Current.Response.Cookies.Add(CC_PhanMemDanhGiaGiaoVien_VSW);
+
+        HttpCookie CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW = new HttpCookie("CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW", "");
+        CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW.Expires = DateTime.Now;
+        HttpContext.Current.Response.Cookies.Add(CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW);
+
         Response.Write("Success");
     }
     void ChangeTheme()
@@ -184,6 +193,22 @@ public partial class Ajax : System.Web.UI.Page
         for (int i = 0; i < table.Rows.Count; i++)
             html += "<option value='" + table.Rows[i]["SchoolId"] + "'>" + table.Rows[i]["SchoolName"] + "</option>";
 
+        Response.Write(html);
+    }
+    async void slUserType_onchange()
+    {
+        string EduLevelCode = (Request.QueryString["value"].Trim());
+        var result = await _apiAuthentication.Get_Position_ByEduLevel(EduLevelCode);
+        string html = "<option value='' >── Chọn chức vụ ──</option>";
+        if (result != null)
+        {
+            var pos = result.Data;
+            if (pos != null)
+            {
+                for (int i = 0; i < pos.Count; i++)
+                    html += "<option value='" + pos[i].PositionId + "' >" + pos[i].PositionName + "</option>";
+            }
+        }
         Response.Write(html);
     }
     void CheckPasswordOLD()
@@ -347,6 +372,20 @@ public partial class Ajax : System.Web.UI.Page
         if (Connect.Exec(sql, paraName, paraValue))
             Response.Write("Success");
     }
+    async void txtUserName_onchange()
+    {
+        string userName = Request.QueryString["value"].Trim();
+        string html = "<option value=''>─ Chọn nhóm người dùng ─</option>";
+        var result = await _apiAuthentication.Get_UserGroup_ByUsername(userName);
+        if (result != null)
+            if (result.Data != null)
+            {
+                var UG = result.Data;
+                for (int i = 0; i < UG.Count; i++)
+                    html += "<option value='" + UG[i].UserGroupCode + "' >" + UG[i].UserGroupName + "</option>";
+            }
+        Response.Write(html);
+    }
     #endregion
     ///////////////////////////////////////  TRƯỜNG HỌC
     #region TRƯỜNG HỌC
@@ -439,9 +478,9 @@ public partial class Ajax : System.Web.UI.Page
     ///////////////////////////////////////  ĐỢT ĐÁNH GIÁ
     #region ĐỢT ĐÁNH GIÁ 
     async void LoadInfoNhanVien()
-    { 
+    {
         string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value;
-        string EmployeeID = StaticData.getField("Employee", "EmployeeID", "username", TenDangNhap_Cookie.ToString());
+        string EmployeeID = StaticData.getField("Employee", "EmployeeID", "Username", TenDangNhap_Cookie.ToString());
 
         var result = await _apiAuthentication.GetEmployee_ById(int.Parse(EmployeeID == "" ? "0" : EmployeeID));
         string KQ = "";
@@ -482,13 +521,16 @@ public partial class Ajax : System.Web.UI.Page
         string DataValue = Request.QueryString["value"].Trim();
         var result = await _apiAuthentication.GetEvalPeriod_ById(int.Parse(DataValue == "" ? "0" : DataValue));
         string KQ = "";
-        var Period = result.Data;
-        if (Period != null)
+        if (result != null)
         {
-            string EduDepartmentId = StaticData.getField("School", "EduDepartmentId", "SchoolId", Period.SchoolId.ToString());
-            string EduProvinceId = StaticData.getField("School", "EduProvinceId", "SchoolId", Period.SchoolId.ToString());
+            var Period = result.Data;
+            if (Period != null)
+            {
+                string EduDepartmentId = StaticData.getField("School", "EduDepartmentId", "SchoolId", Period.SchoolId.ToString());
+                string EduProvinceId = StaticData.getField("School", "EduProvinceId", "SchoolId", Period.SchoolId.ToString());
 
-            KQ = Period.PeriodName + "@_@" + Period.FromDate.ToString().ConvertMMDDYYtoDDMMYY() + "@_@" + Period.ToDate.ToString().ConvertMMDDYYtoDDMMYY() + "@_@" + Period.Year + "@_@" + EduProvinceId + "@_@" + EduDepartmentId + "@_@" + Period.SchoolId;
+                KQ = Period.PeriodName + "@_@" + Period.FromDate.ToString().ConvertMMDDYYtoDDMMYY() + "@_@" + Period.ToDate.ToString().ConvertMMDDYYtoDDMMYY() + "@_@" + Period.Year + "@_@" + EduProvinceId + "@_@" + EduDepartmentId + "@_@" + Period.SchoolId;
+            }
         }
         Response.Write(KQ);
     }

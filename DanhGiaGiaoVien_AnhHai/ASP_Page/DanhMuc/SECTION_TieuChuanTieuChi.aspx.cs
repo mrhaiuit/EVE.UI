@@ -79,10 +79,8 @@ public partial class ASP_Page_Default : System.Web.UI.Page
     {
         ClientResponse<List<EvalStandard>> result = new ClientResponse<List<EvalStandard>>();
 
-       // if (pCapGiaoDuc != "")
-         //   result = await _apiAuthentication.GetSchool_ByEduDepartmentId(int.Parse(pCapGiaoDuc == "" ? "0" : pCapGiaoDuc));
-        //else
-            result = await _apiAuthentication.GetEvalStandard();
+        if (pCapGiaoDuc != "" && pLoaiTieuChuan != "")
+            result = await _apiAuthentication.GetEvalStandard_ByLevel_and_Type(pCapGiaoDuc, pLoaiTieuChuan); 
 
         string html = @" ";
         if (result != null)

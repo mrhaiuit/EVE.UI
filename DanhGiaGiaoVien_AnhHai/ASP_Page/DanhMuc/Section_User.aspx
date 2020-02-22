@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Layout/MasterPage.master" AutoEventWireup="true" CodeFile="SECTION_User.aspx.cs" Inherits="ASP_Page_Default" %>
+﻿<%@ Page Language="C#" Async="true" MasterPageFile="~/Layout/MasterPage.master" AutoEventWireup="true" CodeFile="SECTION_User.aspx.cs" Inherits="ASP_Page_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <style>
@@ -338,6 +338,28 @@
                 xmlhttp.open("GET", "../../Ajax.aspx?Action=EditUser&chuoi=" + chuoi + "&user=" + user, true);
                 xmlhttp.send();
             }
+            function slUserType_onchange(value) {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (xmlhttp.responseText != "") {
+                            $("#slChucVu").html(xmlhttp.responseText);
+                        }
+                        else {
+                            $("#slChucVu").html("");
+                            //swal("Lỗi !", "", "error");
+                        }
+                    }
+                }
+                xmlhttp.open("GET", "../../Ajax.aspx?Action=slUserType_onchange&value=" + value, true);
+                xmlhttp.send();
+            }
         }
     </script>
 </asp:Content>
@@ -413,7 +435,7 @@
                                 </div>
                                 <div class="col-md-2 col-lg-2">
                                     <select class="form-control" id="slGioiTinh" style="width: 100%;">
-                                        <option value="">-- Giới tính --</option>
+                                        <option value="">── Giới tính ──</option>
                                         <option value="0">Nữ</option>
                                         <option value="1">Nam</option>
                                     </select>
@@ -451,10 +473,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
-                                    <select class="form-control" id="slChucVu" style="width: 100%;">
-                                        <option value="">-- Chức vụ --</option>
-                                        <option value="1">Chức vụ A</option>
-                                        <option value="2">Chức vụ B</option>
+                                    <select class="form-control" id="slUserType" runat="server" style="width: 100%;" onchange="slUserType_onchange(this.value);">
                                     </select>
                                 </div>
                                 <div class="col-md-9 col-lg-9">
@@ -466,10 +485,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
-                                    <select class="form-control" id="slActive" runat="server" style="width: 100%;">
-                                        <option value="">-- Chọn active --</option>
-                                        <option value="True">Active</option>
-                                        <option value="False">Disable</option>
+                                    <select class="form-control" id="slChucVu" style="width: 100%;">
+                                        <option value="">── Chức vụ ──</option> 
                                     </select>
                                 </div>
                             </div>
@@ -479,7 +496,10 @@
                             <hr class="m-t-0" />
                             <div class="row">
                                 <div class="col-md-3 col-lg-3">
-                                    <select class="form-control" id="slUserType" runat="server" style="width: 100%;">
+                                    <select class="form-control" id="slActive" runat="server" style="width: 100%;">
+                                        <option value="">── Chọn active ──</option>
+                                        <option value="True">Active</option>
+                                        <option value="False">Disable</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
@@ -581,7 +601,7 @@
             xmlhttp.open("GET", "../../Ajax.aspx?Action=Load_EduSchoold&IDEduDepartment=" + value, true);
             xmlhttp.send();
         }
-        $("#ContentMaster_slUserType,#ContentMaster_slEduMinistry,#ContentMaster_slEduProvince,#ContentMaster_slEduDepartment,#ContentMaster_slEduSchoold").select2();
+        $("#ContentMaster_slUserType,#ContentMaster_slEduMinistry,#ContentMaster_slEduProvince,#ContentMaster_slEduDepartment,#ContentMaster_slEduSchoold,#slChucVu").select2();
 
         //datetimepicker jquery
         jQuery.datetimepicker.setLocale('vi');//chỉ cần dòng này là có thể đổi được ngôn ngữ
