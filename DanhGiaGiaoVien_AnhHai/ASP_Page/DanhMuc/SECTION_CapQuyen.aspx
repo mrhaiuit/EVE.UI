@@ -229,7 +229,7 @@
 
             <!-- vertical Modal -->
             <div class="modal fade" id="verticalModal" tabindex="-1" role="dialog" aria-labelledby="verticalModal" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content" style="border-radius: 10px;">
                         <div class="modal-header">
                             <h4 class="modal-title" id="myModalTile">THÊM MỚI</h4>
@@ -237,7 +237,8 @@
                         <div class="modal-body">
 
                             <div class="row">
-                                <div class="col-md-6 col-lg-6">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;">Nhân viên</h5>
                                     <select class="form-control" id="slNhanVien_modal" style="width: 100%;" runat="server">
                                         <option>── Chọn nhân viên ──</option>
                                         <option>Nhân viên A</option>
@@ -246,7 +247,8 @@
                                         <option>Nhân viên D</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6 col-lg-6">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;">Nhóm quyền</h5>
                                     <select class="form-control" id="slNhomQuyen_modal" style="width: 100%;" runat="server">
                                         <option>── Chọn nhóm quyền ──</option>
                                         <option>Nhóm A</option>

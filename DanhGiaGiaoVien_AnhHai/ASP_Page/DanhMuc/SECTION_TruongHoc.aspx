@@ -21,10 +21,10 @@
             {
                 var SGD = getQueryString("SGD");
                 var PGD = getQueryString("PGD");
-                if (SGD != "") 
+                if (SGD != "")
                     $("#ContentMaster_slSoGiaoDuc").val(SGD).trigger('change');
                 if (PGD != "")
-                    setTimeout(function () { $("#ContentMaster_slPhongGiaoDuc").val(PGD).trigger('change'); }, 500); 
+                    setTimeout(function () { $("#ContentMaster_slPhongGiaoDuc").val(PGD).trigger('change'); }, 500);
             }
             function OpenModal_AddTruongHoc() {
                 $("#txtTenTruongHoc,#txtTenDuong").val("");
@@ -34,7 +34,7 @@
                 $("#btnModalSave").attr('onclick', 'AddTruongHoc();');
                 $("#myModalTile").html('THÊM MỚI TRƯỜNG HỌC');
                 $("#verticalModal").modal('show');
-                $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
+                $("#verticalModal").css({ 'display': 'block', 'align-items': 'center' });
             }
             function AddTruongHoc() {
                 var TenTruong = $("#txtTenTruongHoc").val();
@@ -138,11 +138,11 @@
                             setTimeout(function () { $("#slQuanHuyen").val(arr[6]).trigger('change'); }, 300);
                             setTimeout(function () { $("#slPhuongXa").val(arr[7]).trigger('change'); }, 600);
 
-                            $("#btnModalSave").attr('onclick', 'EditTruongHoc('+value+');');
+                            $("#btnModalSave").attr('onclick', 'EditTruongHoc(' + value + ');');
 
                             $("#myModalTile").html('CHỈNH SỬA THÔNG TIN TRƯỜNG HỌC');
                             $("#verticalModal").modal('show');
-                            $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
+                            $("#verticalModal").css({ 'display': 'block', 'align-items': 'center' });
                         }
                         else {
                             swal("Lỗi !", "", "error");
@@ -151,7 +151,7 @@
                 }
                 xmlhttp.open("GET", "../../Ajax.aspx?Action=LoadTruongHoc&value=" + value, true);
                 xmlhttp.send();
-            }  
+            }
             function EditTruongHoc(TruongHoc) {
                 var TenTruong = $("#txtTenTruongHoc").val();
                 var TenDuong = $("#txtTenDuong").val();
@@ -302,8 +302,7 @@
                 xmlhttp.open("GET", "../../Ajax.aspx?Action=slQuanHuyen_onchange&value=" + value, true);
                 xmlhttp.send();
             }
-            function DeleteTruongHoc(TruongHoc)
-            {
+            function DeleteTruongHoc(TruongHoc) {
                 swal({
                     title: 'Bạn có chắc muốn xoá ?',
                     type: 'warning',
@@ -378,12 +377,12 @@
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <select class="form-control" id="slSoGiaoDuc" style="width: 100%;" runat="server" onchange="slSoGiaoDuc_onchange(this.value,'select_timkiem');">
-                                        <option>── Chọn sở giáo dục ──</option> 
+                                        <option>── Chọn sở giáo dục ──</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <select class="form-control" id="slPhongGiaoDuc" style="width: 100%;" runat="server" onchange="$('#ContentMaster_txtPhongGiaoDuc').val(this.value);">
-                                        <option>── Chọn phòng giáo dục ──</option> 
+                                        <option>── Chọn phòng giáo dục ──</option>
                                     </select>
                                     <input type="hidden" id="txtPhongGiaoDuc" runat="server" />
                                 </div>
@@ -391,7 +390,7 @@
                             <div class="row">
                                 <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
                                     <!-- Call Search -->
-                                    <asp:LinkButton ID="btnSearch" OnClick="btnSearch_Click" runat="server" class="btn btn-warning waves-effect js-search" style="width: 100%; box-shadow: none;"><i class="material-icons">search</i><span>Tìm kiếm</span></asp:LinkButton>
+                                    <asp:LinkButton ID="btnSearch" OnClick="btnSearch_Click" runat="server" class="btn btn-warning waves-effect js-search" Style="width: 100%; box-shadow: none;"><i class="material-icons">search</i><span>Tìm kiếm</span></asp:LinkButton>
                                     <!-- #END# Call Search -->
                                 </div>
                                 <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6 align-right">
@@ -462,7 +461,7 @@
 
             <!-- vertical Modal -->
             <div class="modal fade" id="verticalModal" tabindex="-1" role="dialog" aria-labelledby="verticalModal" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content" style="border-radius: 10px;">
                         <div class="modal-header">
                             <h4 class="modal-title" id="myModalTile">THÊM MỚI</h4>
@@ -470,20 +469,31 @@
                         <div class="modal-body">
 
                             <div class="row">
-                                <div class="col-md-6 col-lg-6">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0; display: none;">Tên trường</h5>
+                                    <div class="form-group form-float">
+                                        <div class="form-line" id="fltxtTenTruongHoc">
+                                            <input type="text" class="form-control" id="txtTenTruongHoc">
+                                            <label class="form-label">Tên trường <span style="display: inline-block; font-size: 10px;">(<i class="fa fa-certificate"></i>)</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 5px;">Sở giáo dục <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
                                     <select class="form-control" id="slSoGiaoDuc_modal" style="width: 100%;" runat="server" onchange="slSoGiaoDuc_onchange(this.value,'modal');">
                                         <option>-- Chọn sở giáo dục --</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6 col-lg-6">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 5px;">Phòng giáo dục <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
                                     <select class="form-control" id="slPhongGiaoDuc_modal" style="width: 100%;">
                                         <option>-- Chọn phòng giáo dục --</option>
                                     </select>
                                 </div>
                             </div>
-                            <h5 class="card-inside-title " style="margin-bottom: 10px;">Cấp trường <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
                             <div class="row">
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;margin-top:5px;">Cấp trường <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
                                     <select class="form-control" id="slCapTruong_modal" style="width: 100%;" runat="server">
                                         <option>-- Chọn cấp trường --</option>
                                         <option>Nhà trẻ</option>
@@ -492,36 +502,33 @@
                                         <option>THPT</option>
                                     </select>
                                 </div>
-                                <div class="col-md-9 col-lg-9">
-                                    <div class="form-group form-float">
-                                        <div class="form-line" id="fltxtTenTruongHoc">
-                                            <input type="text" class="form-control" id="txtTenTruongHoc">
-                                            <label class="form-label">Tên trường <span style="display: inline-block; font-size: 10px;">(<i class="fa fa-certificate"></i>)</span></label>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                            <h5 class="card-inside-title " style="margin-bottom: 10px;">Địa chỉ</h5>
                             <div class="row">
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0; visibility: hidden;">ád áda</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtTenDuong">
                                             <input type="text" class="form-control" id="txtTenDuong">
-                                            <label class="form-label">Tên đường <span style="display: inline-block; font-size: 10px;">(<i class="fa fa-certificate"></i>)</span></label>
+                                            <label class="form-label">Địa chỉ <span style="display: inline-block; font-size: 10px;">(<i class="fa fa-certificate"></i>)</span></label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 5px;">Tỉnh/Thành phố</h5>
                                     <select class="form-control" id="slTinhThanh" style="width: 100%;" runat="server" onchange="slTinhThanh_onchange(this.value);">
                                         <option>-- Chọn tỉnh/thành phố --</option>
                                     </select>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 5px;">Quận/Huyện</h5>
                                     <select class="form-control" id="slQuanHuyen" style="width: 100%;" onchange="slQuanHuyen_onchange(this.value);">
                                         <option>-- Chọn quận/huyện --</option>
                                     </select>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 5px;">Phường/Xã</h5>
                                     <select class="form-control" id="slPhuongXa" style="width: 100%;">
                                         <option>-- Chọn phường/xã --</option>
                                     </select>

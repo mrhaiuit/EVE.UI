@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Async="true"  MasterPageFile="~/Layout/MasterPage.master" AutoEventWireup="true" CodeFile="SECTION_PhongGiaoDuc.aspx.cs" Inherits="ASP_Page_Default" %>
+﻿<%@ Page Language="C#" Async="true" MasterPageFile="~/Layout/MasterPage.master" AutoEventWireup="true" CodeFile="SECTION_PhongGiaoDuc.aspx.cs" Inherits="ASP_Page_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <style>
@@ -18,7 +18,7 @@
     <script>
         {
             function OpenModal_AddPhongGiaoDuc() {
-                $("#txtTenPhongGiaoDuc,#txtTenDuong").val(""); 
+                $("#txtTenPhongGiaoDuc,#txtTenDuong").val("");
                 $("#ContentMaster_slTinhThanh, #slQuanHuyen, #slPhuongXa").val("").trigger('change');
 
                 $("#btnModalSave").attr('onclick', 'AddPhongGiaoDuc();');
@@ -61,7 +61,7 @@
                         $("#slQuanHuyen").removeClass("animated shake");
                     }, 1000);
                     flag_OK = false;
-                } 
+                }
 
                 var value = TenPhongGiaoDuc + "@_@" + TenDuong + "@_@" + Province + "@_@" + District + "@_@" + Ward + "@_@" + STT;
                 if (!flag_OK)
@@ -107,7 +107,7 @@
                         {
                             $("#fltxtTenPhongGiaoDuc,#fltxtTenDuong,#fltxtSTT").addClass("focused");
 
-                            var arr = xmlhttp.responseText.split("@_@");   
+                            var arr = xmlhttp.responseText.split("@_@");
                             $("#txtTenPhongGiaoDuc").val(arr[0]);
                             $("#txtTenDuong").val(arr[1]);
                             $("#txtSTT").val(arr[2]);
@@ -205,7 +205,7 @@
                 xmlhttp.open("GET", "../../Ajax.aspx?Action=EditPhongGiaoDuc&value=" + value + "&PhongGiaoDuc=" + PhongGiaoDuc, true);
                 xmlhttp.send();
 
-            } 
+            }
             function slTinhThanh_onchange(value) {
                 var xmlhttp;
                 if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -289,7 +289,7 @@
                     xmlhttp.open("GET", "../../Ajax.aspx?Action=DeletePhongGiaoDuc&PhongGiaoDuc=" + PhongGiaoDuc, true);
                     xmlhttp.send();
                 });
-            } 
+            }
         }
     </script>
 </asp:Content>
@@ -337,9 +337,9 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
                                     <!-- Call Search -->
-                                    <asp:LinkButton OnClick="btnSearch_Click" runat="server" class="btn btn-warning waves-effect js-search" style="width: 100%; box-shadow: none;"><i class="material-icons">search</i><span>Tìm kiếm</span></asp:LinkButton>
+                                    <asp:LinkButton OnClick="btnSearch_Click" runat="server" class="btn btn-warning waves-effect js-search" Style="width: 100%; box-shadow: none;"><i class="material-icons">search</i><span>Tìm kiếm</span></asp:LinkButton>
                                     <!-- #END# Call Search -->
-                                </div> 
+                                </div>
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 align-right">
                                     <a class="btn btn-warning waves-effect" href="javascript:OpenModal_AddPhongGiaoDuc();"><i class="material-icons">playlist_add</i> <span>THÊM MỚI</span></a>
                                 </div>
@@ -402,7 +402,7 @@
 
             <!-- vertical Modal -->
             <div class="modal fade" id="verticalModal" tabindex="-1" role="dialog" aria-labelledby="verticalModal" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content" style="border-radius: 10px;">
                         <div class="modal-header">
                             <h4 class="modal-title" id="myModalTile">THÊM MỚI</h4>
@@ -410,7 +410,7 @@
                         <div class="modal-body">
 
                             <div class="row">
-                                <div class="col-md-10 col-lg-10">
+                                <div class="col-md-8 col-lg-8">
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtTenPhongGiaoDuc">
                                             <input type="text" class="form-control" id="txtTenPhongGiaoDuc">
@@ -418,7 +418,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-lg-2">
+                                <div class="col-md-4 col-lg-4">
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtSTT">
                                             <input type="text" class="form-control" id="txtSTT">
@@ -427,27 +427,32 @@
                                     </div>
                                 </div>
                             </div>
-                            <h5 class="card-inside-title " style="margin-bottom: 10px;">Chọn địa chỉ</h5>
                             <div class="row">
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0; visibility: hidden;">Tên đường</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtTenDuong">
                                             <input type="text" class="form-control" id="txtTenDuong">
-                                            <label class="form-label">Tên đường <span style="display: inline-block; font-size: 10px;">(<i class="fa fa-certificate"></i>)</span></label>
+                                            <label class="form-label">Địa chỉ <span style="display: inline-block; font-size: 10px;">(<i class="fa fa-certificate"></i>)</span></label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0;">Tỉnh/Thành phố</h5>
                                     <select class="form-control" id="slTinhThanh" style="width: 100%;" onchange="slTinhThanh_onchange(this.value);" runat="server">
                                         <option value="">── Chọn tỉnh/thành phố ──</option>
                                     </select>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
-                                    <select class="form-control" id="slQuanHuyen" style="width: 100%;"onchange="slQuanHuyen_onchange(this.value);">
+                                <div class="col-md-6 col-lg-6">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0;">Quận/Huyện</h5>
+                                    <select class="form-control" id="slQuanHuyen" style="width: 100%;" onchange="slQuanHuyen_onchange(this.value);">
                                         <option value="">── Chọn quận/huyện ──</option>
                                     </select>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-6 col-lg-6 hidden">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0;">Phường/Xã</h5>
                                     <select class="form-control" id="slPhuongXa" style="width: 100%;">
                                         <option value="">── Chọn phường/xã ──</option>
                                     </select>

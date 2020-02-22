@@ -59,7 +59,7 @@ public partial class Ajax : System.Web.UI.Page
                 DeleteTruongHoc(); break;
             case "LoadTruongHoc":
                 LoadTruongHoc(); break;
-            ///////////////////////////////  ĐỢT ĐÁNH GIÁ
+            ///////////////////////////////  ĐỢT ĐÁNH GIÁ 
             case "AddDotDanhGia":
                 AddDotDanhGia(); break;
             case "EditDotDanhGia":
@@ -68,6 +68,8 @@ public partial class Ajax : System.Web.UI.Page
                 DeleteDotDanhGia(); break;
             case "LoadDotDanhGia":
                 LoadDotDanhGia(); break;
+            case "LoadInfoNhanVien":
+                LoadInfoNhanVien(); break;
             ///////////////////////////////  TIÊU CHUẨN 
             case "AddTieuChuan":
                 AddTieuChuan(); break;
@@ -436,6 +438,24 @@ public partial class Ajax : System.Web.UI.Page
     #endregion
     ///////////////////////////////////////  ĐỢT ĐÁNH GIÁ
     #region ĐỢT ĐÁNH GIÁ 
+    async void LoadInfoNhanVien()
+    { 
+        string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value;
+        string EmployeeID = StaticData.getField("Employee", "EmployeeID", "username", TenDangNhap_Cookie.ToString());
+
+        var result = await _apiAuthentication.GetEmployee_ById(int.Parse(EmployeeID == "" ? "0" : EmployeeID));
+        string KQ = "";
+        if (result != null)
+        {
+            var emp = result.Data;
+            if (emp != null)
+            {
+                KQ = emp.EmployeeName + "@_@" + emp.PhoneNumber + "@_@" + emp.Address + "@_@" + emp.EmployeeCode + "@_@" + emp.UserName + "@_@" + emp.Password + "@_@" +
+                       emp.EduLevelCode + "@_@" + emp.Active + "@_@" + emp.Remarks + "@_@" + emp.MinistryofEducationaCode + "@_@" + emp.EduProvinceId + "@_@" + emp.EduDepartmentId + "@_@" + emp.SchoolId;
+            }
+        }
+        Response.Write(KQ);
+    }
     async void AddDotDanhGia()
     {
         string[] DataValue = Request.QueryString["value"].Trim().Split(new[] { "@_@" }, StringSplitOptions.None);
@@ -681,7 +701,7 @@ public partial class Ajax : System.Web.UI.Page
             var EduDept = result.Data;
             if (EduDept != null)
             {
-                string ProvinceID = StaticData.getField("district", "ProvinceID", "districtID", EduDept.DistrictId + ""); 
+                string ProvinceID = StaticData.getField("district", "ProvinceID", "districtID", EduDept.DistrictId + "");
                 KQ = EduDept.EduDepartmentName + "@_@" + EduDept.Address + "@_@" + EduDept.Idx + "@_@" + ProvinceID + "@_@" + EduDept.DistrictId;
             }
         }

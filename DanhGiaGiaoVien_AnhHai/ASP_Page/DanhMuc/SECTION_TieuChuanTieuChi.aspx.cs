@@ -79,14 +79,14 @@ public partial class ASP_Page_Default : System.Web.UI.Page
     {
         ClientResponse<List<EvalStandard>> result = new ClientResponse<List<EvalStandard>>();
 
-        //if (pCapGiaoDuc != "")
-        //    result = await _apiAuthentication.GetSchool_ByEduDepartmentId(int.Parse(pCapGiaoDuc == "" ? "0" : pCapGiaoDuc));
+       // if (pCapGiaoDuc != "")
+         //   result = await _apiAuthentication.GetSchool_ByEduDepartmentId(int.Parse(pCapGiaoDuc == "" ? "0" : pCapGiaoDuc));
         //else
-        result = await _apiAuthentication.GetEvalStandard();
+            result = await _apiAuthentication.GetEvalStandard();
 
         string html = @" ";
         if (result != null)
-            if (!result.IsError)
+            if (result.Data != null)
             {
                 var standard = result.Data;
                 for (int i = 0; i < standard.Count; i++)

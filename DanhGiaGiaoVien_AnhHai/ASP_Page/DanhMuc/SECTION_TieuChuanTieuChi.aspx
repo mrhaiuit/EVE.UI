@@ -39,14 +39,14 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                    <select class="form-control" id="slLoaiTieuChuan" runat="server" style="width: 100%;">
-                                        <option>── Chọn loại tiêu chuẩn ──</option>
-                                    </select>
-                                </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <select class="form-control" id="slCapGiaoDuc" runat="server" style="width: 100%;">
                                         <option>── Chọn cấp giáo dục ──</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <select class="form-control" id="slLoaiTieuChuan" runat="server" style="width: 100%;">
+                                        <option>── Chọn loại tiêu chuẩn ──</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
@@ -143,16 +143,7 @@
                             <h4 class="modal-title" id="myModalTile">THÊM MỚI</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="row m-b-15">
-                                <div class="col-md-6 col-lg-6">
-                                    <h5 class="card-inside-title " style="margin-bottom: 10px; margin-top: 0;">Loại tiêu chuẩn <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
-                                    <select id="slLoaiTieuChuan_modal" runat="server" style="width: 100%;"></select>
-                                </div>
-                                <div class="col-md-6 col-lg-6">
-                                    <h5 class="card-inside-title " style="margin-bottom: 10px; margin-top: 0;">Cấp giáo dục <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
-                                    <select id="slCapGiaoDuc_modal" runat="server" style="width: 100%;"></select>
-                                </div>
-                            </div>
+                            
                             <div class="row">
                                 <div class="col-md-12 col-lg-12">
                                     <div class="form-group form-float">
@@ -171,6 +162,16 @@
                                             <label class="form-label">Ghi chú </label>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row m-b-15">
+                                <div class="col-md-6 col-lg-6">
+                                    <h5 class="card-inside-title " style="margin-bottom: 10px; margin-top: 0;">Loại tiêu chuẩn <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
+                                    <select id="slLoaiTieuChuan_modal" runat="server" style="width: 100%;"></select>
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <h5 class="card-inside-title " style="margin-bottom: 10px; margin-top: 0;">Cấp giáo dục <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
+                                    <select id="slCapGiaoDuc_modal" runat="server" style="width: 100%;"></select>
                                 </div>
                             </div>
 
@@ -710,7 +711,7 @@
 
                         $("#btnModalSave_TieuChi").attr('onclick', 'EditTieuChi(' + TieuChuan + ',' + value + ');');
 
-                        $("#myModalTile_TieuChi").html('CHỈNH SỬA THÔNG TIN TIÊU CHÍ CỦA ' + TenTieuChuan.toUpperCase());
+                        $("#myModalTile_TieuChi").html(TenTieuChuan.toUpperCase());
                         $("#verticalModal_TieuChi").modal('show');
                         $("#verticalModal_TieuChi").css({ 'display': 'flex', 'align-items': 'center' });
                     }

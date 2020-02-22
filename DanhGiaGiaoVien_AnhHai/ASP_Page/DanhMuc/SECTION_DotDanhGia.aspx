@@ -29,13 +29,20 @@
     <script>
         {
             function OpenModal_AddDotDanhGia() {
+                var d = new Date();
+                //var month = d.getMonth() + 1;
+                //var day = d.getDate();
+                //var today = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + d.getFullYear();
+
                 $("#txtTenDotDanhGia,#txtTuNgay, #txtDenNgay").val("");
                 $("#slNam_Modal, #ContentMaster_slEduProvince, #ContentMaster_slEduDepartment, #ContentMaster_slEduSchoold").val("").trigger('change');
+                $("#slNam_Modal").val(d.getFullYear()).trigger('change');
 
                 $("#btnModalSave").attr('onclick', 'AddDotDanhGia();');
                 $("#myModalTile").html('THÊM MỚI ĐỢT ĐÁNH GIÁ');
                 $("#verticalModal").modal('show');
                 $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
+                LoadInfoNhanVien();
             }
             function AddDotDanhGia() {
                 var TenDotDanhGia = $("#txtTenDotDanhGia").val();
@@ -91,7 +98,7 @@
                     }
                 }
                 xmlhttp.open("GET", "../../Ajax.aspx?Action=AddDotDanhGia&value=" + value, true);
-                xmlhttp.send();  
+                xmlhttp.send();
             }
 
             function OpenModal_EditDotDanhGia(value) {
@@ -121,6 +128,7 @@
                             $("#txtTuNgay").val(arr[1]);
                             $("#txtDenNgay").val(arr[2]);
                             $("#slNam_Modal").val(arr[3]).trigger('change');
+                            debugger;
                             $("#ContentMaster_slEduProvince").val(arr[4]).trigger('change');
                             setTimeout(function () { $("#ContentMaster_slEduDepartment").val(arr[5]).trigger('change'); }, 500);
                             setTimeout(function () { $("#ContentMaster_slEduSchoold").val(arr[6]).trigger('change'); }, 1000);
@@ -270,6 +278,33 @@
                 xmlhttp.open("GET", "../../Ajax.aspx?Action=Load_EduSchoold&IDEduDepartment=" + value, true);
                 xmlhttp.send();
             }
+            function LoadInfoNhanVien()
+            {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (xmlhttp.responseText != "")
+                        {
+                            var arr = xmlhttp.responseText.split("@_@");
+                            $("#ContentMaster_slEduProvince").val(arr[10]).trigger('change');
+                            setTimeout(function () {
+                                $("#ContentMaster_slEduDepartment").val(arr[11]).trigger('change');
+                            }, 1000);
+                            setTimeout(function () {
+                                $("#ContentMaster_slEduSchoold").val(arr[12]).trigger('change');
+                            }, 1500);
+                        }
+                    }
+                }
+                xmlhttp.open("GET", "../../Ajax.aspx?Action=LoadInfoNhanVien", true);
+                xmlhttp.send();
+            }
         }
     </script>
 </asp:Content>
@@ -290,6 +325,7 @@
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                     <h4>QUẢN LÝ ĐỢT ĐÁNH GIÁ</h4>
+                                    <input type="hidden" name="name" value="" id="ND" runat="server" />
                                 </div>
                                 <br />
                                 <br />
@@ -414,7 +450,7 @@
 
             <!-- vertical Modal -->
             <div class="modal fade" id="verticalModal" tabindex="-1" role="dialog" aria-labelledby="verticalModal" data-keyboard="false" data-backdrop="static">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content" style="border-radius: 10px;">
                         <div class="modal-header">
                             <h4 class="modal-title" id="myModalTile">THÊM MỚI</h4>
@@ -422,7 +458,8 @@
                         <div class="modal-body">
 
                             <div class="row">
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-6 col-lg-6">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;margin-top:0;">Năm đánh giá</h5>
                                     <select class="form-control" id="slNam_Modal" style="width: 100%;">
                                         <option value="">-- Chọn năm đánh giá --</option>
                                         <option value='2020'>2020</option>
@@ -432,7 +469,8 @@
                                         <option value='2024'>2024</option>
                                     </select>
                                 </div>
-                                <div class="col-md-5 col-lg-5">
+                                <div class="col-md-6 col-lg-6">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;margin-top:0;visibility:hidden;">Tên đợt đánh giá</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtTenDotDanhGia">
                                             <input type="text" class="form-control" id="txtTenDotDanhGia">
@@ -440,50 +478,52 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-lg-2">
+                                <div class="col-md-6 col-lg-6">
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtTuNgay">
                                             <input type="text" class="form-control" id="txtTuNgay">
-                                            <label class="form-label">Từ ngày <span style="display: inline-block; font-size: 10px;">(<i class="fa fa-certificate"></i>)</span></label>
+                                            <label class="form-label">Từ ngày </label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-lg-2">
+                                <div class="col-md-6 col-lg-6">
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtDenNgay">
                                             <input type="text" class="form-control" id="txtDenNgay">
-                                            <label class="form-label">Đến ngày <span style="display: inline-block; font-size: 10px;">(<i class="fa fa-certificate"></i>)</span></label>
+                                            <label class="form-label">Đến ngày</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <h5 class="card-inside-title " style="margin-bottom: 10px;">Chọn trường</h5>
                             <div class="row">
-                                <div class="col-md-2 col-lg-2 hidden">
+                                <div class="col-md-6 col-lg-6" hidden>
                                     <select class="form-control" id="slEduMinistry" runat="server" style="width: 100%;">
                                     </select>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-6 col-lg-6">
+                            <h5 class="card-inside-title " style="margin-bottom: 10px;">Cấp sở</h5>
                                     <select class="form-control" id="slEduProvince" runat="server" style="width: 100%;" onchange="slEduProvince_onchange(this.value);">
                                     </select>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-6 col-lg-6">
+                            <h5 class="card-inside-title " style="margin-bottom: 10px;">Cấp phòng</h5>
                                     <select class="form-control" id="slEduDepartment" runat="server" style="width: 100%;" onchange="slEduDepartment_onchange(this.value);">
                                     </select>
                                 </div>
-                                <div class="col-md-4 col-lg-4">
+                                <div class="col-md-12 col-lg-12">
+                            <h5 class="card-inside-title " style="margin-bottom: 10px;">Cấp trường</h5>
                                     <select class="form-control" id="slEduSchoold" runat="server" style="width: 100%;">
                                     </select>
                                 </div>
                             </div>
                             <hr />
-                            <div class="row">
+                            <div class="row hidden">
                                 <div class="col-md-3 col-lg-3">
                                     <a class="btn btn-success"><i class="fa fa-check m-r-10"></i>TẠO DỮ LIỆU</a>
                                 </div>
                             </div>
 
-                            <div class="row m-t-20" style="overflow: auto; height: 250px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">
+                            <div class="row hidden m-t-20" style="overflow: auto; height: 250px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">
                                 <table class='table table-bordered table-hover'>
                                     <thead>
                                         <tr>
