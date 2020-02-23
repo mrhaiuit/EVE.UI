@@ -166,11 +166,11 @@
                             </div>
                             <div class="row m-b-15">
                                 <div class="col-md-6 col-lg-6">
-                                    <h5 class="card-inside-title " style="margin-bottom: 10px; margin-top: 0;">Loại tiêu chuẩn <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0;">Loại tiêu chuẩn <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
                                     <select id="slLoaiTieuChuan_modal" runat="server" style="width: 100%;"></select>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
-                                    <h5 class="card-inside-title " style="margin-bottom: 10px; margin-top: 0;">Cấp giáo dục <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 5px;">Cấp giáo dục <span style="display: inline-block; font-size: 10px; color: #ca0000;">(<i class="fa fa-certificate"></i>)</span></h5>
                                     <select id="slCapGiaoDuc_modal" runat="server" style="width: 100%;"></select>
                                 </div>
                             </div>
@@ -186,7 +186,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-lg-2">
+                                    <div class="col-md-2 col-lg-2 col-sm-6 col-xs-6">
                                         <div class="form-group form-float">
                                             <div class="form-line" id="fltxtSTT_modal">
                                                 <input type="text" class="form-control" id="txtSTT_modal" oninput='DinhDangTien(this.id)' onkeypress='onlyNumber(event)' />
@@ -194,7 +194,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3"> 
                                         <a class="btn btn-success waves-effect" href="javascript:void(0);" id="btnThemTieuChi_TrongTieuChuan"><i class="material-icons">playlist_add</i> <span>THÊM TIÊU CHÍ</span></a>
                                     </div>
                                 </div>
@@ -338,7 +338,7 @@
 
             $("#myModalTile").html('THÊM MỚI TIÊU CHUẨN');
             $("#verticalModal").modal('show');
-            $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
+            $("#verticalModal").css({ 'display': 'block', 'align-items': 'center' });
         }
         function AddTieuChuan() {
             var LoaiTieuChuan = $("#ContentMaster_slLoaiTieuChuan_modal").val();
@@ -435,7 +435,7 @@
 
                         $("#myModalTile").html('CHỈNH SỬA THÔNG TIN TIÊU CHUẨN');
                         $("#verticalModal").modal('show');
-                        $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
+                        $("#verticalModal").css({ 'display': 'block', 'align-items': 'center' });
                         LoadTieuChi_TrongTieuChuan(value);
                     }
                     else {
@@ -636,7 +636,7 @@
 
             $("#myModalTile_TieuChi").html('THÊM MỚI TIÊU CHÍ');
             $("#verticalModal_TieuChi").modal('show');
-            $("#verticalModal_TieuChi").css({ 'display': 'flex', 'align-items': 'center' });
+            $("#verticalModal_TieuChi").css({ 'display': 'inline-grid', 'align-items': 'center' });
         }
         function AddTieuChi(TieuChuan) {
             var TenTieuChi = $("#txtTenTieuChi_modalTieuChi").val();
@@ -713,7 +713,7 @@
 
                         $("#myModalTile_TieuChi").html(TenTieuChuan.toUpperCase());
                         $("#verticalModal_TieuChi").modal('show');
-                        $("#verticalModal_TieuChi").css({ 'display': 'flex', 'align-items': 'center' });
+                        $("#verticalModal_TieuChi").css({ 'display': 'inline-grid', 'align-items': 'center' });
                     }
                     else {
                         swal("Lỗi !", "", "error");

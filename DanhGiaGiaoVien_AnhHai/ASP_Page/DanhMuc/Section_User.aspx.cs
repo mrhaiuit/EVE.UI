@@ -61,7 +61,8 @@ public partial class ASP_Page_Default : System.Web.UI.Page
 
             LoadEduLevel();
             Load_SelectHTML("select * from EduMinistry", "EduMinistryName", "EduMinistryCode", false, "── Chọn cấp Bộ ──", slEduMinistry);
-            Load_SelectHTML("select * from EduProvince", "EduProvinceName", "EduProvinceId", true, "── Chọn cấp Sở ──", slEduProvince);
+            LoadEduProvince();
+            //Load_SelectHTML("select * from EduProvince", "EduProvinceName", "EduProvinceId", true, "── Chọn cấp Sở ──", slEduProvince);
             //Load_SelectHTML("select * from EduDepartment", "EduDepartmentName", "EduDepartmentId", true, "-- Chọn cấp Phòng --", slEduDepartment);
             //Load_SelectHTML("select * from School", "School", "SchoolId", true, "-- Chọn cấp Trường --", slEduSchoold);
             LoadDanhSach();
@@ -153,8 +154,7 @@ public partial class ASP_Page_Default : System.Web.UI.Page
     #endregion
     async void LoadEduLevel()
     {
-        string EmployeeID = StaticData.getField("Employee", "EmployeeID", "userName", tenDangNhap_HienTai);
-        string UserGroup_DB = StaticData.getField("Employee Em JOIN UserGroup_Employee UG ON Em.EmployeeId=UG.EmployeeId ", "UG.UserGroupCode", "Em.EmployeeId", EmployeeID);
+        string UserGroup_DB = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW"].Value;
 
         ClientResponse<List<EduLevel>> result = new ClientResponse<List<EduLevel>>();
         result = await _apiAuthentication.Get_EduLevel_ByUserGroup(UserGroup_DB);
@@ -180,6 +180,39 @@ public partial class ASP_Page_Default : System.Web.UI.Page
                 slUserType.DataBind();
                 slUserType.Items.Add(new ListItem("── Chọn Cấp ──", ""));
                 slUserType.Items.FindByText("── Chọn Cấp ──").Selected = true;
+            }
+
+    } 
+    async void LoadEduProvince()
+    {
+        string UserGroup_DB = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW"].Value; 
+        string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value;
+        string EmployeeID = StaticData.getField("Employee", "EmployeeID", "Username", TenDangNhap_Cookie);
+
+        ClientResponse<List<EduProvince>> result = new ClientResponse<List<EduProvince>>();
+        result = await _apiAuthentication.Get_EduProvince_ByUserGroup(UserGroup_DB, int.Parse(EmployeeID));
+        if (result != null)
+            if (result.Data != null)
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add("EduProvinceId");
+                table.Columns.Add("EduProvinceName");
+
+                var edu = result.Data;
+                for (int i = 0; i < edu.Count; i++)
+                {
+                    DataRow row = table.NewRow();
+                    row["EduProvinceId"] = edu[i].EduProvinceId;
+                    row["EduProvinceName"] = edu[i].EduProvinceName;
+                    table.Rows.Add(row);
+                }
+
+                slEduProvince.DataSource = table;
+                slEduProvince.DataTextField = "EduProvinceName";
+                slEduProvince.DataValueField = "EduProvinceId";
+                slEduProvince.DataBind();
+                slEduProvince.Items.Add(new ListItem("── Chọn cấp sở ──", ""));
+                slEduProvince.Items.FindByText("── Chọn cấp sở ──").Selected = true;
             }
 
     }

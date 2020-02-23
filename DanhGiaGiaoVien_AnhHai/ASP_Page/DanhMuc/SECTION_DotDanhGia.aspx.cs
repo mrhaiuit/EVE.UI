@@ -12,6 +12,8 @@ public partial class ASP_Page_Default : System.Web.UI.Page
 {
     string pChuoiTimKiem = "";
     string pNam = "";
+    string pSchoolID = "";
+    string pEvalType = "";
 
     string txtFistPage = "1";
     string txtPage1 = "";
@@ -48,6 +50,8 @@ public partial class ASP_Page_Default : System.Web.UI.Page
             Load_SelectHTML("select * from EduMinistry", "EduMinistryName", "EduMinistryCode", false, "── Chọn cấp Bộ ──", slEduMinistry);
             Load_SelectHTML("select * from EduProvince", "EduProvinceName", "EduProvinceId", true, "── Chọn cấp Sở ──", slEduProvince);
             Load_SelectHTML("select * from EduProvince", "EduProvinceName", "EduProvinceId", true, "── Chọn cấp Sở ──", slEduProvince_TimKiem);
+            Load_SelectHTML("select * from EvalType", "EvalTypeName", "EvalTypeCode", true, "── Chọn loại đánh giá ──", slEvalType);
+            Load_SelectHTML("select * from EvalType", "EvalTypeName", "EvalTypeCode", true, "── Chọn loại đánh giá ──", slEvalType_TimKiem);
 
             LoadQueryString();
             LoadDanhSach();
@@ -66,15 +70,26 @@ public partial class ASP_Page_Default : System.Web.UI.Page
             slNam.Value = pNam;
         }
         catch { }
+        try
+        {
+            pSchoolID = Request.QueryString["CapTruong"].ToString(); 
+        }
+        catch { }
+        try
+        {
+            pEvalType = Request.QueryString["LoaiDG"].ToString();
+            slEvalType_TimKiem.Value = pEvalType;
+        }
+        catch { }
     }
     async void LoadDanhSach()
     {
         ClientResponse<List<EvalPeriod>> result = new ClientResponse<List<EvalPeriod>>();
 
-        //if (pNam != "")
-        //    result = await _apiAuthentication.GetSchool_ByEduDepartmentId(int.Parse(pNam == "" ? "0" : pNam));
-        //else
-        result = await _apiAuthentication.GetEvalPeriod();
+        if (pNam != "" && pSchoolID != "" && pEvalType != "")
+            result = await _apiAuthentication.GetEvalPeriod_ByYear_and_School(int.Parse(pNam == "" ? "0" : pNam), int.Parse(pSchoolID == "" ? "0" : pSchoolID), pEvalType);
+        else
+            result = await _apiAuthentication.GetEvalPeriod();
 
         string html = @" ";
         if (result != null)
@@ -82,11 +97,7 @@ public partial class ASP_Page_Default : System.Web.UI.Page
             {
                 var period = result.Data;
                 for (int i = 0; i < period.Count; i++)
-                {
-                    if (pNam != "")
-                        if (pNam != period[i].Year.ToString())
-                            continue;
-
+                {  
                     html += @"  <tr>
                                  <td>" + (i + 1) + @"</td>
                                  <td class='align-center'>" + period[i].Year + @"</td>
@@ -111,12 +122,21 @@ public partial class ASP_Page_Default : System.Web.UI.Page
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         string Nam = slNam.Value.Trim();
-        string Truong = slEduSchoold_TimKiem.Value.Trim();
+        string LoaiDG = slEvalType_TimKiem.Value.Trim();
+        string CapSo = txtEduProvince_TimKiem.Value.Trim();
+        string CapPhong = txtEduDepartment_TimKiem.Value.Trim();
+        string CapTruong = txtEduSchoold_TimKiem.Value.Trim();
         string url = "Section_DotDanhGia.aspx?";
         if (Nam != "")
             url += "Nam=" + Nam + "&";
-        if (Truong != "")
-            url += "Truong=" + Truong + "&";
+        if (LoaiDG != "")
+            url += "LoaiDG=" + LoaiDG + "&";
+        if (CapSo != "")
+            url += "CapSo=" + CapSo + "&";
+        if (CapPhong != "")
+            url += "CapPhong=" + CapPhong + "&";
+        if (CapTruong != "")
+            url += "CapTruong=" + CapTruong + "&";
         Response.Redirect(url);
     }
     void Load_SelectHTML(string sql, string TextField, string ValueField, bool AddANewItem, string ItemName, System.Web.UI.HtmlControls.HtmlSelect select)

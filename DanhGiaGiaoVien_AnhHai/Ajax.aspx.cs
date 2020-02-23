@@ -171,30 +171,50 @@ public partial class Ajax : System.Web.UI.Page
                 html += "<option value='" + list[i].WardId + "' >" + list[i].WardName + "</option>";
         Response.Write(html);
     }
-    ///////////////////////////////////////  NGƯỜI DÙNG
-    #region NGƯỜI DÙNG 
-    void Load_EduDepartment()
+    async void Load_EduDepartment()
     {
         string IDEduProvince = (Request.QueryString["IDEduProvince"].Trim());
         string html = "<option value=''>── Chọn cấp Phòng ──</option>";
-        DataTable table = Connect.GetTable(@"select EduDepartmentId,EduDepartmentName from EduDepartment where EduProvinceId='" + IDEduProvince + "'");
+        //DataTable table = Connect.GetTable(@"select EduDepartmentId,EduDepartmentName from EduDepartment where EduProvinceId='" + IDEduProvince + "'"); 
+        //for (int i = 0; i < table.Rows.Count; i++)
+        //    html += "<option value='" + table.Rows[i]["EduDepartmentId"] + "'>" + table.Rows[i]["EduDepartmentName"] + "</option>";
 
-        for (int i = 0; i < table.Rows.Count; i++)
-            html += "<option value='" + table.Rows[i]["EduDepartmentId"] + "'>" + table.Rows[i]["EduDepartmentName"] + "</option>";
+        string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value;
+        string UserGroup_DB = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW"].Value;
+         
+        string EmployeeID = StaticData.getField("Employee", "EmployeeID", "Username", TenDangNhap_Cookie);
 
+        var result = await _apiAuthentication.Get_EduDepartment_ByUserGroup(UserGroup_DB, int.Parse(EmployeeID));
+        if (result != null)
+            if (result.Data != null)
+            {
+                var edu = result.Data;
+                for (int i = 0; i < edu.Count; i++)
+                    html += "<option value='" +edu[i].EduDepartmentId + "'>" + edu[i].EduDepartmentName + "</option>";
+            }
         Response.Write(html);
     }
-    void Load_EduSchoold()
+    async void Load_EduSchoold()
     {
         string IDEduDepartment = (Request.QueryString["IDEduDepartment"].Trim());
         string html = "<option value=''>── Chọn cấp Trường ──</option>";
-        DataTable table = Connect.GetTable(@"select SchoolId, SchoolName from School where EduDepartmentId='" + IDEduDepartment + "'");
 
-        for (int i = 0; i < table.Rows.Count; i++)
-            html += "<option value='" + table.Rows[i]["SchoolId"] + "'>" + table.Rows[i]["SchoolName"] + "</option>";
+        string TenDangNhap_Cookie = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_VSW"].Value;
+        string UserGroup_DB = HttpContext.Current.Request.Cookies["CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW"].Value;
+        string EmployeeID = StaticData.getField("Employee", "EmployeeID", "Username", TenDangNhap_Cookie);
 
+        var result = await _apiAuthentication.Get_School_ByUserGroup(UserGroup_DB, int.Parse(EmployeeID));
+        if (result != null)
+            if (result.Data != null)
+            {
+                var edu = result.Data;
+                for (int i = 0; i < edu.Count; i++)
+                    html += "<option value='" + edu[i].SchoolId + "'>" + edu[i].SchoolName + "</option>";
+            }
         Response.Write(html);
     }
+    ///////////////////////////////////////  NGƯỜI DÙNG
+    #region NGƯỜI DÙNG 
     async void slUserType_onchange()
     {
         string EduLevelCode = (Request.QueryString["value"].Trim());
@@ -241,21 +261,26 @@ public partial class Ajax : System.Web.UI.Page
                 Response.Write("OK");
         }
     }
-    void DeleteUser()
+    async void DeleteUser()
     {
-        string user = (Request.QueryString["user"]);
+        //string user = (Request.QueryString["user"]);
         // string LinkHinhAnh = StaticData.getField("tb_NguoiDung", "LinkHinhDaiDien", "idNguoiDung", user);
-        if (Connect.Exec("delete from Employee where EmployeeId='" + user + "'"))
+        //if (Connect.Exec("delete from Employee where EmployeeId='" + user + "'"))
         {
             //try
             //{
             //    File.Delete(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "/images/image-user/" + LinkHinhAnh);
             //}
             //catch { }
-            Response.Write("Success");
+            //Response.Write("Success");
         }
+        string ID = Request.QueryString["user"].Trim();
+        var result = await _apiAuthentication.Delete_Employee(int.Parse(ID == "" ? "0" : ID));
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
     }
-    void AddNewUser()
+    async void AddNewUser()
     {
         string[] chuoi = (Request.QueryString["chuoi"].Trim()).Split(new[] { "@_@" }, StringSplitOptions.None);
         //0 : FullnameUser 
@@ -271,54 +296,87 @@ public partial class Ajax : System.Web.UI.Page
         //10 : EduProvinceId
         //11 : EduDepartmentId
         //12 : SchoolId
+        //13 : GioiTInh
+        //14 : NgaySinh
+        //15 : Email
+        //16 : ChucVu 
+        #region CODE CŨ CÙI BẮP 
+        //DataTable table_checkExist_tenDangNhap = Connect.GetTable("select * from Employee where Username = '" + chuoi[4] + "' ");
+        //DataTable table_checkExist_maNhanVien = Connect.GetTable("select * from Employee where EmployeeCode = '" + chuoi[3] + "' ");
+        //if (table_checkExist_tenDangNhap.Rows.Count > 0)
+        //{
+        //    Response.Write("SameUsername");
+        //    return;
+        //}
+        //else if (table_checkExist_maNhanVien.Rows.Count > 0)
+        //{
+        //    Response.Write("SameCode");
+        //    return;
+        //}
 
-        DataTable table_checkExist_tenDangNhap = Connect.GetTable("select * from Employee where Username = '" + chuoi[4] + "' ");
-        DataTable table_checkExist_maNhanVien = Connect.GetTable("select * from Employee where EmployeeCode = '" + chuoi[3] + "' ");
-        if (table_checkExist_tenDangNhap.Rows.Count > 0)
+        //string sql = @" insert into Employee (EmployeeName, PhoneNumber,Address ,EmployeeCode,UserName,Password, EduLevelCode, Active, Remarks, 
+        //                                       MinistryofEducationaCode, EduProvinceId, EduDepartmentId, SchoolId)
+
+        //                values( @EmployeeName, @PhoneNumber, @Address, @EmployeeCode, @UserName, @Password, @EduLevelCode, @Active, @Remarks, 
+        //                                @MinistryofEducationaCode, @EduProvinceId, @EduDepartmentId, @SchoolId ) ";
+
+        //string[] paraName = new string[13] { "@EmployeeName", "@PhoneNumber", "@Address", "@EmployeeCode", "@UserName", "@Password", "@EduLevelCode", "@Active", "@Remarks",
+        //                                            "@MinistryofEducationaCode", "@EduProvinceId", "@EduDepartmentId", "@SchoolId" };
+
+        //object[] paraValue = new object[13] { chuoi[0], chuoi[1], chuoi[2], chuoi[3], chuoi[4], chuoi[5].EncodePassword() , chuoi[6], chuoi[7], chuoi[8],
+        //                                            chuoi[9], chuoi[10], chuoi[11], chuoi[12]};
+
+        //if (Connect.Exec(sql, paraName, paraValue))
+        //    Response.Write("Success");
+        #endregion
+
+        EmployeeInsertReq emp = new EmployeeInsertReq
         {
-            Response.Write("SameUsername");
-            return;
-        }
-        else if (table_checkExist_maNhanVien.Rows.Count > 0)
-        {
-            Response.Write("SameCode");
-            return;
-        }
-
-        string sql = @" insert into Employee (EmployeeName, PhoneNumber,Address ,EmployeeCode,UserName,Password, EduLevelCode, Active, Remarks, 
-                                               MinistryofEducationaCode, EduProvinceId, EduDepartmentId, SchoolId)
-
-                        values( @EmployeeName, @PhoneNumber, @Address, @EmployeeCode, @UserName, @Password, @EduLevelCode, @Active, @Remarks, 
-                                        @MinistryofEducationaCode, @EduProvinceId, @EduDepartmentId, @SchoolId ) ";
-
-        string[] paraName = new string[13] { "@EmployeeName", "@PhoneNumber", "@Address", "@EmployeeCode", "@UserName", "@Password", "@EduLevelCode", "@Active", "@Remarks",
-                                                    "@MinistryofEducationaCode", "@EduProvinceId", "@EduDepartmentId", "@SchoolId" };
-
-        object[] paraValue = new object[13] { chuoi[0], chuoi[1], chuoi[2], chuoi[3], chuoi[4], chuoi[5].EncodePassword() , chuoi[6], chuoi[7], chuoi[8],
-                                                    chuoi[9], chuoi[10], chuoi[11], chuoi[12]};
-
-        if (Connect.Exec(sql, paraName, paraValue))
-            Response.Write("Success");
+            EmployeeName = chuoi[0],
+            PhoneNumber = chuoi[1],
+            Address = chuoi[2],
+            EmployeeCode = chuoi[3],
+            UserName = chuoi[4],
+            Password = chuoi[5],
+            EduLevelCode = chuoi[6],
+            Active = (chuoi[7] == "False" ? false : true),
+            Remarks = chuoi[8],
+            MinistryofEducationaCode = chuoi[9],
+            EduProvinceId = int.Parse(chuoi[10] == "" ? "0" : chuoi[10]),
+            EduDepartmentId = int.Parse(chuoi[11] == "" ? "0" : chuoi[11]),
+            SchoolId = int.Parse(chuoi[12] == "" ? "0" : chuoi[12]),
+            Sex = (chuoi[13] == "0" ? false : true),
+            Birthday = DateTime.Parse(chuoi[14].ConvertDDMMtoMMDD()),
+            Email = chuoi[15],
+            PositionCode = chuoi[16]
+        };
+        var result = await _apiAuthentication.Insert_Employee(emp);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
     }
-    void LoadInfoUser()
+    async void LoadInfoUser()
     {
-        string EmployeeId = (Request.QueryString["user"].Trim());
-        string sql = "select * from Employee where EmployeeId ='" + EmployeeId + "' ";
-        DataTable table = Connect.GetTable(sql);
-        if (table.Rows.Count > 0)
+        string EmployeeID = (Request.QueryString["user"].Trim());
+        var result = await _apiAuthentication.GetEmployee_ById(int.Parse(EmployeeID == "" ? "0" : EmployeeID));
+        string KQ = "";
+        if (result != null)
         {
-            string kq = table.Rows[0]["EmployeeName"] + "@_@" + table.Rows[0]["PhoneNumber"] + "@_@" + table.Rows[0]["Address"] + "@_@" + table.Rows[0]["EmployeeCode"]
-                      + "@_@" + table.Rows[0]["UserName"] + "@_@" + table.Rows[0]["Password"] + "@_@" + table.Rows[0]["EduLevelCode"] + "@_@" + table.Rows[0]["Active"]
-                       + "@_@" + table.Rows[0]["Remarks"]
-                        + "@_@" + table.Rows[0]["MinistryofEducationaCode"] + "@_@" + table.Rows[0]["EduProvinceId"] + "@_@" + table.Rows[0]["EduDepartmentId"] + "@_@" + table.Rows[0]["SchoolId"];
-            Response.Write(kq);
+            var emp = result.Data;
+            if (emp != null)
+            {
+                KQ = emp.EmployeeName + "@_@" + emp.PhoneNumber + "@_@" + emp.Address + "@_@" + emp.EmployeeCode + "@_@" + emp.UserName + "@_@" + emp.Password + "@_@" +
+                       emp.EduLevelCode + "@_@" + emp.Active + "@_@" + emp.Remarks + "@_@" + emp.MinistryofEducationaCode + "@_@" + emp.EduProvinceId + "@_@" + emp.EduDepartmentId + "@_@" + emp.SchoolId
+                       + "@_@" + emp.Sex + "@_@" + emp.Birthday.ToString().ConvertMMDDYYtoDDMMYY() + "@_@" + emp.Email  + "@_@" + emp.PositionCode;
+            }
         }
+        Response.Write(KQ);
     }
-    void EditUser()
+    async void EditUser()
     {
         string idNguoiDung = (Request.QueryString["user"].Trim());
-        string MaNguoiDUng_OLD = StaticData.getField("Employee", "EmployeeCode", "EmployeeId", idNguoiDung);
-        string TenDangNhap_OLD = StaticData.getField("Employee", "UserName", "EmployeeId", idNguoiDung);
+        //string MaNguoiDUng_OLD = StaticData.getField("Employee", "EmployeeCode", "EmployeeId", idNguoiDung);
+        //string TenDangNhap_OLD = StaticData.getField("Employee", "UserName", "EmployeeId", idNguoiDung);
 
         string[] chuoi = (Request.QueryString["chuoi"].Trim()).Split(new[] { "@_@" }, StringSplitOptions.None);
         //0 : FullnameUser 
@@ -335,42 +393,69 @@ public partial class Ajax : System.Web.UI.Page
         //11 : EduDepartmentId
         //12 : SchoolId
 
-        string MaNguoiDung_CheckExist = StaticData.getField("Employee", "EmployeeCode", "EmployeeCode", chuoi[3]).Trim();
-        if (MaNguoiDung_CheckExist != "" && MaNguoiDung_CheckExist != MaNguoiDUng_OLD)
-        {
-            Response.Write("SameCode");
-            return;
-        }
+        #region CODE CŨ CÙI BẮP
+        //string MaNguoiDung_CheckExist = StaticData.getField("Employee", "EmployeeCode", "EmployeeCode", chuoi[3]).Trim();
+        //if (MaNguoiDung_CheckExist != "" && MaNguoiDung_CheckExist != MaNguoiDUng_OLD)
+        //{
+        //    Response.Write("SameCode");
+        //    return;
+        //}
 
-        string TenDangNhap_CheckExist = StaticData.getField("Employee", "UserName", "UserName", chuoi[4]).Trim();
-        if (TenDangNhap_CheckExist != "" && TenDangNhap_CheckExist != TenDangNhap_OLD)
-        {
-            Response.Write("SameUsername");
-            return;
-        }
-        string sql = @" update Employee 
-                        SET  
-                             EmployeeName = @EmployeeName,
-                             PhoneNumber = @PhoneNumber,
-                             Address = @Address ,
-                             EmployeeCode = @EmployeeCode,
-                             UserName = @UserName,
-                             Password = @Password,
-                             EduLevelCode = @EduLevelCode, 
-                             Active  = @Active, 
-                             Remarks = @Remarks, 
-                             MinistryofEducationaCode = @MinistryofEducationaCode, 
-                             EduProvinceId = @EduProvinceId, 
-                             EduDepartmentId = @EduDepartmentId, 
-                             SchoolId = @SchoolId
-                        where EmployeeId= @EmployeeId";
-        string[] paraName = new string[14] { "@EmployeeName", "@PhoneNumber", "@Address", "@EmployeeCode", "@UserName", "@Password", "@EduLevelCode", "@Active", "@Remarks",
-                                                    "@MinistryofEducationaCode", "@EduProvinceId", "@EduDepartmentId", "@SchoolId","@EmployeeId" };
+        //string TenDangNhap_CheckExist = StaticData.getField("Employee", "UserName", "UserName", chuoi[4]).Trim();
+        //if (TenDangNhap_CheckExist != "" && TenDangNhap_CheckExist != TenDangNhap_OLD)
+        //{
+        //    Response.Write("SameUsername");
+        //    return;
+        //}
+        //string sql = @" update Employee 
+        //                SET  
+        //                     EmployeeName = @EmployeeName,
+        //                     PhoneNumber = @PhoneNumber,
+        //                     Address = @Address ,
+        //                     EmployeeCode = @EmployeeCode,
+        //                     UserName = @UserName,
+        //                     Password = @Password,
+        //                     EduLevelCode = @EduLevelCode, 
+        //                     Active  = @Active, 
+        //                     Remarks = @Remarks, 
+        //                     MinistryofEducationaCode = @MinistryofEducationaCode, 
+        //                     EduProvinceId = @EduProvinceId, 
+        //                     EduDepartmentId = @EduDepartmentId, 
+        //                     SchoolId = @SchoolId
+        //                where EmployeeId= @EmployeeId";
+        //string[] paraName = new string[14] { "@EmployeeName", "@PhoneNumber", "@Address", "@EmployeeCode", "@UserName", "@Password", "@EduLevelCode", "@Active", "@Remarks",
+        //                                            "@MinistryofEducationaCode", "@EduProvinceId", "@EduDepartmentId", "@SchoolId","@EmployeeId" };
 
-        object[] paraValue = new object[14] { chuoi[0], chuoi[1], chuoi[2], chuoi[3], chuoi[4], chuoi[5].EncodePassword() , chuoi[6],  (chuoi[7] =="True"? "1":"0"), chuoi[8],
-                                                     (chuoi[9] ==""? Convert.DBNull:chuoi[9]), (chuoi[10] ==""? Convert.DBNull:chuoi[10]), (chuoi[11] ==""? Convert.DBNull:chuoi[11]), (chuoi[12] ==""? Convert.DBNull:chuoi[12]), idNguoiDung};
-        if (Connect.Exec(sql, paraName, paraValue))
-            Response.Write("Success");
+        //object[] paraValue = new object[14] { chuoi[0], chuoi[1], chuoi[2], chuoi[3], chuoi[4], chuoi[5].EncodePassword() , chuoi[6],  (chuoi[7] =="True"? "1":"0"), chuoi[8],
+        //                                             (chuoi[9] ==""? Convert.DBNull:chuoi[9]), (chuoi[10] ==""? Convert.DBNull:chuoi[10]), (chuoi[11] ==""? Convert.DBNull:chuoi[11]), (chuoi[12] ==""? Convert.DBNull:chuoi[12]), idNguoiDung};
+        //if (Connect.Exec(sql, paraName, paraValue))
+        //    Response.Write("Success");
+        #endregion
+        EmployeeUpdateReq emp = new EmployeeUpdateReq
+        {
+            EmployeeName = chuoi[0],
+            PhoneNumber = chuoi[1],
+            Address = chuoi[2],
+            EmployeeCode = chuoi[3],
+            UserName = chuoi[4],
+            Password = chuoi[5],
+            EduLevelCode = chuoi[6],
+            Active = (chuoi[7] == "False" ? false : true),
+            Remarks = chuoi[8],
+            MinistryofEducationaCode = chuoi[9],
+            EduProvinceId = int.Parse(chuoi[10] == "" ? "0" : chuoi[10]),
+            EduDepartmentId = int.Parse(chuoi[11] == "" ? "0" : chuoi[11]),
+            SchoolId = int.Parse(chuoi[12] == "" ? "0" : chuoi[12]),
+            Sex = (chuoi[13] == "0" ? false : true),
+            Birthday = DateTime.Parse(chuoi[14].ConvertDDMMtoMMDD()),
+            Email = chuoi[15],
+            PositionCode = chuoi[16],
+            EmployeeId = int.Parse(idNguoiDung == "" ? "0" : idNguoiDung),
+        };
+        var result = await _apiAuthentication.Update_Employee(emp);
+        if (result != null)
+            if (!result.IsError)
+                Response.Write("Success");
     }
     async void txtUserName_onchange()
     {
@@ -490,7 +575,8 @@ public partial class Ajax : System.Web.UI.Page
             if (emp != null)
             {
                 KQ = emp.EmployeeName + "@_@" + emp.PhoneNumber + "@_@" + emp.Address + "@_@" + emp.EmployeeCode + "@_@" + emp.UserName + "@_@" + emp.Password + "@_@" +
-                       emp.EduLevelCode + "@_@" + emp.Active + "@_@" + emp.Remarks + "@_@" + emp.MinistryofEducationaCode + "@_@" + emp.EduProvinceId + "@_@" + emp.EduDepartmentId + "@_@" + emp.SchoolId;
+                       emp.EduLevelCode + "@_@" + emp.Active + "@_@" + emp.Remarks + "@_@" + emp.MinistryofEducationaCode + "@_@" + emp.EduProvinceId + "@_@" + emp.EduDepartmentId + "@_@" + emp.SchoolId
+                       + "@_@" + emp.Sex + "@_@" + emp.Birthday.ToString().ConvertMMDDYYtoDDMMYY() + "@_@" + emp.Email + "@_@" + emp.PositionCode;
             }
         }
         Response.Write(KQ);
@@ -503,6 +589,7 @@ public partial class Ajax : System.Web.UI.Page
         //2 : DenNgay
         //3 : Nam
         //4 : TruongHoc 
+        //5 : EvalType 
         EvalPeriodInsertReq peri = new EvalPeriodInsertReq
         {
             PeriodName = DataValue[0],
@@ -510,6 +597,7 @@ public partial class Ajax : System.Web.UI.Page
             ToDate = DateTime.Parse(DataValue[2].ConvertDDMMtoMMDD()),
             Year = int.Parse(DataValue[3] == "" ? "0" : DataValue[3]),
             SchoolId = int.Parse(DataValue[4] == "" ? "0" : DataValue[4]),
+            EvalTypeCode = DataValue[5]
         };
         var result = await _apiAuthentication.Insert_EvalPeriod(peri);
         if (result != null)
@@ -529,7 +617,8 @@ public partial class Ajax : System.Web.UI.Page
                 string EduDepartmentId = StaticData.getField("School", "EduDepartmentId", "SchoolId", Period.SchoolId.ToString());
                 string EduProvinceId = StaticData.getField("School", "EduProvinceId", "SchoolId", Period.SchoolId.ToString());
 
-                KQ = Period.PeriodName + "@_@" + Period.FromDate.ToString().ConvertMMDDYYtoDDMMYY() + "@_@" + Period.ToDate.ToString().ConvertMMDDYYtoDDMMYY() + "@_@" + Period.Year + "@_@" + EduProvinceId + "@_@" + EduDepartmentId + "@_@" + Period.SchoolId;
+                KQ = Period.PeriodName + "@_@" + Period.FromDate.ToString().ConvertMMDDYYtoDDMMYY() + "@_@" + Period.ToDate.ToString().ConvertMMDDYYtoDDMMYY()
+                            + "@_@" + Period.Year + "@_@" + EduProvinceId + "@_@" + EduDepartmentId + "@_@" + Period.SchoolId + "@_@" + Period.EvalTypeCode;
             }
         }
         Response.Write(KQ);
@@ -543,6 +632,7 @@ public partial class Ajax : System.Web.UI.Page
         //2 : DenNgay
         //3 : Nam
         //4 : TruongHoc 
+        //5 : EvalType 
         EvalPeriodUpdateReq peri = new EvalPeriodUpdateReq
         {
             PeriodName = DataValue[0],
@@ -550,6 +640,7 @@ public partial class Ajax : System.Web.UI.Page
             ToDate = DateTime.Parse(DataValue[2].ConvertDDMMtoMMDD()),
             Year = int.Parse(DataValue[3] == "" ? "0" : DataValue[3]),
             SchoolId = int.Parse(DataValue[4] == "" ? "0" : DataValue[4]),
+            EvalTypeCode = DataValue[5],
             EvalPeriodId = int.Parse(ID == "" ? "0" : ID)
         };
 

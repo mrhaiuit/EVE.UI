@@ -46,27 +46,21 @@
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                     <h5 class="card-inside-title " style="margin-bottom: 5px;">Chọn kỳ đánh giá</h5>
-                                    <select class="form-control" id="slKyDanhGia">
-                                        <option>-- Chọn kỳ --</option>
-                                        <option>Đánh giá kỳ 1</option>
-                                        <option>Đánh giá kỳ 2</option>
-                                        <option>Đánh giá kỳ 3</option>
-                                        <option>Đánh giá kỳ 4</option>
-                                        <option>Đánh giá kỳ 5</option>
+                                    <select class="form-control" id="slKyDanhGia_TimKiem" runat="server">
+                                        <option>── Chọn kỳ ──</option> 
                                     </select>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <h5 class="card-inside-title " style="margin-bottom: 5px;">Chọn giáo viên</h5>
-                                    <select class="form-control" id="slGiaoVien">
-                                        <option>-- Chọn giáo viên --</option>
-                                        <option>Lê Văn A</option>
-                                        <option>Lê Văn B</option>
-                                        <option>Lê Văn C</option>
-                                        <option>Lê Văn D</option>
-                                        <option>Lê Văn E</option>
+                                    <select class="form-control" id="slGiaoVien_TimKiem" runat="server">
+                                        <option>── Chọn giáo viên ──</option> 
                                     </select>
                                 </div>
-                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12  align-right">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;visibility:hidden;">C</h5>
+                                    <a class="btn bg-purple waves-effect" href="javascript:void(0);"><i class="material-icons">file_download</i> <span>LẤY DỮ LIỆU</span></a>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12  align-right">
                                     <h5 class="card-inside-title " style="margin-bottom: 5px;visibility:hidden;">A</h5>
                                     <a class="btn btn-success waves-effect m-r-10" href="javascript:void(0);"><i class="material-icons">done_all</i> <span>LƯU</span></a>
                                     <a class="btn bg-red  waves-effect" href="javascript:HuyDanhGia();"><i class="material-icons">clear</i> <span>HUỶ</span></a>
@@ -308,7 +302,7 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterMaster" runat="Server">
     <script>
 
-        $("#slKyDanhGia,#slGiaoVien").select2();
+        $("#ContentMaster_slKyDanhGia_TimKiem,#ContentMaster_slGiaoVien_TimKiem").select2();
         $('.tr-header').click(function () {
             var $this = $(this);
             $(this).nextUntil('tr.tr-header').slideToggle(100).promise().done(function () {

@@ -28,6 +28,24 @@
     </style>
     <script>
         {
+            window.onload = function ()//
+            {
+                collapesSideBar();
+
+                var CapSo = getQueryString("CapSo");
+                var CapPhong = getQueryString("CapPhong");
+                var CapTruong = getQueryString("CapTruong");
+
+                if (CapSo != "")
+                {
+                    $("#ContentMaster_slEduProvince_TimKiem").val(CapSo).trigger('change');
+                    //$("#ContentMaster_txtEduProvince_TimKiem").val(CapSo);
+                }
+                if (CapPhong != "")
+                    setTimeout(function () { $("#ContentMaster_slEduDepartment_TimKiem").val(CapPhong).trigger('change');   }, 500);
+                if (CapTruong != "")
+                    setTimeout(function () { $("#ContentMaster_slEduSchoold_TimKiem").val(CapTruong).trigger('change');   }, 900);
+            }
             function OpenModal_AddDotDanhGia() {
                 var d = new Date();
                 //var month = d.getMonth() + 1;
@@ -35,7 +53,7 @@
                 //var today = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + d.getFullYear();
 
                 $("#txtTenDotDanhGia,#txtTuNgay, #txtDenNgay").val("");
-                $("#slNam_Modal, #ContentMaster_slEduProvince, #ContentMaster_slEduDepartment, #ContentMaster_slEduSchoold").val("").trigger('change');
+                $("#slNam_Modal, #ContentMaster_slEduProvince, #ContentMaster_slEduDepartment, #ContentMaster_slEduSchoold, #ContentMaster_slEvalType").val("").trigger('change');
                 $("#slNam_Modal").val(d.getFullYear()).trigger('change');
 
                 $("#btnModalSave").attr('onclick', 'AddDotDanhGia();');
@@ -51,6 +69,7 @@
 
                 var Nam = $("#slNam_Modal").val();
                 var TruongHoc = $("#ContentMaster_slEduSchoold").val();
+                var EvalType = $("#ContentMaster_slEvalType").val();
 
                 var flag_OK = true;
                 if (TenDotDanhGia == "")//
@@ -59,6 +78,33 @@
                     $("#fltxtTenDotDanhGia").addClass("animated shake");
                     setTimeout(function () {
                         $("#fltxtTenDotDanhGia").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+                if (EvalType == "")//
+                {
+                    $("#ContentMaster_slEvalType").notify("Vui lòng chọn loại Đợt đánh giá!", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#ContentMaster_slEvalType").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#ContentMaster_slEvalType").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+                if (TuNgay == "")//
+                {
+                    $("#txtTuNgay").notify("Vui lòng chọn Ngày bắt đầu !", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#fltxtTuNgay").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#fltxtTuNgay").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+                if (DenNgay == "")//
+                {
+                    $("#txtDenNgay").notify("Vui lòng chọn Ngày kết thúc !", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#fltxtDenNgay").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#fltxtDenNgay").removeClass("animated shake");
                     }, 1000);
                     flag_OK = false;
                 }
@@ -72,7 +118,7 @@
                     flag_OK = false;
                 }
 
-                var value = TenDotDanhGia + "@_@" + TuNgay + "@_@" + DenNgay + "@_@" + Nam + "@_@" + TruongHoc;
+                var value = TenDotDanhGia + "@_@" + TuNgay + "@_@" + DenNgay + "@_@" + Nam + "@_@" + TruongHoc + "@_@" + EvalType;
                 if (!flag_OK)
                     return;
                 $('.page-loader-wrapper').fadeIn(300);//mở hiệu ứng chờ
@@ -128,12 +174,12 @@
                             $("#txtTuNgay").val(arr[1]);
                             $("#txtDenNgay").val(arr[2]);
                             $("#slNam_Modal").val(arr[3]).trigger('change');
-                            debugger;
+
                             $("#ContentMaster_slEduProvince").val(arr[4]).trigger('change');
                             setTimeout(function () { $("#ContentMaster_slEduDepartment").val(arr[5]).trigger('change'); }, 500);
                             setTimeout(function () { $("#ContentMaster_slEduSchoold").val(arr[6]).trigger('change'); }, 1000);
-
-
+                            $("#ContentMaster_slEvalType").val(arr[7]).trigger('change');
+                             
                             $("#btnModalSave").attr('onclick', 'EditDotDanhGia(' + value + ');');
 
                             $("#myModalTile").html('CHỈNH SỬA THÔNG TIN ĐỢT ĐÁNH GIÁ');
@@ -155,6 +201,7 @@
 
                 var Nam = $("#slNam_Modal").val();
                 var TruongHoc = $("#ContentMaster_slEduSchoold").val();
+                var EvalType = $("#ContentMaster_slEvalType").val();
 
                 var flag_OK = true;
                 if (TenDotDanhGia == "")//
@@ -163,6 +210,33 @@
                     $("#fltxtTenDotDanhGia").addClass("animated shake");
                     setTimeout(function () {
                         $("#fltxtTenDotDanhGia").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+                if (EvalType == "")//
+                {
+                    $("#ContentMaster_slEvalType").notify("Vui lòng chọn loại Đợt đánh giá!", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#ContentMaster_slEvalType").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#ContentMaster_slEvalType").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+                if (TuNgay == "")//
+                {
+                    $("#txtTuNgay").notify("Vui lòng chọn Ngày bắt đầu !", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#fltxtTuNgay").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#fltxtTuNgay").removeClass("animated shake");
+                    }, 1000);
+                    flag_OK = false;
+                }
+                if (DenNgay == "")//
+                {
+                    $("#txtDenNgay").notify("Vui lòng chọn Ngày kết thúc !", { position: "top", className: "error", autoHideDelay: 5000, });
+                    $("#fltxtDenNgay").addClass("animated shake");
+                    setTimeout(function () {
+                        $("#fltxtDenNgay").removeClass("animated shake");
                     }, 1000);
                     flag_OK = false;
                 }
@@ -176,7 +250,7 @@
                     flag_OK = false;
                 }
 
-                var value = TenDotDanhGia + "@_@" + TuNgay + "@_@" + DenNgay + "@_@" + Nam + "@_@" + TruongHoc;
+                var value = TenDotDanhGia + "@_@" + TuNgay + "@_@" + DenNgay + "@_@" + Nam + "@_@" + TruongHoc + "@_@" + EvalType;
                 if (!flag_OK)
                     return;
                 $('.page-loader-wrapper').fadeIn(300);//mở hiệu ứng chờ
@@ -325,7 +399,7 @@
             </div>
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
+                    <div class="card"> 
                         <div class="header">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -337,7 +411,7 @@
                             </div>
 
                             <div class="row m-b-10">
-                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <h5 class="card-inside-title " style="margin-bottom: 5px;">Năm đánh giá</h5>
                                     <select class="form-control" id="slNam" style="width: 100%;" runat="server">
                                         <option value="">── Chọn tìm năm đánh giá ──</option>
@@ -348,20 +422,31 @@
                                         <option value='2024'>2024</option>
                                     </select>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px;">Loại đánh giá</h5>
+                                    <select class="form-control" id="slEvalType_TimKiem" style="width: 100%;" runat="server">
+                                        <option value="">── Chọn loại năm đánh giá ──</option>  
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row m-b-10">
+                                <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12">
                                     <h5 class="card-inside-title " style="margin-bottom: 5px;">Cấp sở</h5>
-                                    <select class="form-control" id="slEduProvince_TimKiem" runat="server" style="width: 100%;" onchange="slEduProvince_onchange(this.value,'_TimKiem');">
+                                    <select class="form-control" id="slEduProvince_TimKiem" runat="server" style="width: 100%;" onchange="slEduProvince_onchange(this.value,'_TimKiem'); $('#ContentMaster_txtEduProvince_TimKiem').val(this.value);">
                                     </select>
+                                    <input type="hidden" id="txtEduProvince_TimKiem" runat="server" />
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12">
                                     <h5 class="card-inside-title " style="margin-bottom: 5px;">Cấp phòng</h5>
-                                    <select class="form-control" id="slEduDepartment_TimKiem" runat="server" style="width: 100%;" onchange="slEduDepartment_onchange(this.value,'_TimKiem');">
+                                    <select class="form-control" id="slEduDepartment_TimKiem" runat="server" style="width: 100%;" onchange="slEduDepartment_onchange(this.value,'_TimKiem'); $('#ContentMaster_txtEduDepartment_TimKiem').val(this.value);">
                                     </select>
+                                    <input type="hidden" id="txtEduDepartment_TimKiem" runat="server" />
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12">
                                     <h5 class="card-inside-title " style="margin-bottom: 5px;">Cấp trường</h5>
-                                    <select class="form-control" id="slEduSchoold_TimKiem" runat="server" style="width: 100%;">
+                                    <select class="form-control" id="slEduSchoold_TimKiem" runat="server" style="width: 100%;" onchange="$('#ContentMaster_txtEduSchoold_TimKiem').val(this.value);">
                                     </select>
+                                    <input type="hidden" id="txtEduSchoold_TimKiem" runat="server" />
                                 </div>
                             </div>
 
@@ -481,12 +566,17 @@
                             <h4 class="modal-title" id="myModalTile">THÊM MỚI</h4>
                         </div>
                         <div class="modal-body">
-
                             <div class="row">
                                 <div class="col-md-6 col-lg-6">
-                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0;">Năm đánh giá</h5>
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0;">Loại đánh giá <span style="display: inline-block; font-size: 10px;color:red;">(<i class="fa fa-certificate"></i>)</span></h5>
+                                    <select class="form-control" id="slEvalType" style="width: 100%;" runat="server">
+                                        <option value="">── Chọn loại đánh giá ──</option> 
+                                    </select>
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0;">Năm đánh giá <span style="display: inline-block; font-size: 10px;color:red;">(<i class="fa fa-certificate"></i>)</span></h5>
                                     <select class="form-control" id="slNam_Modal" style="width: 100%;">
-                                        <option value="">-- Chọn năm đánh giá --</option>
+                                        <option value="">── Chọn năm đánh giá ──</option>
                                         <option value='2020'>2020</option>
                                         <option value='2021'>2021</option>
                                         <option value='2022'>2022</option>
@@ -494,12 +584,15 @@
                                         <option value='2024'>2024</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6 col-lg-6">
-                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0; visibility: hidden;">Tên đợt đánh giá</h5>
+                             </div>
+
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 5px; margin-top: 0; visibility: hidden;">Tên đợt đánh giá <span style="display: inline-block; font-size: 10px;color:red;">(<i class="fa fa-certificate"></i>)</span></h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtTenDotDanhGia">
                                             <input type="text" class="form-control" id="txtTenDotDanhGia">
-                                            <label class="form-label">Tên đợt đánh giá <span style="display: inline-block; font-size: 10px;">(<i class="fa fa-certificate"></i>)</span></label>
+                                            <label class="form-label">Tên đợt đánh giá <span style="display: inline-block; font-size: 10px;color:red;">(<i class="fa fa-certificate"></i>)</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -507,7 +600,7 @@
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtTuNgay">
                                             <input type="text" class="form-control" id="txtTuNgay">
-                                            <label class="form-label">Từ ngày </label>
+                                            <label class="form-label">Từ ngày <span style="display: inline-block; font-size: 10px;color:red;">(<i class="fa fa-certificate"></i>)</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -515,7 +608,7 @@
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtDenNgay">
                                             <input type="text" class="form-control" id="txtDenNgay">
-                                            <label class="form-label">Đến ngày</label>
+                                            <label class="form-label">Đến ngày <span style="display: inline-block; font-size: 10px;color:red;">(<i class="fa fa-certificate"></i>)</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -616,13 +709,9 @@
     </section>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterMaster" runat="Server">
-    <link href="../../plugins/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" />
-    <script src="../../plugins/jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
-    <script>
-        window.onload = function () //
-        {
-            collapesSideBar();
-        }
+    <link href="../../css_ALL/jquery.datetimepicker.min.css" rel="stylesheet" />
+    <script src="../../js_ALL/jquery.datetimepicker.full.min.js"></script>
+    <script> 
         $('.tr-header').click(function () {
             var $this = $(this);
             $(this).nextUntil('tr.tr-header').slideToggle(100).promise().done(function () {
@@ -636,7 +725,7 @@
 
         $("#ContentMaster_slNam,#slNam_Modal").select2();
         $("#ContentMaster_slEduMinistry,#ContentMaster_slEduProvince,#ContentMaster_slEduDepartment,#ContentMaster_slEduSchoold").select2();
-        $("#ContentMaster_slEduProvince_TimKiem,#ContentMaster_slEduDepartment_TimKiem,#ContentMaster_slEduSchoold_TimKiem").select2();
+        $("#ContentMaster_slEduProvince_TimKiem,#ContentMaster_slEduDepartment_TimKiem,#ContentMaster_slEduSchoold_TimKiem,#ContentMaster_slEvalType,#ContentMaster_slEvalType_TimKiem").select2();
 
         //datetimepicker jquery
         jQuery.datetimepicker.setLocale('vi');//chỉ cần dòng này là có thể đổi được ngôn ngữ

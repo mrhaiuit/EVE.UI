@@ -52,20 +52,15 @@
                 });
             }
             function OpenModal_AddNewUser() {
-                $("#txtFullnameUser").val('');
-                $("#txtPhoneUser").val('');
-                $("#txtAddresslUser").val('');
-                $("#txtCodeUser").val('');
-                $("#txtUsername").val('');
-                $("#txtPassword").val('');
-                $("#txtGhiChu").val('');
-                $("#ContentMaster_slUserType").val('').trigger('change');
-                $("#ContentMaster_slActive").val('').trigger('change');
+                $("#txtFullnameUser,#txtPhoneUser,#txtAddresslUser, #txtCodeUser, #txtUsername, #txtPassword,#txtGhiChu,#txtNgaySinh").val('');
+                $("#ContentMaster_slUserType,#ContentMaster_slActive,#slChucVu,#slGioiTinh").val('').trigger('change');
+                $("#ContentMaster_slEduProvince,#ContentMaster_slEduDepartment,#ContentMaster_slEduSchoold").val('').trigger('change');
+
                 $("#btnModalSave").attr('onclick', 'AddNewUser();');
 
                 $("#myModalTile").html('THÊM MỚI NHÂN VIÊN');
                 $("#verticalModal").modal('show');
-                $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
+                $("#verticalModal").css({ 'display': 'block', 'align-items': 'center' });
             }
             function AddNewUser() {
                 var flag = true;
@@ -83,6 +78,11 @@
                 var Cap_Bo = $("#ContentMaster_slEduMinistry").val();
                 var Cap_So = $("#ContentMaster_slEduProvince").val();
                 var Cap_Truong = $("#ContentMaster_slEduSchoold").val();
+
+                var GioiTinh = $("#slGioiTinh").val().trim();
+                var NgaySinh = $("#txtNgaySinh").val().trim();
+                var Email = $("#txtEmail").val().trim();
+                var ChucVu = $("#slChucVu").val().trim();
                 ////////////////////////////////////
                 if (FullnameUser == "") {
                     $("#txtFullnameUser").notify("Vui lòng nhập Nhập họ tên", { position: "top", className: "error", autoHideDelay: 5000 });
@@ -121,8 +121,7 @@
                 }
                 ////////////////////////////////////
                 if (hasUnicode(Username)) {
-                    $("#spUsername").html("Tên đăng nhập không được có dấu !");
-                    $("#spUsername").css('display', 'block');
+                    $("#txtUsername").notify("KHÔNG nhập ký tự CÓ DẤU vào Tên đăng nhập", { position: "top", className: "error", autoHideDelay: 5000 });
                     $("#fltxtUsername").addClass("animated shake");
                     setTimeout(function () {
                         $("#fltxtUsername").removeClass("animated shake");
@@ -131,7 +130,9 @@
                 }
                 if (!flag)
                     return;
-                var chuoi = FullnameUser + "@_@" + PhoneUser + "@_@" + AddresslUser + "@_@" + CodeUser + "@_@" + Username + "@_@" + Password + "@_@" + UserType + "@_@" + Active + "@_@" + GhiChu + "@_@" + Cap_Bo + "@_@" + Cap_So + "@_@" + Cap_Phong + "@_@" + Cap_Truong;
+
+                var chuoi = FullnameUser + "@_@" + PhoneUser + "@_@" + AddresslUser + "@_@" + CodeUser + "@_@" + Username + "@_@" + Password + "@_@" + UserType + "@_@" + Active + "@_@" +
+                            GhiChu + "@_@" + Cap_Bo + "@_@" + Cap_So + "@_@" + Cap_Phong + "@_@" + Cap_Truong + "@_@" + GioiTinh + "@_@" + NgaySinh + "@_@" + Email + "@_@" + ChucVu;
 
                 ////////////////////////////////////
                 var xmlhttp;
@@ -182,13 +183,7 @@
                     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                         if (xmlhttp.responseText != "") {
                             var arr = xmlhttp.responseText.split("@_@");
-                            $("#fltxtCodeUser").addClass('focused');
-                            $("#fltxtFullnameUser").addClass('focused');
-                            $("#fltxtPhoneUser").addClass('focused');
-                            $("#fltxtAddresslUser").addClass('focused');
-                            $("#fltxtUsername").addClass('focused');
-                            $("#fltxtPassword").addClass('focused');
-                            $("#fltxtGhiChu").addClass('focused');
+                            $("#fltxtCodeUser, #fltxtFullnameUser, #fltxtPhoneUser, #fltxtAddresslUser,#fltxtUsername,#fltxtPassword,#fltxtGhiChu,#fltxtNgaySinh,#fltxtEmail").addClass('focused');
 
                             //0 : FullnameUser 
                             //1 : PhoneUser 
@@ -203,6 +198,10 @@
                             //10 : EduProvinceId
                             //11 : EduDepartmentId
                             //12 : SchoolId
+                            //13 : GioiTInh
+                            //14 : NgaySinh
+                            //15 : Email
+                            //16 : ChucVu
 
                             $("#txtFullnameUser").val(arr[0]);
                             $("#txtPhoneUser").val(arr[1]);
@@ -215,17 +214,17 @@
                             $("#txtPassword").val(arr[8]);
                             $("#ContentMaster_slEduMinistry").val(arr[9]).trigger('change');
                             $("#ContentMaster_slEduProvince").val(arr[10]).trigger('change');
-                            setTimeout(function () {
-                                $("#ContentMaster_slEduDepartment").val(arr[11]).trigger('change');
-                            }, 1000);
-                            setTimeout(function () {
-                                $("#ContentMaster_slEduSchoold").val(arr[12]).trigger('change');
-                            }, 1500);
+                            setTimeout(function () { $("#ContentMaster_slEduDepartment").val(arr[11]).trigger('change'); }, 300);
+                            setTimeout(function () { $("#ContentMaster_slEduSchoold").val(arr[12]).trigger('change'); }, 700);
+                            $("#slGioiTinh").val((arr[13] == "False" ? 0 : 1)).trigger('change');
+                            $("#txtNgaySinh").val(arr[14]);
+                            $("#txtEmail").val(arr[15]);
+                            setTimeout(function () { $("#slChucVu").val(arr[16]).trigger('change'); }, 300);
 
                             $("#myModalTile").html("CHỈNH SỬA THÔNG TIN NGƯỜI DÙNG");
                             $("#btnModalSave").attr("onclick", "EditUser(" + user + ")");
                             $("#verticalModal").modal('show');
-                            $("#verticalModal").css({ 'display': 'flex', 'align-items': 'center' });
+                            $("#verticalModal").css({ 'display': 'block', 'align-items': 'center' });
                         }
                         else {
                             swal("Lỗi !", "", "error");
@@ -252,6 +251,11 @@
                 var Cap_Bo = $("#ContentMaster_slEduMinistry").val();
                 var Cap_So = $("#ContentMaster_slEduProvince").val();
                 var Cap_Truong = $("#ContentMaster_slEduSchoold").val();
+
+                var GioiTinh = $("#slGioiTinh").val().trim();
+                var NgaySinh = $("#txtNgaySinh").val().trim();
+                var Email = $("#txtEmail").val().trim();
+                var ChucVu = $("#slChucVu").val().trim();
                 ////////////////////////////////////
                 if (FullnameUser == "") {
                     $("#txtFullnameUser").notify("Vui lòng nhập Nhập họ tên", { position: "top", className: "error", autoHideDelay: 5000 });
@@ -300,8 +304,8 @@
                 }
                 if (!flag)
                     return;
-                var chuoi = FullnameUser + "@_@" + PhoneUser + "@_@" + AddresslUser + "@_@" + CodeUser + "@_@" + Username + "@_@" + Password + "@_@" + UserType + "@_@" + Active + "@_@" + GhiChu + "@_@" + Cap_Bo + "@_@" + Cap_So + "@_@" + Cap_Phong + "@_@" + Cap_Truong;
-
+                var chuoi = FullnameUser + "@_@" + PhoneUser + "@_@" + AddresslUser + "@_@" + CodeUser + "@_@" + Username + "@_@" + Password + "@_@" + UserType + "@_@" + Active + "@_@" +
+                            GhiChu + "@_@" + Cap_Bo + "@_@" + Cap_So + "@_@" + Cap_Phong + "@_@" + Cap_Truong + "@_@" + GioiTinh + "@_@" + NgaySinh + "@_@" + Email + "@_@" + ChucVu;
                 ////////////////////////////////////
                 var xmlhttp;
                 if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -426,6 +430,7 @@
                             <hr class="m-t-0" />
                             <div class="row">
                                 <div class="col-md-3 col-lg-3">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 0px;font-size:12px;visibility:hidden;">A</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtFullnameUser">
                                             <input type="text" class="form-control" id="txtFullnameUser">
@@ -434,13 +439,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2 col-lg-2">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 0px;font-size:12px;">Giới tính</h5>
                                     <select class="form-control" id="slGioiTinh" style="width: 100%;">
-                                        <option value="">── Giới tính ──</option>
+                                        <option value="">─ Giới tính ─</option>
                                         <option value="0">Nữ</option>
                                         <option value="1">Nam</option>
                                     </select>
                                 </div>
                                 <div class="col-md-2 col-lg-2">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 0px;font-size:12px;visibility:hidden;">A</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtPhoneUser">
                                             <input type="text" class="form-control" id="txtPhoneUser">
@@ -449,6 +456,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2 col-lg-2">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 0px;font-size:12px;visibility:hidden;">A</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtNgaySinh">
                                             <input type="text" class="form-control" id="txtNgaySinh">
@@ -457,6 +465,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 0px;font-size:12px;visibility:hidden;">A</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtEmail">
                                             <input type="text" class="form-control" id="txtEmail">
@@ -465,6 +474,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-9 col-lg-9">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: -10px;font-size:12px;visibility:hidden;">A</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtAddresslUser">
                                             <input type="text" class="form-control" id="txtAddresslUser">
@@ -473,10 +483,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: -10px;font-size:12px;">Cấp</h5>
                                     <select class="form-control" id="slUserType" runat="server" style="width: 100%;" onchange="slUserType_onchange(this.value);">
                                     </select>
                                 </div>
                                 <div class="col-md-9 col-lg-9">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 0px;font-size:12px;visibility:hidden;">A</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtGhiChu">
                                             <input type="text" class="form-control" id="txtGhiChu">
@@ -485,8 +497,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: -10px;font-size:12px; ">Chức vụ</h5>
                                     <select class="form-control" id="slChucVu" style="width: 100%;">
-                                        <option value="">── Chức vụ ──</option> 
+                                        <option value="">── Chức vụ ──</option>
                                     </select>
                                 </div>
                             </div>
@@ -496,6 +509,7 @@
                             <hr class="m-t-0" />
                             <div class="row">
                                 <div class="col-md-3 col-lg-3">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 0px;font-size:12px;visibility:hidden;">A</h5>
                                     <select class="form-control" id="slActive" runat="server" style="width: 100%;">
                                         <option value="">── Chọn active ──</option>
                                         <option value="True">Active</option>
@@ -503,6 +517,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 0px;font-size:12px;visibility:hidden;">A</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtCodeUser">
                                             <input type="text" class="form-control" id="txtCodeUser">
@@ -511,6 +526,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 0px;font-size:12px;visibility:hidden;">A</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtUsername">
                                             <input type="text" class="form-control" id="txtUsername">
@@ -519,6 +535,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-lg-3">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 0px;font-size:12px;visibility:hidden;">A</h5>
                                     <div class="form-group form-float">
                                         <div class="form-line" id="fltxtPassword">
                                             <input type="password" class="form-control" id="txtPassword">
@@ -528,20 +545,25 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row m-b-10">
                                 <div class="col-md-3 col-lg-3 hidden">
                                     <select class="form-control" id="slEduMinistry" runat="server" style="width: 100%;">
                                     </select>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-6 col-lg-6">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 0px;font-size:12px;">Cấp sở</h5>
                                     <select class="form-control" id="slEduProvince" runat="server" style="width: 100%;" onchange="slEduProvince_onchange(this.value);">
                                     </select>
                                 </div>
-                                <div class="col-md-3 col-lg-3">
+                                <div class="col-md-6 col-lg-6">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 5px;font-size:12px;">Cấp phòng</h5>
                                     <select class="form-control" id="slEduDepartment" runat="server" style="width: 100%;" onchange="slEduDepartment_onchange(this.value);">
                                     </select>
                                 </div>
-                                <div class="col-md-6 col-lg-6">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <h5 class="card-inside-title " style="margin-bottom: 0px;margin-top: 5px;font-size:12px;">Cấp trường</h5>
                                     <select class="form-control" id="slEduSchoold" runat="server" style="width: 100%;">
                                     </select>
                                 </div>
@@ -561,8 +583,8 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterMaster" runat="Server">
-    <link href="../../plugins/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" />
-    <script src="../../plugins/jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
+    <link href="../../css_ALL/jquery.datetimepicker.min.css" rel="stylesheet" />
+    <script src="../../js_ALL/jquery.datetimepicker.full.min.js"></script>
     <script>
         function slEduProvince_onchange(value) {
             var xmlhttp;
@@ -582,7 +604,6 @@
             xmlhttp.open("GET", "../../Ajax.aspx?Action=Load_EduDepartment&IDEduProvince=" + value, true);
             xmlhttp.send();
         }
-
         function slEduDepartment_onchange(value) {
             var xmlhttp;
             if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari

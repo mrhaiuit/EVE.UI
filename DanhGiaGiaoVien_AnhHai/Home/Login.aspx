@@ -257,9 +257,10 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <select class="form-group form-control" id="slUserGroup" runat="server">
+                        <select class="form-group form-control" id="slUserGroup" runat="server" onchange="$('#txtUserGroup').val(this.value);" >
                             <option value=''>─ Chọn nhóm người dùng ─</option>
                         </select>
+                        <input type="hidden" id="txtUserGroup" runat="server"/>
                     </div>
                     <div class="col-sm-12">
                         <a href="javascript:$('.formLogin').fadeOut().hide(); $('.formForgot').removeAttr('style').addClass('animated shake');"><i class="fa fa-key m-r-10"></i>Quên mật khẩu</a>

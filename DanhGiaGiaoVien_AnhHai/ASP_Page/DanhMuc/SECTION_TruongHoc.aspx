@@ -548,8 +548,8 @@
     </section>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="FooterMaster" runat="Server">
-    <link href="../../plugins/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" />
-    <script src="../../plugins/jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
+    <link href="../../css_ALL/jquery.datetimepicker.min.css" rel="stylesheet" />
+    <script src="../../js_ALL/jquery.datetimepicker.full.min.js"></script>
     <script>
 
         $("#ContentMaster_slSoGiaoDuc_modal,#slPhongGiaoDuc_modal, #ContentMaster_slSoGiaoDuc,#ContentMaster_slPhongGiaoDuc,#ContentMaster_slTinhThanh,#slQuanHuyen,#slPhuongXa").select2();

@@ -26,14 +26,14 @@ public partial class Home_Login : System.Web.UI.Page
     {
         string Username = (txtUsername.Value);
         string Password = (txtPassword.Value);
-        string UserGroup = slUserGroup.Value.Trim();
+        string UserGroup = txtUserGroup.Value.Trim();
 
         if (Username.Trim() == "")
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Vui lòng nhập tên đăng nhập !')", true);
         else if (Password.Trim() == "")
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Vui lòng nhập mật khẩu !')", true);
-        //else if (UserGroup.Trim() == "")
-            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Vui lòng chọn nhóm người dùng !')", true);
+        else if (UserGroup.Trim() == "")
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Vui lòng chọn nhóm người dùng !')", true);
         else if (Username.Any(c => c > 255) || Password.Any(c => c > 255))
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Vui lòng không nhập ký tự có dấu vào tên đăng nhập và mật khẩu !')", true);
         else
@@ -48,9 +48,9 @@ public partial class Home_Login : System.Web.UI.Page
                     CC_PhanMemDanhGiaGiaoVien_VSW.Expires = DateTime.Now.AddDays(30);
                     HttpContext.Current.Response.Cookies.Add(CC_PhanMemDanhGiaGiaoVien_VSW);
                     ////////
-                    //HttpCookie CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW = new HttpCookie("CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW", UserGroup);
-                    //CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW.Expires = DateTime.Now.AddDays(30);
-                    //HttpContext.Current.Response.Cookies.Add(CC_PhanMemDanhGiaGiaoVien_VSW);
+                    HttpCookie CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW = new HttpCookie("CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW", UserGroup);
+                    CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW.Expires = DateTime.Now.AddDays(30);
+                    HttpContext.Current.Response.Cookies.Add(CC_PhanMemDanhGiaGiaoVien_UserGroup_VSW);
 
                     Response.Redirect("../Home/Default.aspx");
                 }
